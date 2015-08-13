@@ -44,15 +44,9 @@ export default class Autowhatever extends Component {
     }
 
     const { id } = this.props;
-    const itemKey = this.getItemKey(sectionIndex, itemIndex);
-
-    return `react-autowhatever-${id}-${itemKey}`;
-  }
-
-  getItemKey(sectionIndex, itemIndex) {
     const section = (sectionIndex === null ? '' : `section-${sectionIndex}`);
 
-    return `${section}-item-${itemIndex}`;
+    return `react-autowhatever-${id}-${section}-item-${itemIndex}`;
   }
 
   getItemsContainerId() {
@@ -65,12 +59,10 @@ export default class Autowhatever extends Component {
     const { renderItem } = this.props;
 
     return items.map((item, itemIndex) => {
-      const itemKey = this.getItemKey(sectionIndex, itemIndex);
-
       return (
         <li id={this.getItemId(sectionIndex, itemIndex)}
             role="option"
-            key={itemKey}>
+            key={itemIndex}>
           {renderItem(item)}
         </li>
       );
