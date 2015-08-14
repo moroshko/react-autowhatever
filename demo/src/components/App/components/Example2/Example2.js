@@ -5,15 +5,17 @@ import { connect } from 'react-redux';
 import { updateInputValue } from 'flux/actionCreators/app';
 import Autowhatever from 'Autowhatever';
 
+const exampleId = '2';
+
 function mapStateToProps(state) {
   return {
-    value: state[2].value
+    value: state[exampleId].value
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    onChange: event => dispatch(updateInputValue(2, event.target.value))
+    onChange: event => dispatch(updateInputValue(exampleId, event.target.value))
   };
 }
 
@@ -67,7 +69,7 @@ class Example2 extends Component {
     const inputProps = { value, onChange };
 
     return (
-      <Autowhatever id="2"
+      <Autowhatever id={exampleId}
                     isMultiSection={true}
                     isOpen={true}
                     items={items}
