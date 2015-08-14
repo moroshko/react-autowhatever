@@ -1,33 +1,17 @@
 import React, { Component, PropTypes } from 'react';
+import themeable from 'react-themeable';
 
 export default class Autowhatever extends Component {
   static propTypes = {
     id: PropTypes.string,               // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
     isOpen: PropTypes.bool.isRequired,
-    items: PropTypes.oneOfType([
-      PropTypes.arrayOf(
-        PropTypes.shape({
-          text: PropTypes.string.isRequired
-        })
-      ),
-      PropTypes.arrayOf(
-        PropTypes.shape({
-          title: PropTypes.shape({
-            text: PropTypes.string.isRequired
-          }),
-          items: PropTypes.arrayOf(
-            PropTypes.shape({
-              text: PropTypes.string.isRequired
-            })
-          )
-        })
-      )
-    ]).isRequired,
+    items: PropTypes.array.isRequired,
     renderItem: PropTypes.func.isRequired,
-    renderTitle: PropTypes.func,
+    renderSection: PropTypes.func,
     inputProps: PropTypes.object,
     focusedSectionIndex: PropTypes.number,
-    focusedItemIndex: PropTypes.number
+    focusedItemIndex: PropTypes.number,
+    theme: PropTypes.object
   };
 
   static defaultProps = {
@@ -35,7 +19,11 @@ export default class Autowhatever extends Component {
     renderTitle: title => title.text,
     inputProps: {},
     focusedSectionIndex: null,
-    focusedItemIndex: null
+    focusedItemIndex: null,
+    theme: {
+      'items-container': 'react-autowhatever__items-container',
+      item: 'react-autowhatever__item'
+    }
   };
 
   getItemId(sectionIndex, itemIndex) {
@@ -55,33 +43,34 @@ export default class Autowhatever extends Component {
     return `react-whatever-${id}`;
   }
 
-  renderItemsList(items, sectionIndex) {
+  renderItemsList(theme, items, sectionIndex) {
     const { renderItem } = this.props;
 
     return items.map((item, itemIndex) => {
       return (
         <li id={this.getItemId(sectionIndex, itemIndex)}
             role="option"
-            key={itemIndex}>
+            {...theme(itemIndex, 'item')}>
           {renderItem(item)}
         </li>
       );
     });
   }
 
-  renderSections() {
+  renderSections(theme) {
     const { id, items, renderTitle } = this.props;
 
     return (
       <div id={this.getItemsContainerId()}
-           role="listbox">
+           role="listbox"
+           {...theme('items-container', 'items-container')}>
         {
           items.map((section, sectionIndex) => {
             return section.items.length === 0 ? null : (
               <div key={sectionIndex}>
                 {section.title && renderTitle(section.title)}
                 <ul>
-                  {this.renderItemsList(section.items, sectionIndex)}
+                  {this.renderItemsList(theme, section.items, sectionIndex)}
                 </ul>
               </div>
             );
@@ -91,13 +80,14 @@ export default class Autowhatever extends Component {
     );
   }
 
-  renderItems() {
+  renderItems(theme) {
     const { id, items } = this.props;
 
     return (
       <ul id={this.getItemsContainerId()}
-          role="listbox">
-        {this.renderItemsList(items, null)}
+          role="listbox"
+          {...theme('items-container', 'items-container')}>
+        {this.renderItemsList(theme, items, null)}
       </ul>
     );
   }
@@ -106,6 +96,7 @@ export default class Autowhatever extends Component {
     const { id, isOpen, items, focusedSectionIndex, focusedItemIndex } = this.props;
     const isMultipleSections = items.length > 0 && typeof items[0].items !== 'undefined';
     const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
+    const theme = themeable(this.props.theme);
     const inputProps = {
       type: 'text',
       value: '',
@@ -121,8 +112,8 @@ export default class Autowhatever extends Component {
     return (
       <div>
         <input {...inputProps} />
-        {isOpen && isMultipleSections && this.renderSections()}
-        {isOpen && !isMultipleSections && this.renderItems()}
+        {isOpen && isMultipleSections && this.renderSections(theme)}
+        {isOpen && !isMultipleSections && this.renderItems(theme)}
       </div>
     );
   }

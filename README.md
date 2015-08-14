@@ -2,10 +2,10 @@
 
 TODO:
 
-* Make sure value changes when inputProps.value is updated
-* Add link to ExamplesN.js
-* Add `react-themeable`, and render classNames
+* Render the rest of the classes
 * Highlight focused item
+* Figure out multi section API
+* Add link to ExamplesN.js
 * Compile to dist/
 * Add tests
 * Integrate with Codeship

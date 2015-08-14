@@ -47,7 +47,8 @@ function renderTitle(title) {
 export default class App extends Component {
   render() {
     return (
-      <Autowhatever isOpen={true}
+      <Autowhatever id="2"
+                    isOpen={true}
                     items={items}
                     renderItem={renderItem}
                     renderTitle={renderTitle}

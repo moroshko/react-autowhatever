@@ -2,6 +2,7 @@ import styles from './Example1.less';
 
 import React, { Component } from 'react';
 import Autowhatever from 'Autowhatever';
+import theme from './Example1.less';
 
 const items = [{
   text: 'Apple'
@@ -26,15 +27,41 @@ function renderItem(item) {
   );
 }
 
+function onChange(event) {
+  console.log('Example1:', event.target.value);
+}
+
 export default class Example1 extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      inputProps: {
+        value: 'hello',
+        onChange
+      }
+    };
+
+    setTimeout(() => {
+      this.setState({
+        inputProps: {
+          value: 'all good',
+          onChange
+        }
+      });
+    }, 1000);
+  }
+
   render() {
     return (
       <div>
-        <Autowhatever isOpen={true}
+        <Autowhatever id="1"
+                      isOpen={true}
                       items={items}
                       renderItem={renderItem}
-                      inputProps={inputProps}
-                      focusedItemIndex={2} />
+                      inputProps={this.state.inputProps}
+                      focusedItemIndex={2}
+                      theme={theme} />
       </div>
     );
   }
