@@ -44,6 +44,7 @@ export default class Example1 extends Component {
     return (
       <div>
         <Autowhatever id="1"
+                      isMultiSection={false}
                       isOpen={true}
                       items={items}
                       renderItem={renderItem}

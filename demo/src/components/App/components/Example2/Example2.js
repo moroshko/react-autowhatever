@@ -4,33 +4,37 @@ import React, { Component } from 'react';
 import Autowhatever from 'Autowhatever';
 
 const items = [{
-  title: {
-    text: 'A'
-  },
+  title: 'A',
   items: [{
     text: 'Apple'
   }, {
     text: 'Apricot'
   }]
 }, {
-  title: {
-    text: 'B'
-  },
+  title: 'B',
   items: [{
     text: 'Banana'
   }]
 }, {
-  title: {
-    text: 'C'
-  },
+  title: 'C',
   items: [{
     text: 'Cherry'
   }]
 }];
 
-const inputProps = {
-  onChange: event => console.log('Example2:', event.target.value)
-};
+function shouldRenderSection(section) {
+  return section.items.length > 0;
+}
+
+function renderSectionTitle(section) {
+  return (
+    <strong>{section.title}</strong>
+  );
+}
+
+function getSectionItems(section){
+  return section.items;
+}
 
 function renderItem(item) {
   return (
@@ -38,21 +42,36 @@ function renderItem(item) {
   );
 }
 
-function renderTitle(title) {
-  return (
-    <strong>{`- ${title.text} -`}</strong>
-  );
-}
-
 export default class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      inputProps: {
+        value: 'hi',
+        onChange: event => {
+          this.setState({
+            inputProps: {
+              ...this.state.inputProps,
+              value: event.target.value
+            }
+          });
+        }
+      }
+    };
+  }
+
   render() {
     return (
       <Autowhatever id="2"
+                    isMultiSection={true}
                     isOpen={true}
                     items={items}
+                    shouldRenderSection={shouldRenderSection}
+                    renderSectionTitle={renderSectionTitle}
+                    getSectionItems={getSectionItems}
                     renderItem={renderItem}
-                    renderTitle={renderTitle}
-                    inputProps={inputProps}
+                    inputProps={this.state.inputProps}
                     focusedSectionIndex={0}
                     focusedItemIndex={1}
                     theme={theme} />

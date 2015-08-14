@@ -3,20 +3,25 @@ import themeable from 'react-themeable';
 
 export default class Autowhatever extends Component {
   static propTypes = {
-    id: PropTypes.string,               // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
-    isOpen: PropTypes.bool.isRequired,
-    items: PropTypes.array.isRequired,
-    renderItem: PropTypes.func.isRequired,
-    renderSection: PropTypes.func,
-    inputProps: PropTypes.object,
-    focusedSectionIndex: PropTypes.number,
-    focusedItemIndex: PropTypes.number,
-    theme: PropTypes.object
+    id: PropTypes.string,                      // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
+    isMultiSection: PropTypes.bool.isRequired, // Indicates whether a multi section list of items should be rendered.
+    isOpen: PropTypes.bool.isRequired,         // Indicates whether `items` should be rendered, or not.
+    items: PropTypes.array.isRequired,         // Array of items or sections to render.
+    renderItem: PropTypes.func.isRequired,     // This function renders a single item.
+    shouldRenderSection: PropTypes.func,       // This function gets a section and returns whether it should be rendered, or not.
+    renderSectionTitle: PropTypes.func,        // This function gets a section and renders its title.
+    getSectionItems: PropTypes.func,           // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
+    inputProps: PropTypes.object,              // Arbitrary input props
+    focusedSectionIndex: PropTypes.number,     // Section index of the focused item
+    focusedItemIndex: PropTypes.number,        // Focused item index (within a section)
+    theme: PropTypes.object                    // Styles. See: https://github.com/markdalgleish/react-themeable
   };
 
   static defaultProps = {
     id: '1',
-    renderTitle: title => title.text,
+    shouldRenderSection: () => true,
+    renderSectionTitle: () => console.log('`renderSectionTitle` must be provided'),
+    getSectionItems: () => console.log('`getSectionItems` must be provided'),
     inputProps: {},
     focusedSectionIndex: null,
     focusedItemIndex: null,
@@ -66,7 +71,8 @@ export default class Autowhatever extends Component {
   }
 
   renderSections(theme) {
-    const { id, items, renderTitle } = this.props;
+    const { id, items, shouldRenderSection,
+            renderSectionTitle, getSectionItems } = this.props;
 
     return (
       <div id={this.getItemsContainerId()}
@@ -74,14 +80,14 @@ export default class Autowhatever extends Component {
            {...theme('items-container', 'items-container')}>
         {
           items.map((section, sectionIndex) => {
-            return section.items.length === 0 ? null : (
+            return shouldRenderSection(section) && (
               <div key={sectionIndex}
                    {...theme(sectionIndex, 'section-container')}>
                 <div {...theme('section-title', 'section-title')}>
-                  {section.title && renderTitle(section.title)}
+                  {renderSectionTitle(section)}
                 </div>
                 <ul {...theme('section-items-container', 'section-items-container')}>
-                  {this.renderItemsList(theme, section.items, sectionIndex)}
+                  {this.renderItemsList(theme, getSectionItems(section), sectionIndex)}
                 </ul>
               </div>
             );
@@ -104,8 +110,8 @@ export default class Autowhatever extends Component {
   }
 
   render() {
-    const { id, isOpen, items, focusedSectionIndex, focusedItemIndex } = this.props;
-    const isMultipleSections = items.length > 0 && typeof items[0].items !== 'undefined';
+    const { id, isMultiSection, isOpen, items,
+            focusedSectionIndex, focusedItemIndex } = this.props;
     const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
     const theme = themeable(this.props.theme);
     const inputProps = {
@@ -124,8 +130,8 @@ export default class Autowhatever extends Component {
     return (
       <div {...theme('container', 'container')}>
         <input {...inputProps} />
-        {isOpen && isMultipleSections && this.renderSections(theme)}
-        {isOpen && !isMultipleSections && this.renderItems(theme)}
+        {isOpen && isMultiSection && this.renderSections(theme)}
+        {isOpen && !isMultiSection && this.renderItems(theme)}
       </div>
     );
   }

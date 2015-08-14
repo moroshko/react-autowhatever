@@ -2,7 +2,6 @@
 
 TODO:
 
-* Figure out multi section API
 * Add link to ExamplesN.js
 * Compile to dist/
 * Add tests
