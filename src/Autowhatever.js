@@ -21,8 +21,14 @@ export default class Autowhatever extends Component {
     focusedSectionIndex: null,
     focusedItemIndex: null,
     theme: {
+      container: 'react-autowhatever__container',
+      input: 'react-autowhatever__input',
       'items-container': 'react-autowhatever__items-container',
-      item: 'react-autowhatever__item'
+      item: 'react-autowhatever__item',
+      'item--focused': 'react-autowhatever__item--focused',
+      'section-container': 'react-autowhatever__section-container',
+      'section-title': 'react-autowhatever__section-title',
+      'section-items-container': 'react-autowhatever__section-items-container'
     }
   };
 
@@ -44,13 +50,15 @@ export default class Autowhatever extends Component {
   }
 
   renderItemsList(theme, items, sectionIndex) {
-    const { renderItem } = this.props;
+    const { renderItem, focusedSectionIndex, focusedItemIndex } = this.props;
 
     return items.map((item, itemIndex) => {
       return (
         <li id={this.getItemId(sectionIndex, itemIndex)}
             role="option"
-            {...theme(itemIndex, 'item')}>
+            {...theme(itemIndex, 'item', sectionIndex === focusedSectionIndex &&
+                                         itemIndex === focusedItemIndex &&
+                                         'item--focused')}>
           {renderItem(item)}
         </li>
       );
@@ -67,9 +75,12 @@ export default class Autowhatever extends Component {
         {
           items.map((section, sectionIndex) => {
             return section.items.length === 0 ? null : (
-              <div key={sectionIndex}>
-                {section.title && renderTitle(section.title)}
-                <ul>
+              <div key={sectionIndex}
+                   {...theme(sectionIndex, 'section-container')}>
+                <div {...theme('section-title', 'section-title')}>
+                  {section.title && renderTitle(section.title)}
+                </div>
+                <ul {...theme('section-items-container', 'section-items-container')}>
                   {this.renderItemsList(theme, section.items, sectionIndex)}
                 </ul>
               </div>
@@ -106,11 +117,12 @@ export default class Autowhatever extends Component {
       'aria-owns': this.getItemsContainerId(),
       'aria-expanded': isOpen,
       'aria-activedescendant': ariaActivedescendant,
-      ...this.props.inputProps
+      ...this.props.inputProps,
+      ...theme('input', 'input')
     };
 
     return (
-      <div>
+      <div {...theme('container', 'container')}>
         <input {...inputProps} />
         {isOpen && isMultipleSections && this.renderSections(theme)}
         {isOpen && !isMultipleSections && this.renderItems(theme)}

@@ -1,4 +1,4 @@
-import styles from './Example2.less';
+import theme from '../theme.less';
 
 import React, { Component } from 'react';
 import Autowhatever from 'Autowhatever';
@@ -54,7 +54,8 @@ export default class App extends Component {
                     renderTitle={renderTitle}
                     inputProps={inputProps}
                     focusedSectionIndex={0}
-                    focusedItemIndex={1} />
+                    focusedItemIndex={1}
+                    theme={theme} />
     );
   }
 }

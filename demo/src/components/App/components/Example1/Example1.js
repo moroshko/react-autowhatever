@@ -1,8 +1,7 @@
-import styles from './Example1.less';
+import theme from '../theme.less';
 
 import React, { Component } from 'react';
 import Autowhatever from 'Autowhatever';
-import theme from './Example1.less';
 
 const items = [{
   text: 'Apple'
@@ -16,19 +15,10 @@ const items = [{
   text: 'Lemon'
 }];
 
-const inputProps = {
-  value: 'hello',
-  onChange: event => console.log('Example1:', event.target.value)
-};
-
 function renderItem(item) {
   return (
     <span>{item.text}</span>
   );
-}
-
-function onChange(event) {
-  console.log('Example1:', event.target.value);
 }
 
 export default class Example1 extends Component {
@@ -38,18 +28,16 @@ export default class Example1 extends Component {
     this.state = {
       inputProps: {
         value: 'hello',
-        onChange
+        onChange: event => {
+          this.setState({
+            inputProps: {
+              ...this.state.inputProps,
+              value: event.target.value
+            }
+          });
+        }
       }
     };
-
-    setTimeout(() => {
-      this.setState({
-        inputProps: {
-          value: 'all good',
-          onChange
-        }
-      });
-    }, 1000);
   }
 
   render() {
