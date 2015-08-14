@@ -1,7 +1,21 @@
 import theme from '../theme.less';
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { updateInputValue } from 'flux/actionCreators/app';
 import Autowhatever from 'Autowhatever';
+
+function mapStateToProps(state) {
+  return {
+    value: state[1].value
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onChange: event => dispatch(updateInputValue(1, event.target.value))
+  };
+}
 
 const items = [{
   text: 'Apple'
@@ -21,26 +35,16 @@ function renderItem(item) {
   );
 }
 
-export default class Example1 extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      inputProps: {
-        value: 'hello',
-        onChange: event => {
-          this.setState({
-            inputProps: {
-              ...this.state.inputProps,
-              value: event.target.value
-            }
-          });
-        }
-      }
-    };
-  }
+class Example1 extends Component {
+  static propTypes = {
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
+  };
 
   render() {
+    const { value, onChange } = this.props;
+    const inputProps = { value, onChange };
+
     return (
       <div>
         <Autowhatever id="1"
@@ -48,10 +52,12 @@ export default class Example1 extends Component {
                       isOpen={true}
                       items={items}
                       renderItem={renderItem}
-                      inputProps={this.state.inputProps}
+                      inputProps={inputProps}
                       focusedItemIndex={2}
                       theme={theme} />
       </div>
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Example1);

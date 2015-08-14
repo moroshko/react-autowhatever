@@ -1,7 +1,21 @@
 import theme from '../theme.less';
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { updateInputValue } from 'flux/actionCreators/app';
 import Autowhatever from 'Autowhatever';
+
+function mapStateToProps(state) {
+  return {
+    value: state[2].value
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onChange: event => dispatch(updateInputValue(2, event.target.value))
+  };
+}
 
 const items = [{
   title: 'A',
@@ -42,26 +56,16 @@ function renderItem(item) {
   );
 }
 
-export default class App extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      inputProps: {
-        value: 'hi',
-        onChange: event => {
-          this.setState({
-            inputProps: {
-              ...this.state.inputProps,
-              value: event.target.value
-            }
-          });
-        }
-      }
-    };
-  }
+class Example2 extends Component {
+  static propTypes = {
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
+  };
 
   render() {
+    const { value, onChange } = this.props;
+    const inputProps = { value, onChange };
+
     return (
       <Autowhatever id="2"
                     isMultiSection={true}
@@ -71,10 +75,12 @@ export default class App extends Component {
                     renderSectionTitle={renderSectionTitle}
                     getSectionItems={getSectionItems}
                     renderItem={renderItem}
-                    inputProps={this.state.inputProps}
+                    inputProps={inputProps}
                     focusedSectionIndex={0}
                     focusedItemIndex={1}
                     theme={theme} />
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Example2);
