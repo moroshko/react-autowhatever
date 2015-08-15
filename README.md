@@ -3,8 +3,7 @@
 #### TODO:
 
 * What happens if not all theme classes are specified?
-* Add tests
-* Integrate with Codeship
+* Write tests
 * Write docs
 * Publish to npm
 
