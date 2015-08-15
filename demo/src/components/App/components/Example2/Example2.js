@@ -52,7 +52,6 @@ class Example extends Component {
     return (
       <div>
         <Autowhatever id={exampleId}
-                      isOpen={true}
                       items={items}
                       renderItem={renderItem}
                       inputProps={inputProps}

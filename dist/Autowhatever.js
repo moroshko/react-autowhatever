@@ -130,11 +130,11 @@ var Autowhatever = (function (_Component) {
       var _props4 = this.props;
       var id = _props4.id;
       var isMultiSection = _props4.isMultiSection;
-      var isOpen = _props4.isOpen;
       var items = _props4.items;
       var focusedSectionIndex = _props4.focusedSectionIndex;
       var focusedItemIndex = _props4.focusedItemIndex;
 
+      var isOpen = items.length > 0;
       var ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
       var theme = (0, _reactThemeable2['default'])(this.props.theme);
       var inputProps = _extends({
@@ -161,9 +161,8 @@ var Autowhatever = (function (_Component) {
     value: {
       id: _react.PropTypes.string, // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
       isMultiSection: _react.PropTypes.bool, // Indicates whether a multi section list of items should be rendered.
-      isOpen: _react.PropTypes.bool.isRequired, // Indicates whether `items` should be rendered, or not.
       items: _react.PropTypes.array.isRequired, // Array of items or sections to render.
-      renderItem: _react.PropTypes.func.isRequired, // This function renders a single item.
+      renderItem: _react.PropTypes.func, // This function renders a single item.
       shouldRenderSection: _react.PropTypes.func, // This function gets a section and returns whether it should be rendered, or not.
       renderSectionTitle: _react.PropTypes.func, // This function gets a section and renders its title.
       getSectionItems: _react.PropTypes.func, // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
@@ -180,6 +179,9 @@ var Autowhatever = (function (_Component) {
       isMultiSection: false,
       shouldRenderSection: function shouldRenderSection() {
         return true;
+      },
+      renderItem: function renderItem() {
+        throw new Error('`renderItem` must be provided');
       },
       renderSectionTitle: function renderSectionTitle() {
         throw new Error('`renderSectionTitle` must be provided');

@@ -74,7 +74,6 @@ class Example extends Component {
       <div>
         <Autowhatever id={exampleId}
                       isMultiSection={true}
-                      isOpen={true}
                       items={items}
                       shouldRenderSection={shouldRenderSection}
                       renderSectionTitle={renderSectionTitle}
