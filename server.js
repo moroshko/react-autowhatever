@@ -8,8 +8,8 @@ new WebpackDevServer(webpack(config), {
   historyApiFallback: true
 }).listen(3000, 'localhost', function(error) {
   if (error) {
-    console.log(error);
+    console.error(error);
+  } else {
+    console.log('Demo is ready at http://localhost:3000/demo/dist/index.html');
   }
-
-  console.log('Demo is ready at http://localhost:3000/demo/dist/index.html');
 });

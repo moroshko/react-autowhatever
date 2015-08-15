@@ -2,10 +2,10 @@
 
 set -e
 
-git checkout gh-pages
+git checkout -B gh-pages
 git pull origin gh-pages
 git merge master --no-edit
-npm run build
+npm run gh-pages-build
 cp demo/dist/*.* .
 git add index.html app.css index.js
 git commit -m 'Update gh-pages files'

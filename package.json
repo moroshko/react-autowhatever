@@ -1,7 +1,8 @@
 {
   "name": "react-autowhatever",
   "version": "0.0.1",
-  "description": "React Autowhatever",
+  "description": "Accessible rendering layer for Autosuggest and Autocomplete components",
+  "main": "dist/Autosuggest.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/moroshko/react-autowhatever.git"
@@ -12,8 +13,10 @@
     "lint": "eslint demo/src src server.js webpack.dev.config.js",
     "test": "mocha --opts mocha.opts",
     "copy-static-files": "cp demo/src/index.html demo/dist/",
-    "dist": "rm -rf demo/dist/ && mkdir demo/dist && npm run copy-static-files && webpack --config webpack.prod.config.js",
-    "build": "npm run lint && npm test && npm run dist",
+    "dist": "rm -rf dist && mkdir dist && babel src -d dist",
+    "demo-dist": "rm -rf demo/dist && mkdir demo/dist && npm run copy-static-files && webpack --config webpack.gh-pages.config.js",
+    "ci-build": "npm run lint && npm test && npm run dist",
+    "gh-pages-build": "npm run lint && npm test && npm run demo-dist",
     "deploy": "./scripts/deploy-to-gh-pages.sh"
   },
   "dependencies": {
@@ -41,5 +44,24 @@
     "webpack": "^1.11.0",
     "webpack-dev-server": "^1.10.1"
   },
+  "keywords": [
+    "autosuggest",
+    "autocomplete",
+    "auto-suggest",
+    "auto-complete",
+    "auto suggest",
+    "auto complete",
+    "react autosuggest",
+    "react autocomplete",
+    "react auto-suggest",
+    "react auto-complete",
+    "react auto suggest",
+    "react auto complete",
+    "react-autosuggest",
+    "react-autocomplete",
+    "react-auto-suggest",
+    "react-auto-complete",
+    "react-component"
+  ],
   "license": "MIT"
 }
