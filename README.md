@@ -1,13 +1,13 @@
 [![Build Status][status-image]][status-url]
 
-## Work in progress.
+<a href="http://moroshko.github.io/react-autowhatever" target="_blank">Live Examples</a>
 
-#### TODO:
+**TODO:**
 
 * Write tests
 * Write docs
 
-#### Later:
+**Later:**
 
 * Add more examples
 * Add support for items container with a scrollbar
