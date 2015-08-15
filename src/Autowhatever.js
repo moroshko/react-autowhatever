@@ -3,26 +3,30 @@ import themeable from 'react-themeable';
 
 export default class Autowhatever extends Component {
   static propTypes = {
-    id: PropTypes.string,                      // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
-    isMultiSection: PropTypes.bool,            // Indicates whether a multi section list of items should be rendered.
-    isOpen: PropTypes.bool.isRequired,         // Indicates whether `items` should be rendered, or not.
-    items: PropTypes.array.isRequired,         // Array of items or sections to render.
-    renderItem: PropTypes.func.isRequired,     // This function renders a single item.
-    shouldRenderSection: PropTypes.func,       // This function gets a section and returns whether it should be rendered, or not.
-    renderSectionTitle: PropTypes.func,        // This function gets a section and renders its title.
-    getSectionItems: PropTypes.func,           // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
-    inputProps: PropTypes.object,              // Arbitrary input props
-    focusedSectionIndex: PropTypes.number,     // Section index of the focused item
-    focusedItemIndex: PropTypes.number,        // Focused item index (within a section)
-    theme: PropTypes.object                    // Styles. See: https://github.com/markdalgleish/react-themeable
+    id: PropTypes.string,                  // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
+    isMultiSection: PropTypes.bool,        // Indicates whether a multi section list of items should be rendered.
+    isOpen: PropTypes.bool.isRequired,     // Indicates whether `items` should be rendered, or not.
+    items: PropTypes.array.isRequired,     // Array of items or sections to render.
+    renderItem: PropTypes.func.isRequired, // This function renders a single item.
+    shouldRenderSection: PropTypes.func,   // This function gets a section and returns whether it should be rendered, or not.
+    renderSectionTitle: PropTypes.func,    // This function gets a section and renders its title.
+    getSectionItems: PropTypes.func,       // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
+    inputProps: PropTypes.object,          // Arbitrary input props
+    focusedSectionIndex: PropTypes.number, // Section index of the focused item
+    focusedItemIndex: PropTypes.number,    // Focused item index (within a section)
+    theme: PropTypes.object                // Styles. See: https://github.com/markdalgleish/react-themeable
   };
 
   static defaultProps = {
     id: '1',
     isMultiSection: false,
     shouldRenderSection: () => true,
-    renderSectionTitle: () => { throw new Error('`renderSectionTitle` must be provided') },
-    getSectionItems: () => { throw new Error('`getSectionItems` must be provided') },
+    renderSectionTitle: () => {
+      throw new Error('`renderSectionTitle` must be provided');
+    },
+    getSectionItems: () => {
+      throw new Error('`getSectionItems` must be provided');
+    },
     inputProps: {},
     focusedSectionIndex: null,
     focusedItemIndex: null,

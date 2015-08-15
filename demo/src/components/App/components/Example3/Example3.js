@@ -7,7 +7,7 @@ import Autowhatever from 'Autowhatever';
 import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
 
 const exampleId = '3';
-const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`
+const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`;
 
 function mapStateToProps(state) {
   return {
@@ -50,7 +50,7 @@ function renderSectionTitle(section) {
   );
 }
 
-function getSectionItems(section){
+function getSectionItems(section) {
   return section.items;
 }
 
