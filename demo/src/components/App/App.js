@@ -11,20 +11,30 @@ export default class App extends Component {
   render() {
     return (
       <div className={styles.container}>
-        <div className={styles.exampleContainer}>
-          <Example0 />
+        <div className={styles.headerContainer}>
+          <h1 className={styles.header}>
+            React Autowhatever
+          </h1>
+          <h2 className={styles.subHeader}>
+            Accessible rendering layer for Autosuggest and Autocomplete components
+          </h2>
         </div>
-        <div className={styles.exampleContainer}>
-          <Example1 />
-        </div>
-        <div className={styles.exampleContainer}>
-          <Example2 />
-        </div>
-        <div className={styles.exampleContainer}>
-          <Example3 />
-        </div>
-        <div className={styles.exampleContainer}>
-          <Example4 />
+        <div className={styles.examplesContainer}>
+          <div className={styles.exampleContainer}>
+            <Example0 />
+          </div>
+          <div className={styles.exampleContainer}>
+            <Example1 />
+          </div>
+          <div className={styles.exampleContainer}>
+            <Example2 />
+          </div>
+          <div className={styles.exampleContainer}>
+            <Example3 />
+          </div>
+          <div className={styles.exampleContainer}>
+            <Example4 />
+          </div>
         </div>
       </div>
     );

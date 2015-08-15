@@ -4,8 +4,10 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { updateInputValue } from 'flux/actionCreators/app';
 import Autowhatever from 'Autowhatever';
+import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
 
 const exampleId = '2';
+const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`
 
 function mapStateToProps(state) {
   return {
@@ -56,6 +58,7 @@ class Example extends Component {
                       inputProps={inputProps}
                       focusedItemIndex={2}
                       theme={theme} />
+        <SourceCodeLink file={file} />
       </div>
     );
   }
