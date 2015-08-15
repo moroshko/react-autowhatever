@@ -21,24 +21,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const items = [{
-  text: 'Apple'
-}, {
-  text: 'Banana'
-}, {
-  text: 'Cherry'
-}, {
-  text: 'Grapefruit'
-}, {
-  text: 'Lemon'
-}];
-
-function renderItem(item) {
-  return (
-    <span>{item.text}</span>
-  );
-}
-
 class Example extends Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
@@ -52,9 +34,7 @@ class Example extends Component {
     return (
       <div>
         <Autowhatever id={exampleId}
-                      isOpen={false}
-                      items={items}
-                      renderItem={renderItem}
+                      items={[]}
                       inputProps={inputProps}
                       theme={theme} />
         <SourceCodeLink file={file} />

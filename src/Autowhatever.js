@@ -5,9 +5,8 @@ export default class Autowhatever extends Component {
   static propTypes = {
     id: PropTypes.string,                  // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
     isMultiSection: PropTypes.bool,        // Indicates whether a multi section list of items should be rendered.
-    isOpen: PropTypes.bool.isRequired,     // Indicates whether `items` should be rendered, or not.
     items: PropTypes.array.isRequired,     // Array of items or sections to render.
-    renderItem: PropTypes.func.isRequired, // This function renders a single item.
+    renderItem: PropTypes.func,            // This function renders a single item.
     shouldRenderSection: PropTypes.func,   // This function gets a section and returns whether it should be rendered, or not.
     renderSectionTitle: PropTypes.func,    // This function gets a section and renders its title.
     getSectionItems: PropTypes.func,       // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
@@ -21,6 +20,9 @@ export default class Autowhatever extends Component {
     id: '1',
     isMultiSection: false,
     shouldRenderSection: () => true,
+    renderItem: () => {
+      throw new Error('`renderItem` must be provided');
+    },
     renderSectionTitle: () => {
       throw new Error('`renderSectionTitle` must be provided');
     },
@@ -116,8 +118,8 @@ export default class Autowhatever extends Component {
   }
 
   render() {
-    const { id, isMultiSection, isOpen, items,
-            focusedSectionIndex, focusedItemIndex } = this.props;
+    const { id, isMultiSection, items, focusedSectionIndex, focusedItemIndex } = this.props;
+    const isOpen = (items.length > 0);
     const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
     const theme = themeable(this.props.theme);
     const inputProps = {

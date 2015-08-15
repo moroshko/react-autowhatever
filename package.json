@@ -1,8 +1,8 @@
 {
   "name": "react-autowhatever",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "Accessible rendering layer for Autosuggest and Autocomplete components",
-  "main": "dist/Autosuggest.js",
+  "main": "dist/Autowhatever.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/moroshko/react-autowhatever.git"
@@ -13,7 +13,7 @@
     "lint": "eslint demo/src src server.js webpack.dev.config.js",
     "test": "mocha --opts mocha.opts",
     "copy-static-files": "cp demo/src/index.html demo/dist/",
-    "dist": "rm -rf dist && mkdir dist && babel src -d dist",
+    "dist": "rm -rf dist && mkdir dist && babel src/Autowhatever.js --out-file dist/Autowhatever.js",
     "demo-dist": "rm -rf demo/dist && mkdir demo/dist && npm run copy-static-files && webpack --config webpack.gh-pages.config.js",
     "ci-build": "npm run lint && npm test && npm run dist",
     "gh-pages-build": "npm run lint && npm test && npm run demo-dist",
@@ -21,7 +21,6 @@
   },
   "dependencies": {
     "react": "^0.14.0-beta3",
-    "react-dom": "^0.14.0-beta3",
     "react-themeable": "^1.0.1"
   },
   "devDependencies": {
@@ -37,6 +36,7 @@
     "less": "^2.5.1",
     "less-loader": "^2.2.0",
     "mocha": "^2.2.5",
+    "react-dom": "^0.14.0-beta3",
     "react-hot-loader": "^1.2.8",
     "react-redux": "^0.8.2",
     "redux": "^1.0.0",

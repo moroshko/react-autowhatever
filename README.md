@@ -1,13 +1,16 @@
-## Work in progress.
+[![Build Status][status-image]][status-url]
 
-#### TODO:
+<a href="http://moroshko.github.io/react-autowhatever" target="_blank">Live Examples</a>
 
-* What happens if not all theme classes are specified?
-* Add tests
-* Integrate with Codeship
+**TODO:**
+
+* Write tests
 * Write docs
-* Publish to npm
 
-#### Later:
+**Later:**
 
+* Add more examples
 * Add support for items container with a scrollbar
+
+[status-image]: https://img.shields.io/codeship/6c79f8c0-2565-0133-4af8-72f090cba113/master.svg
+[status-url]: https://codeship.com/projects/96953
