@@ -20,37 +20,16 @@ function mapDispatchToProps(dispatch) {
 }
 
 const items = [{
-  title: 'A',
-  items: [{
-    text: 'Apple'
-  }, {
-    text: 'Apricot'
-  }]
+  text: 'Apple'
 }, {
-  title: 'B',
-  items: [{
-    text: 'Banana'
-  }]
+  text: 'Banana'
 }, {
-  title: 'C',
-  items: [{
-    text: 'Cherry'
-  }]
+  text: 'Cherry'
+}, {
+  text: 'Grapefruit'
+}, {
+  text: 'Lemon'
 }];
-
-function shouldRenderSection(section) {
-  return section.items.length > 0;
-}
-
-function renderSectionTitle(section) {
-  return (
-    <strong>{section.title}</strong>
-  );
-}
-
-function getSectionItems(section){
-  return section.items;
-}
 
 function renderItem(item) {
   return (
@@ -58,7 +37,7 @@ function renderItem(item) {
   );
 }
 
-class Example2 extends Component {
+class Example extends Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired
@@ -69,20 +48,18 @@ class Example2 extends Component {
     const inputProps = { value, onChange };
 
     return (
-      <Autowhatever id={exampleId}
-                    isMultiSection={true}
-                    isOpen={true}
-                    items={items}
-                    shouldRenderSection={shouldRenderSection}
-                    renderSectionTitle={renderSectionTitle}
-                    getSectionItems={getSectionItems}
-                    renderItem={renderItem}
-                    inputProps={inputProps}
-                    focusedSectionIndex={0}
-                    focusedItemIndex={1}
-                    theme={theme} />
+      <div>
+        <Autowhatever id={exampleId}
+                      isMultiSection={false}
+                      isOpen={true}
+                      items={items}
+                      renderItem={renderItem}
+                      inputProps={inputProps}
+                      focusedItemIndex={2}
+                      theme={theme} />
+      </div>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Example2);
+export default connect(mapStateToProps, mapDispatchToProps)(Example);

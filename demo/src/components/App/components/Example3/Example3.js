@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { updateInputValue } from 'flux/actionCreators/app';
 import Autowhatever from 'Autowhatever';
 
-const exampleId = '1';
+const exampleId = '3';
 
 function mapStateToProps(state) {
   return {
@@ -20,16 +20,37 @@ function mapDispatchToProps(dispatch) {
 }
 
 const items = [{
-  text: 'Apple'
+  title: 'A',
+  items: [{
+    text: 'Apple'
+  }, {
+    text: 'Apricot'
+  }]
 }, {
-  text: 'Banana'
+  title: 'B',
+  items: [{
+    text: 'Banana'
+  }]
 }, {
-  text: 'Cherry'
-}, {
-  text: 'Grapefruit'
-}, {
-  text: 'Lemon'
+  title: 'C',
+  items: [{
+    text: 'Cherry'
+  }]
 }];
+
+function shouldRenderSection(section) {
+  return section.items.length > 0;
+}
+
+function renderSectionTitle(section) {
+  return (
+    <strong>{section.title}</strong>
+  );
+}
+
+function getSectionItems(section){
+  return section.items;
+}
 
 function renderItem(item) {
   return (
@@ -48,15 +69,16 @@ class Example extends Component {
     const inputProps = { value, onChange };
 
     return (
-      <div>
-        <Autowhatever id={exampleId}
-                      isMultiSection={false}
-                      isOpen={true}
-                      items={items}
-                      renderItem={renderItem}
-                      inputProps={inputProps}
-                      theme={theme} />
-      </div>
+      <Autowhatever id={exampleId}
+                    isMultiSection={true}
+                    isOpen={true}
+                    items={items}
+                    shouldRenderSection={shouldRenderSection}
+                    renderSectionTitle={renderSectionTitle}
+                    getSectionItems={getSectionItems}
+                    renderItem={renderItem}
+                    inputProps={inputProps}
+                    theme={theme} />
     );
   }
 }

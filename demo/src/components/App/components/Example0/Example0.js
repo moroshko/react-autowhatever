@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { updateInputValue } from 'flux/actionCreators/app';
 import Autowhatever from 'Autowhatever';
 
-const exampleId = '1';
+const exampleId = '0';
 
 function mapStateToProps(state) {
   return {
@@ -51,7 +51,7 @@ class Example extends Component {
       <div>
         <Autowhatever id={exampleId}
                       isMultiSection={false}
-                      isOpen={true}
+                      isOpen={false}
                       items={items}
                       renderItem={renderItem}
                       inputProps={inputProps}

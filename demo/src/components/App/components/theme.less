@@ -1,4 +1,4 @@
-@font-size: 18px;
+@font-size: 16px;
 @border-color: #aaa;
 @border-radius: 4px;
 
@@ -25,8 +25,8 @@
 }
 
 .items-container {
-  position: absolute;
-  top: 51px;
+  position: relative;
+  top: -1px;
   width: 280px;
   margin: 0;
   padding: 0;
@@ -42,10 +42,10 @@
 .item {
   cursor: pointer;
   padding: 10px 20px;
+}
 
-  &--focused {
-    background-color: #ddd;
-  }
+.item--focused {
+  background-color: #ddd;
 }
 
 .section-title {
@@ -53,10 +53,10 @@
   font-size: 12px;
   color: #777;
   border-top: 1px dashed #ccc;
+}
 
-  .section-container:first-child & {
-    border-top: 0;
-  }
+.section-container:first-child .section-title {
+  border-top: 0;
 }
 
 .section-items-container {
