@@ -2,8 +2,7 @@
 
 #### TODO:
 
-* Add link to ExamplesN.js
-* Compile to dist/
+* What happens if not all theme classes are specified?
 * Add tests
 * Integrate with Codeship
 * Write docs
