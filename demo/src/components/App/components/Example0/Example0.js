@@ -50,7 +50,6 @@ class Example extends Component {
     return (
       <div>
         <Autowhatever id={exampleId}
-                      isMultiSection={false}
                       isOpen={false}
                       items={items}
                       renderItem={renderItem}

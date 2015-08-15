@@ -1,6 +1,6 @@
 ## Work in progress.
 
-TODO:
+#### TODO:
 
 * Add link to ExamplesN.js
 * Compile to dist/
@@ -8,3 +8,7 @@ TODO:
 * Integrate with Codeship
 * Write docs
 * Publish to npm
+
+#### Later:
+
+* Add support for items container with a scrollbar

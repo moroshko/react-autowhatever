@@ -4,7 +4,7 @@ import themeable from 'react-themeable';
 export default class Autowhatever extends Component {
   static propTypes = {
     id: PropTypes.string,                      // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
-    isMultiSection: PropTypes.bool.isRequired, // Indicates whether a multi section list of items should be rendered.
+    isMultiSection: PropTypes.bool,            // Indicates whether a multi section list of items should be rendered.
     isOpen: PropTypes.bool.isRequired,         // Indicates whether `items` should be rendered, or not.
     items: PropTypes.array.isRequired,         // Array of items or sections to render.
     renderItem: PropTypes.func.isRequired,     // This function renders a single item.
@@ -19,15 +19,17 @@ export default class Autowhatever extends Component {
 
   static defaultProps = {
     id: '1',
+    isMultiSection: false,
     shouldRenderSection: () => true,
-    renderSectionTitle: () => console.log('`renderSectionTitle` must be provided'),
-    getSectionItems: () => console.log('`getSectionItems` must be provided'),
+    renderSectionTitle: () => { throw new Error('`renderSectionTitle` must be provided') },
+    getSectionItems: () => { throw new Error('`getSectionItems` must be provided') },
     inputProps: {},
     focusedSectionIndex: null,
     focusedItemIndex: null,
     theme: {
       container: 'react-autowhatever__container',
       input: 'react-autowhatever__input',
+      'input--open': 'react-autowhatever__input--open',
       'items-container': 'react-autowhatever__items-container',
       item: 'react-autowhatever__item',
       'item--focused': 'react-autowhatever__item--focused',
@@ -124,7 +126,7 @@ export default class Autowhatever extends Component {
       'aria-expanded': isOpen,
       'aria-activedescendant': ariaActivedescendant,
       ...this.props.inputProps,
-      ...theme('input', 'input')
+      ...theme('input', 'input', isOpen && 'input--open')
     };
 
     return (

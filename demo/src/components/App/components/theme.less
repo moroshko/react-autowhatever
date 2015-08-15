@@ -14,14 +14,14 @@
   border: 1px solid @border-color;
   border-radius: @border-radius;
 
-  &[aria-expanded="true"] {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
   &:focus {
     outline: none;
   }
+}
+
+.input--open {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .items-container {
@@ -53,10 +53,10 @@
   font-size: 12px;
   color: #777;
   border-top: 1px dashed #ccc;
-}
 
-.section-container:first-child .section-title {
-  border-top: 0;
+  .section-container:first-child & {
+    border-top: 0;
+  }
 }
 
 .section-items-container {
