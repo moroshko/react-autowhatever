@@ -21,7 +21,6 @@
   },
   "dependencies": {
     "react": "^0.14.0-beta3",
-    "react-dom": "^0.14.0-beta3",
     "react-themeable": "^1.0.1"
   },
   "devDependencies": {
@@ -37,6 +36,7 @@
     "less": "^2.5.1",
     "less-loader": "^2.2.0",
     "mocha": "^2.2.5",
+    "react-dom": "^0.14.0-beta3",
     "react-hot-loader": "^1.2.8",
     "react-redux": "^0.8.2",
     "redux": "^1.0.0",
