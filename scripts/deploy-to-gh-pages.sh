@@ -3,6 +3,7 @@
 set -e
 
 git checkout -B gh-pages
+git branch --set-upstream-to origin/gh-pages
 git pull origin gh-pages
 git merge master --no-edit
 npm run gh-pages-build
