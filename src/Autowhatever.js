@@ -4,7 +4,7 @@ import themeable from 'react-themeable';
 export default class Autowhatever extends Component {
   static propTypes = {
     id: PropTypes.string,                  // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
-    isMultiSection: PropTypes.bool,        // Indicates whether a multi section list of items should be rendered.
+    multiSection: PropTypes.bool,          // Indicates whether a multi section layout should be rendered.
     items: PropTypes.array.isRequired,     // Array of items or sections to render.
     renderItem: PropTypes.func,            // This function renders a single item.
     shouldRenderSection: PropTypes.func,   // This function gets a section and returns whether it should be rendered, or not.
@@ -18,7 +18,7 @@ export default class Autowhatever extends Component {
 
   static defaultProps = {
     id: '1',
-    isMultiSection: false,
+    multiSection: false,
     shouldRenderSection: () => true,
     renderItem: () => {
       throw new Error('`renderItem` must be provided');
@@ -118,7 +118,7 @@ export default class Autowhatever extends Component {
   }
 
   render() {
-    const { id, isMultiSection, items, focusedSectionIndex, focusedItemIndex } = this.props;
+    const { id, multiSection, items, focusedSectionIndex, focusedItemIndex } = this.props;
     const isOpen = (items.length > 0);
     const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
     const theme = themeable(this.props.theme);
@@ -138,8 +138,8 @@ export default class Autowhatever extends Component {
     return (
       <div {...theme('container', 'container')}>
         <input {...inputProps} />
-        {isOpen && isMultiSection && this.renderSections(theme)}
-        {isOpen && !isMultiSection && this.renderItems(theme)}
+        {isOpen && multiSection && this.renderSections(theme)}
+        {isOpen && !multiSection && this.renderItems(theme)}
       </div>
     );
   }

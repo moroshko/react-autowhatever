@@ -73,7 +73,7 @@ class Example extends Component {
     return (
       <div>
         <Autowhatever id={exampleId}
-                      isMultiSection={true}
+                      multiSection={true}
                       items={items}
                       shouldRenderSection={shouldRenderSection}
                       renderSectionTitle={renderSectionTitle}
