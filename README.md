@@ -1,6 +1,6 @@
 [![Build Status][status-image]][status-url]
 
-<a href="http://moroshko.github.io/react-autowhatever" target="_blank">Live Examples</a>
+<a href="http://react-autowhatever.js.org" target="_blank">Live Examples</a>
 
 **TODO:**
 
