@@ -129,7 +129,7 @@ var Autowhatever = (function (_Component) {
     value: function render() {
       var _props4 = this.props;
       var id = _props4.id;
-      var isMultiSection = _props4.isMultiSection;
+      var multiSection = _props4.multiSection;
       var items = _props4.items;
       var focusedSectionIndex = _props4.focusedSectionIndex;
       var focusedItemIndex = _props4.focusedItemIndex;
@@ -152,15 +152,15 @@ var Autowhatever = (function (_Component) {
         'div',
         theme('container', 'container'),
         _react2['default'].createElement('input', inputProps),
-        isOpen && isMultiSection && this.renderSections(theme),
-        isOpen && !isMultiSection && this.renderItems(theme)
+        isOpen && multiSection && this.renderSections(theme),
+        isOpen && !multiSection && this.renderItems(theme)
       );
     }
   }], [{
     key: 'propTypes',
     value: {
       id: _react.PropTypes.string, // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
-      isMultiSection: _react.PropTypes.bool, // Indicates whether a multi section list of items should be rendered.
+      multiSection: _react.PropTypes.bool, // Indicates whether a multi section layout should be rendered.
       items: _react.PropTypes.array.isRequired, // Array of items or sections to render.
       renderItem: _react.PropTypes.func, // This function renders a single item.
       shouldRenderSection: _react.PropTypes.func, // This function gets a section and returns whether it should be rendered, or not.
@@ -176,7 +176,7 @@ var Autowhatever = (function (_Component) {
     key: 'defaultProps',
     value: {
       id: '1',
-      isMultiSection: false,
+      multiSection: false,
       shouldRenderSection: function shouldRenderSection() {
         return true;
       },
