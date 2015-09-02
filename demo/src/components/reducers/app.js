@@ -1,4 +1,4 @@
-import { UPDATE_INPUT_VALUE } from 'flux/constants/actionTypes/app';
+import { UPDATE_INPUT_VALUE, UPDATE_FOCUSED_ITEM } from 'actions/app';
 
 const initialState = {
   0: {
@@ -15,6 +15,11 @@ const initialState = {
   },
   4: {
     value: 'Multi section - focused item'
+  },
+  5: {
+    value: 'Hover over items',
+    focusedSectionIndex: null,
+    focusedItemIndex: null
   }
 };
 
@@ -25,6 +30,16 @@ export default function(state = initialState, action) {
         ...state,
         [action.exampleNumber]: {
           value: action.value
+        }
+      };
+
+    case UPDATE_FOCUSED_ITEM:
+      return {
+        ...state,
+        [action.exampleNumber]: {
+          ...state[action.exampleNumber],
+          focusedSectionIndex: action.focusedSectionIndex,
+          focusedItemIndex: action.focusedItemIndex
         }
       };
 

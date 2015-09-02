@@ -7,6 +7,7 @@ import Example1 from 'Example1/Example1';
 import Example2 from 'Example2/Example2';
 import Example3 from 'Example3/Example3';
 import Example4 from 'Example4/Example4';
+import Example5 from 'Example5/Example5';
 
 export default class App extends Component {
   render() {
@@ -35,6 +36,9 @@ export default class App extends Component {
           </div>
           <div className={styles.exampleContainer}>
             <Example4 />
+          </div>
+          <div className={styles.exampleContainer}>
+            <Example5 />
           </div>
         </div>
         <ForkMeOnGitHub user="moroshko" repo="react-autowhatever" />

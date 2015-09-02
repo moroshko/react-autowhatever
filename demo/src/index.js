@@ -2,21 +2,31 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import appReducer from 'flux/reducers/app';
+import { devTools } from 'redux-devtools';
+import { DevTools } from 'redux-devtools/lib/react';
+import DiffMonitor from 'redux-devtools-diff-monitor';
+import appReducer from 'reducers/app';
 import App from 'App/App';
 
+//const store = devTools()(createStore)(appReducer);
+const store = createStore(appReducer);
+
+// Enable Webpack hot module replacement for reducers
+module.hot.accept('reducers/app', () => {
+  const nextRootReducer = require('reducers/app');
+
+  store.replaceReducer(nextRootReducer);
+});
+
 class Demo extends Component {
-  constructor() {
-    super();
-
-    this.store = createStore(appReducer);
-  }
-
   render() {
     return (
-      <Provider store={this.store}>
-        {() => <App />}
-      </Provider>
+      <div>
+        <Provider store={store}>
+          <App />
+        </Provider>
+        {/*<DevTools store={store} monitor={DiffMonitor} />*/}
+      </div>
     );
   }
 }

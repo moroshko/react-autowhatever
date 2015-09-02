@@ -11,6 +11,7 @@ export default class Autowhatever extends Component {
     renderSectionTitle: PropTypes.func,    // This function gets a section and renders its title.
     getSectionItems: PropTypes.func,       // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
     inputProps: PropTypes.object,          // Arbitrary input props
+    itemProps: PropTypes.object,           // Arbitrary item props
     focusedSectionIndex: PropTypes.number, // Section index of the focused item
     focusedItemIndex: PropTypes.number,    // Focused item index (within a section)
     theme: PropTypes.object                // Styles. See: https://github.com/markdalgleish/react-themeable
@@ -30,6 +31,7 @@ export default class Autowhatever extends Component {
       throw new Error('`getSectionItems` must be provided');
     },
     inputProps: {},
+    itemProps: {},
     focusedSectionIndex: null,
     focusedItemIndex: null,
     theme: {
@@ -64,14 +66,28 @@ export default class Autowhatever extends Component {
 
   renderItemsList(theme, items, sectionIndex) {
     const { renderItem, focusedSectionIndex, focusedItemIndex } = this.props;
+    const { onMouseEnter, onMouseLeave } = this.props.itemProps;
 
     return items.map((item, itemIndex) => {
+      const onMouseEnterFn = onMouseEnter ?
+        event => onMouseEnter(event, sectionIndex, itemIndex) :
+        () => {};
+      const onMouseLeaveFn = onMouseLeave ?
+        event => onMouseLeave(event, sectionIndex, itemIndex) :
+        () => {};
+      const itemProps = {
+        id: this.getItemId(sectionIndex, itemIndex),
+        role: 'option',
+        ...this.props.itemProps,
+        onMouseEnter: onMouseEnterFn,
+        onMouseLeave: onMouseLeaveFn,
+        ...theme(itemIndex, 'item', sectionIndex === focusedSectionIndex &&
+                                    itemIndex === focusedItemIndex &&
+                                    'item--focused')
+      };
+
       return (
-        <li id={this.getItemId(sectionIndex, itemIndex)}
-            role="option"
-            {...theme(itemIndex, 'item', sectionIndex === focusedSectionIndex &&
-                                         itemIndex === focusedItemIndex &&
-                                         'item--focused')}>
+        <li {...itemProps}>
           {renderItem(item)}
         </li>
       );
