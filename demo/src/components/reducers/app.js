@@ -17,7 +17,7 @@ const initialState = {
     value: 'Multi section - focused item'
   },
   5: {
-    value: 'Hover over items',
+    value: 'Hover and click items',
     focusedSectionIndex: null,
     focusedItemIndex: null
   }
@@ -29,6 +29,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         [action.exampleNumber]: {
+          ...state[action.exampleNumber],
           value: action.value
         }
       };

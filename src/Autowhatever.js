@@ -66,7 +66,7 @@ export default class Autowhatever extends Component {
 
   renderItemsList(theme, items, sectionIndex) {
     const { renderItem, focusedSectionIndex, focusedItemIndex } = this.props;
-    const { onMouseEnter, onMouseLeave } = this.props.itemProps;
+    const { onMouseEnter, onMouseLeave, onMouseDown } = this.props.itemProps;
 
     return items.map((item, itemIndex) => {
       const onMouseEnterFn = onMouseEnter ?
@@ -75,12 +75,16 @@ export default class Autowhatever extends Component {
       const onMouseLeaveFn = onMouseLeave ?
         event => onMouseLeave(event, sectionIndex, itemIndex) :
         () => {};
+      const onMouseDownFn = onMouseDown ?
+        event => onMouseDown(event, sectionIndex, itemIndex) :
+        () => {};
       const itemProps = {
         id: this.getItemId(sectionIndex, itemIndex),
         role: 'option',
         ...this.props.itemProps,
         onMouseEnter: onMouseEnterFn,
         onMouseLeave: onMouseLeaveFn,
+        onMouseDown: onMouseDownFn,
         ...theme(itemIndex, 'item', sectionIndex === focusedSectionIndex &&
                                     itemIndex === focusedItemIndex &&
                                     'item--focused')

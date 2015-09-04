@@ -9,6 +9,18 @@ import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
 const exampleId = '5';
 const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`;
 
+const items = [{
+  text: 'Apple'
+}, {
+  text: 'Banana'
+}, {
+  text: 'Cherry'
+}, {
+  text: 'Grapefruit'
+}, {
+  text: 'Lemon'
+}];
+
 function mapStateToProps(state) {
   return {
     value: state[exampleId].value,
@@ -27,21 +39,12 @@ function mapDispatchToProps(dispatch) {
     },
     onMouseLeave: event => {
       return dispatch(updateFocusedItem(exampleId, null, null));
+    },
+    onMouseDown: (event, sectionIndex, itemIndex) => {
+      return dispatch(updateInputValue(exampleId, items[itemIndex].text + ' clicked'));
     }
   };
 }
-
-const items = [{
-  text: 'Apple'
-}, {
-  text: 'Banana'
-}, {
-  text: 'Cherry'
-}, {
-  text: 'Grapefruit'
-}, {
-  text: 'Lemon'
-}];
 
 function renderItem(item) {
   return (
@@ -57,14 +60,15 @@ class Example extends Component {
 
     onChange: PropTypes.func.isRequired,
     onMouseEnter: PropTypes.func.isRequired,
-    onMouseLeave: PropTypes.func.isRequired
+    onMouseLeave: PropTypes.func.isRequired,
+    onMouseDown: PropTypes.func.isRequired
   };
 
   render() {
-    const { value, focusedSectionIndex, focusedItemIndex,
-            onChange, onMouseEnter, onMouseLeave } = this.props;
+    const { value, focusedSectionIndex, focusedItemIndex, onChange,
+            onMouseEnter, onMouseLeave, onMouseDown } = this.props;
     const inputProps = { value, onChange };
-    const itemProps = { onMouseEnter, onMouseLeave };
+    const itemProps = { onMouseEnter, onMouseLeave, onMouseDown };
 
     return (
       <div>
