@@ -6,20 +6,47 @@ import { updateInputValue, updateFocusedItem } from 'actions/app';
 import Autowhatever from 'Autowhatever';
 import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
 
-const exampleId = '5';
+const exampleId = '7';
 const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`;
 
 const items = [{
-  text: 'Apple'
+  title: 'A',
+  items: [{
+    text: 'Apple'
+  }, {
+    text: 'Apricot'
+  }]
 }, {
-  text: 'Banana'
+  title: 'B',
+  items: [{
+    text: 'Banana'
+  }]
 }, {
-  text: 'Cherry'
-}, {
-  text: 'Grapefruit'
-}, {
-  text: 'Lemon'
+  title: 'C',
+  items: [{
+    text: 'Cherry'
+  }]
 }];
+
+function shouldRenderSection(section) {
+  return section.items.length > 0;
+}
+
+function renderSectionTitle(section) {
+  return (
+    <strong>{section.title}</strong>
+  );
+}
+
+function getSectionItems(section) {
+  return section.items;
+}
+
+function renderItem(item) {
+  return (
+    <span>{item.text}</span>
+  );
+}
 
 function mapStateToProps(state) {
   return {
@@ -34,22 +61,20 @@ function mapDispatchToProps(dispatch) {
     onChange: event => {
       dispatch(updateInputValue(exampleId, event.target.value));
     },
-    onMouseEnter: (event, sectionIndex, itemIndex) => {
-      dispatch(updateFocusedItem(exampleId, sectionIndex, itemIndex));
-    },
-    onMouseLeave: event => {
-      dispatch(updateFocusedItem(exampleId, null, null));
-    },
-    onMouseDown: (event, sectionIndex, itemIndex) => {
-      dispatch(updateInputValue(exampleId, items[itemIndex].text + ' clicked'));
+    onKeyDown: (event, sectionIndex, itemIndex) => {
+      switch (event.key) {
+        case 'ArrowDown':
+        case 'ArrowUp':
+          event.preventDefault();
+          dispatch(updateFocusedItem(exampleId, sectionIndex, itemIndex));
+          break;
+
+        case 'Enter':
+          dispatch(updateInputValue(exampleId, items[sectionIndex].items[itemIndex].text + ' selected'));
+          break;
+      }
     }
   };
-}
-
-function renderItem(item) {
-  return (
-    <span>{item.text}</span>
-  );
 }
 
 class Example extends Component {
@@ -59,24 +84,23 @@ class Example extends Component {
     focusedItemIndex: PropTypes.number,
 
     onChange: PropTypes.func.isRequired,
-    onMouseEnter: PropTypes.func.isRequired,
-    onMouseLeave: PropTypes.func.isRequired,
-    onMouseDown: PropTypes.func.isRequired
+    onKeyDown: PropTypes.func.isRequired
   };
 
   render() {
-    const { value, focusedSectionIndex, focusedItemIndex, onChange,
-            onMouseEnter, onMouseLeave, onMouseDown } = this.props;
-    const inputProps = { value, onChange };
-    const itemProps = { onMouseEnter, onMouseLeave, onMouseDown };
+    const { value, focusedSectionIndex, focusedItemIndex, onChange, onKeyDown } = this.props;
+    const inputProps = { value, onChange, onKeyDown };
 
     return (
       <div>
         <Autowhatever id={exampleId}
+                      multiSection={true}
                       items={items}
+                      shouldRenderSection={shouldRenderSection}
+                      renderSectionTitle={renderSectionTitle}
+                      getSectionItems={getSectionItems}
                       renderItem={renderItem}
                       inputProps={inputProps}
-                      itemProps={itemProps}
                       focusedSectionIndex={focusedSectionIndex}
                       focusedItemIndex={focusedItemIndex}
                       theme={theme} />

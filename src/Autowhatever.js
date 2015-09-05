@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import createSectionIterator from 'section-iterator';
 import themeable from 'react-themeable';
 
 export default class Autowhatever extends Component {
@@ -46,6 +47,12 @@ export default class Autowhatever extends Component {
       'section-items-container': 'react-autowhatever__section-items-container'
     }
   };
+
+  constructor(props) {
+    super(props);
+
+    this.onKeyDown = ::this.onKeyDown;
+  }
 
   getItemId(sectionIndex, itemIndex) {
     if (itemIndex === null) {
@@ -137,8 +144,35 @@ export default class Autowhatever extends Component {
     );
   }
 
+  onKeyDown(event) {
+    const { inputProps, focusedSectionIndex, focusedItemIndex } = this.props;
+    const { onKeyDown } = inputProps;
+
+    switch (event.key) {
+      case 'ArrowDown':
+      case 'ArrowUp':
+        const { multiSection, items, getSectionItems } = this.props;
+        const sectionIterator = createSectionIterator({
+          multiSection,
+          data: multiSection ?
+            items.map(section => getSectionItems(section).length) :
+            items.length
+        });
+        const nextPrev = (event.key === 'ArrowDown' ? 'next' : 'prev');
+        const [newFocusedSectionIndex, newFocusedItemIndex] =
+          sectionIterator[nextPrev]([focusedSectionIndex, focusedItemIndex]);
+
+        onKeyDown(event, newFocusedSectionIndex, newFocusedItemIndex);
+        break;
+
+      default:
+        onKeyDown(event, focusedSectionIndex, focusedItemIndex);
+    }
+  }
+
   render() {
-    const { id, multiSection, items, focusedSectionIndex, focusedItemIndex } = this.props;
+    const { id, multiSection, items,
+            focusedSectionIndex, focusedItemIndex } = this.props;
     const isOpen = (items.length > 0);
     const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
     const theme = themeable(this.props.theme);
@@ -152,6 +186,7 @@ export default class Autowhatever extends Component {
       'aria-expanded': isOpen,
       'aria-activedescendant': ariaActivedescendant,
       ...this.props.inputProps,
+      onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown,
       ...theme('input', 'input', isOpen && 'input--open')
     };
 

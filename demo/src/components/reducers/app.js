@@ -20,6 +20,16 @@ const initialState = {
     value: 'Hover and click items',
     focusedSectionIndex: null,
     focusedItemIndex: null
+  },
+  6: {
+    value: 'Up/Down',
+    focusedSectionIndex: null,
+    focusedItemIndex: null
+  },
+  7: {
+    value: 'Multi section - Up/Down/Enter',
+    focusedSectionIndex: null,
+    focusedItemIndex: null
   }
 };
 

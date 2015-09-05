@@ -6,7 +6,7 @@ import { updateInputValue, updateFocusedItem } from 'actions/app';
 import Autowhatever from 'Autowhatever';
 import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
 
-const exampleId = '5';
+const exampleId = '6';
 const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`;
 
 const items = [{
@@ -34,14 +34,11 @@ function mapDispatchToProps(dispatch) {
     onChange: event => {
       dispatch(updateInputValue(exampleId, event.target.value));
     },
-    onMouseEnter: (event, sectionIndex, itemIndex) => {
-      dispatch(updateFocusedItem(exampleId, sectionIndex, itemIndex));
-    },
-    onMouseLeave: event => {
-      dispatch(updateFocusedItem(exampleId, null, null));
-    },
-    onMouseDown: (event, sectionIndex, itemIndex) => {
-      dispatch(updateInputValue(exampleId, items[itemIndex].text + ' clicked'));
+    onKeyDown: (event, newFocusedSectionIndex, newFocusedItemIndex) => {
+      if (typeof newFocusedItemIndex !== 'undefined') {
+        event.preventDefault();
+        dispatch(updateFocusedItem(exampleId, newFocusedSectionIndex, newFocusedItemIndex));
+      }
     }
   };
 }
@@ -59,16 +56,12 @@ class Example extends Component {
     focusedItemIndex: PropTypes.number,
 
     onChange: PropTypes.func.isRequired,
-    onMouseEnter: PropTypes.func.isRequired,
-    onMouseLeave: PropTypes.func.isRequired,
-    onMouseDown: PropTypes.func.isRequired
+    onKeyDown: PropTypes.func.isRequired
   };
 
   render() {
-    const { value, focusedSectionIndex, focusedItemIndex, onChange,
-            onMouseEnter, onMouseLeave, onMouseDown } = this.props;
-    const inputProps = { value, onChange };
-    const itemProps = { onMouseEnter, onMouseLeave, onMouseDown };
+    const { value, focusedSectionIndex, focusedItemIndex, onChange, onKeyDown } = this.props;
+    const inputProps = { value, onChange, onKeyDown };
 
     return (
       <div>
@@ -76,7 +69,6 @@ class Example extends Component {
                       items={items}
                       renderItem={renderItem}
                       inputProps={inputProps}
-                      itemProps={itemProps}
                       focusedSectionIndex={focusedSectionIndex}
                       focusedItemIndex={focusedItemIndex}
                       theme={theme} />

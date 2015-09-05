@@ -21,7 +21,8 @@
   },
   "dependencies": {
     "react": "^0.14.0-beta3",
-    "react-themeable": "^1.0.1"
+    "react-themeable": "^1.0.1",
+    "section-iterator": "^1.1.0"
   },
   "devDependencies": {
     "autoprefixer-loader": "^2.1.0",
