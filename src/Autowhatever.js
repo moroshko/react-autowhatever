@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import createSectionIterator from 'section-iterator';
 import themeable from 'react-themeable';
 
 export default class Autowhatever extends Component {
@@ -11,6 +12,7 @@ export default class Autowhatever extends Component {
     renderSectionTitle: PropTypes.func,    // This function gets a section and renders its title.
     getSectionItems: PropTypes.func,       // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
     inputProps: PropTypes.object,          // Arbitrary input props
+    itemProps: PropTypes.object,           // Arbitrary item props
     focusedSectionIndex: PropTypes.number, // Section index of the focused item
     focusedItemIndex: PropTypes.number,    // Focused item index (within a section)
     theme: PropTypes.object                // Styles. See: https://github.com/markdalgleish/react-themeable
@@ -30,6 +32,7 @@ export default class Autowhatever extends Component {
       throw new Error('`getSectionItems` must be provided');
     },
     inputProps: {},
+    itemProps: {},
     focusedSectionIndex: null,
     focusedItemIndex: null,
     theme: {
@@ -44,6 +47,12 @@ export default class Autowhatever extends Component {
       'section-items-container': 'react-autowhatever__section-items-container'
     }
   };
+
+  constructor(props) {
+    super(props);
+
+    this.onKeyDown = ::this.onKeyDown;
+  }
 
   getItemId(sectionIndex, itemIndex) {
     if (itemIndex === null) {
@@ -64,14 +73,32 @@ export default class Autowhatever extends Component {
 
   renderItemsList(theme, items, sectionIndex) {
     const { renderItem, focusedSectionIndex, focusedItemIndex } = this.props;
+    const { onMouseEnter, onMouseLeave, onMouseDown } = this.props.itemProps;
 
     return items.map((item, itemIndex) => {
+      const onMouseEnterFn = onMouseEnter ?
+        event => onMouseEnter(event, { sectionIndex, itemIndex }) :
+        () => {};
+      const onMouseLeaveFn = onMouseLeave ?
+        event => onMouseLeave(event, { sectionIndex, itemIndex }) :
+        () => {};
+      const onMouseDownFn = onMouseDown ?
+        event => onMouseDown(event, { sectionIndex, itemIndex }) :
+        () => {};
+      const itemProps = {
+        id: this.getItemId(sectionIndex, itemIndex),
+        role: 'option',
+        ...this.props.itemProps,
+        onMouseEnter: onMouseEnterFn,
+        onMouseLeave: onMouseLeaveFn,
+        onMouseDown: onMouseDownFn,
+        ...theme(itemIndex, 'item', sectionIndex === focusedSectionIndex &&
+                                    itemIndex === focusedItemIndex &&
+                                    'item--focused')
+      };
+
       return (
-        <li id={this.getItemId(sectionIndex, itemIndex)}
-            role="option"
-            {...theme(itemIndex, 'item', sectionIndex === focusedSectionIndex &&
-                                         itemIndex === focusedItemIndex &&
-                                         'item--focused')}>
+        <li {...itemProps}>
           {renderItem(item)}
         </li>
       );
@@ -117,8 +144,35 @@ export default class Autowhatever extends Component {
     );
   }
 
+  onKeyDown(event) {
+    const { inputProps, focusedSectionIndex, focusedItemIndex } = this.props;
+    const { onKeyDown } = inputProps;
+
+    switch (event.key) {
+      case 'ArrowDown':
+      case 'ArrowUp':
+        const { multiSection, items, getSectionItems } = this.props;
+        const sectionIterator = createSectionIterator({
+          multiSection,
+          data: multiSection ?
+            items.map(section => getSectionItems(section).length) :
+            items.length
+        });
+        const nextPrev = (event.key === 'ArrowDown' ? 'next' : 'prev');
+        const [newFocusedSectionIndex, newFocusedItemIndex] =
+          sectionIterator[nextPrev]([focusedSectionIndex, focusedItemIndex]);
+
+        onKeyDown(event, { newFocusedSectionIndex, newFocusedItemIndex });
+        break;
+
+      default:
+        onKeyDown(event, { focusedSectionIndex, focusedItemIndex });
+    }
+  }
+
   render() {
-    const { id, multiSection, items, focusedSectionIndex, focusedItemIndex } = this.props;
+    const { id, multiSection, items,
+            focusedSectionIndex, focusedItemIndex } = this.props;
     const isOpen = (items.length > 0);
     const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
     const theme = themeable(this.props.theme);
@@ -132,6 +186,7 @@ export default class Autowhatever extends Component {
       'aria-expanded': isOpen,
       'aria-activedescendant': ariaActivedescendant,
       ...this.props.inputProps,
+      onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown,
       ...theme('input', 'input', isOpen && 'input--open')
     };
 
