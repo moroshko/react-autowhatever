@@ -181,6 +181,7 @@ export default class Autowhatever extends Component {
       value: '',
       autoComplete: 'off',
       role: 'combobox',
+      ref: 'input',
       'aria-autocomplete': 'list',
       'aria-owns': this.getItemsContainerId(),
       'aria-expanded': isOpen,

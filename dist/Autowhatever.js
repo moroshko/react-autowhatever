@@ -260,6 +260,7 @@ var Autowhatever = (function (_Component) {
         value: '',
         autoComplete: 'off',
         role: 'combobox',
+        ref: 'input',
         'aria-autocomplete': 'list',
         'aria-owns': this.getItemsContainerId(),
         'aria-expanded': isOpen,
