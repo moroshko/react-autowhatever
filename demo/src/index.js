@@ -11,12 +11,14 @@ import App from 'App/App';
 //const store = devTools()(createStore)(appReducer);
 const store = createStore(appReducer);
 
-// Enable Webpack hot module replacement for reducers
-module.hot.accept('reducers/app', () => {
-  const nextRootReducer = require('reducers/app');
+if (module.hot) {
+  // Enable Webpack hot module replacement for reducers
+  module.hot.accept('reducers/app', () => {
+    const nextRootReducer = require('reducers/app');
 
-  store.replaceReducer(nextRootReducer);
-});
+    store.replaceReducer(nextRootReducer);
+  });
+}
 
 class Demo extends Component {
   render() {
