@@ -61,8 +61,7 @@ function mapDispatchToProps(dispatch) {
     onChange: event => {
       dispatch(updateInputValue(exampleId, event.target.value));
     },
-    onKeyDown: (event, { focusedSectionIndex, focusedItemIndex,
-                         newFocusedSectionIndex, newFocusedItemIndex }) => {
+    onKeyDown: (event, { focusedSectionIndex, focusedItemIndex, newFocusedSectionIndex, newFocusedItemIndex }) => {
       switch (event.key) {
         case 'ArrowDown':
         case 'ArrowUp':
