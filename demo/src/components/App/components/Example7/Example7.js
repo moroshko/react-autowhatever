@@ -61,16 +61,17 @@ function mapDispatchToProps(dispatch) {
     onChange: event => {
       dispatch(updateInputValue(exampleId, event.target.value));
     },
-    onKeyDown: (event, sectionIndex, itemIndex) => {
+    onKeyDown: (event, { focusedSectionIndex, focusedItemIndex,
+                         newFocusedSectionIndex, newFocusedItemIndex }) => {
       switch (event.key) {
         case 'ArrowDown':
         case 'ArrowUp':
           event.preventDefault();
-          dispatch(updateFocusedItem(exampleId, sectionIndex, itemIndex));
+          dispatch(updateFocusedItem(exampleId, newFocusedSectionIndex, newFocusedItemIndex));
           break;
 
         case 'Enter':
-          dispatch(updateInputValue(exampleId, items[sectionIndex].items[itemIndex].text + ' selected'));
+          dispatch(updateInputValue(exampleId, items[focusedSectionIndex].items[focusedItemIndex].text + ' selected'));
           break;
       }
     }

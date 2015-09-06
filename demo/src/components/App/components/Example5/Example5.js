@@ -34,13 +34,13 @@ function mapDispatchToProps(dispatch) {
     onChange: event => {
       dispatch(updateInputValue(exampleId, event.target.value));
     },
-    onMouseEnter: (event, sectionIndex, itemIndex) => {
+    onMouseEnter: (event, { sectionIndex, itemIndex }) => {
       dispatch(updateFocusedItem(exampleId, sectionIndex, itemIndex));
     },
     onMouseLeave: event => {
       dispatch(updateFocusedItem(exampleId, null, null));
     },
-    onMouseDown: (event, sectionIndex, itemIndex) => {
+    onMouseDown: (event, { sectionIndex, itemIndex }) => {
       dispatch(updateInputValue(exampleId, items[itemIndex].text + ' clicked'));
     }
   };

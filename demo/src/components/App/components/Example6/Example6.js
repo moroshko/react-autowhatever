@@ -34,7 +34,7 @@ function mapDispatchToProps(dispatch) {
     onChange: event => {
       dispatch(updateInputValue(exampleId, event.target.value));
     },
-    onKeyDown: (event, newFocusedSectionIndex, newFocusedItemIndex) => {
+    onKeyDown: (event, { newFocusedSectionIndex, newFocusedItemIndex }) => {
       if (typeof newFocusedItemIndex !== 'undefined') {
         event.preventDefault();
         dispatch(updateFocusedItem(exampleId, newFocusedSectionIndex, newFocusedItemIndex));

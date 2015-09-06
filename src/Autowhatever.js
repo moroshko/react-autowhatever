@@ -77,13 +77,13 @@ export default class Autowhatever extends Component {
 
     return items.map((item, itemIndex) => {
       const onMouseEnterFn = onMouseEnter ?
-        event => onMouseEnter(event, sectionIndex, itemIndex) :
+        event => onMouseEnter(event, { sectionIndex, itemIndex }) :
         () => {};
       const onMouseLeaveFn = onMouseLeave ?
-        event => onMouseLeave(event, sectionIndex, itemIndex) :
+        event => onMouseLeave(event, { sectionIndex, itemIndex }) :
         () => {};
       const onMouseDownFn = onMouseDown ?
-        event => onMouseDown(event, sectionIndex, itemIndex) :
+        event => onMouseDown(event, { sectionIndex, itemIndex }) :
         () => {};
       const itemProps = {
         id: this.getItemId(sectionIndex, itemIndex),
@@ -162,11 +162,11 @@ export default class Autowhatever extends Component {
         const [newFocusedSectionIndex, newFocusedItemIndex] =
           sectionIterator[nextPrev]([focusedSectionIndex, focusedItemIndex]);
 
-        onKeyDown(event, newFocusedSectionIndex, newFocusedItemIndex);
+        onKeyDown(event, { newFocusedSectionIndex, newFocusedItemIndex });
         break;
 
       default:
-        onKeyDown(event, focusedSectionIndex, focusedItemIndex);
+        onKeyDown(event, { focusedSectionIndex, focusedItemIndex });
     }
   }
 
