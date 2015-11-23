@@ -265,9 +265,9 @@ var Autowhatever = (function (_Component) {
         'aria-owns': this.getItemsContainerId(),
         'aria-expanded': isOpen,
         'aria-activedescendant': ariaActivedescendant
-      }, this.props.inputProps, {
+      }, theme('input', 'input', isOpen && 'input--open'), this.props.inputProps, {
         onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
-      }, theme('input', 'input', isOpen && 'input--open'));
+      });
 
       return _react2['default'].createElement(
         'div',
