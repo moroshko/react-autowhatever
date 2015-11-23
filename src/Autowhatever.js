@@ -186,9 +186,9 @@ export default class Autowhatever extends Component {
       'aria-owns': this.getItemsContainerId(),
       'aria-expanded': isOpen,
       'aria-activedescendant': ariaActivedescendant,
+      ...theme('input', 'input', isOpen && 'input--open'),
       ...this.props.inputProps,
-      onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown,
-      ...theme('input', 'input', isOpen && 'input--open')
+      onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
     };
 
     return (
