@@ -127,6 +127,7 @@ var Autowhatever = (function (_Component) {
       var onMouseEnter = _props$itemProps.onMouseEnter;
       var onMouseLeave = _props$itemProps.onMouseLeave;
       var onMouseDown = _props$itemProps.onMouseDown;
+      var onClick = _props$itemProps.onClick;
 
       return items.map(function (item, itemIndex) {
         var onMouseEnterFn = onMouseEnter ? function (event) {
@@ -138,14 +139,18 @@ var Autowhatever = (function (_Component) {
         var onMouseDownFn = onMouseDown ? function (event) {
           return onMouseDown(event, { sectionIndex: sectionIndex, itemIndex: itemIndex });
         } : function () {};
+        var onClickFn = onClick ? function (event) {
+          return onClick(event, { sectionIndex: sectionIndex, itemIndex: itemIndex });
+        } : function () {};
         var itemProps = _extends({
           id: _this.getItemId(sectionIndex, itemIndex),
           role: 'option'
-        }, _this.props.itemProps, {
+        }, theme(itemIndex, 'item', sectionIndex === focusedSectionIndex && itemIndex === focusedItemIndex && 'item--focused'), _this.props.itemProps, {
           onMouseEnter: onMouseEnterFn,
           onMouseLeave: onMouseLeaveFn,
-          onMouseDown: onMouseDownFn
-        }, theme(itemIndex, 'item', sectionIndex === focusedSectionIndex && itemIndex === focusedItemIndex && 'item--focused'));
+          onMouseDown: onMouseDownFn,
+          onClick: onClickFn
+        });
 
         return _react2['default'].createElement(
           'li',
