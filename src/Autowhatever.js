@@ -37,8 +37,8 @@ export default class Autowhatever extends Component {
     focusedItemIndex: null,
     theme: {
       container: 'react-autowhatever__container',
+      'container--open': 'react-autowhatever__container--open',
       input: 'react-autowhatever__input',
-      'input--open': 'react-autowhatever__input--open',
       'items-container': 'react-autowhatever__items-container',
       item: 'react-autowhatever__item',
       'item--focused': 'react-autowhatever__item--focused',
@@ -190,13 +190,13 @@ export default class Autowhatever extends Component {
       'aria-owns': this.getItemsContainerId(),
       'aria-expanded': isOpen,
       'aria-activedescendant': ariaActivedescendant,
-      ...theme('input', 'input', isOpen && 'input--open'),
+      ...theme('input', 'input'),
       ...this.props.inputProps,
       onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
     };
 
     return (
-      <div {...theme('container', 'container')}>
+      <div {...theme('container', 'container', isOpen && 'container--open')}>
         <input {...inputProps} />
         {isOpen && multiSection && this.renderSections(theme)}
         {isOpen && !multiSection && this.renderItems(theme)}

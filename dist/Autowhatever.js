@@ -73,8 +73,8 @@ var Autowhatever = (function (_Component) {
       focusedItemIndex: null,
       theme: {
         container: 'react-autowhatever__container',
+        'container--open': 'react-autowhatever__container--open',
         input: 'react-autowhatever__input',
-        'input--open': 'react-autowhatever__input--open',
         'items-container': 'react-autowhatever__items-container',
         item: 'react-autowhatever__item',
         'item--focused': 'react-autowhatever__item--focused',
@@ -270,13 +270,13 @@ var Autowhatever = (function (_Component) {
         'aria-owns': this.getItemsContainerId(),
         'aria-expanded': isOpen,
         'aria-activedescendant': ariaActivedescendant
-      }, theme('input', 'input', isOpen && 'input--open'), this.props.inputProps, {
+      }, theme('input', 'input'), this.props.inputProps, {
         onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
       });
 
       return _react2['default'].createElement(
         'div',
-        theme('container', 'container'),
+        theme('container', 'container', isOpen && 'container--open'),
         _react2['default'].createElement('input', inputProps),
         isOpen && multiSection && this.renderSections(theme),
         isOpen && !multiSection && this.renderItems(theme)
