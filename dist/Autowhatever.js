@@ -73,8 +73,8 @@ var Autowhatever = (function (_Component) {
       focusedItemIndex: null,
       theme: {
         container: 'react-autowhatever__container',
+        'container--open': 'react-autowhatever__container--open',
         input: 'react-autowhatever__input',
-        'input--open': 'react-autowhatever__input--open',
         'items-container': 'react-autowhatever__items-container',
         item: 'react-autowhatever__item',
         'item--focused': 'react-autowhatever__item--focused',
@@ -127,6 +127,7 @@ var Autowhatever = (function (_Component) {
       var onMouseEnter = _props$itemProps.onMouseEnter;
       var onMouseLeave = _props$itemProps.onMouseLeave;
       var onMouseDown = _props$itemProps.onMouseDown;
+      var onClick = _props$itemProps.onClick;
 
       return items.map(function (item, itemIndex) {
         var onMouseEnterFn = onMouseEnter ? function (event) {
@@ -138,14 +139,18 @@ var Autowhatever = (function (_Component) {
         var onMouseDownFn = onMouseDown ? function (event) {
           return onMouseDown(event, { sectionIndex: sectionIndex, itemIndex: itemIndex });
         } : function () {};
+        var onClickFn = onClick ? function (event) {
+          return onClick(event, { sectionIndex: sectionIndex, itemIndex: itemIndex });
+        } : function () {};
         var itemProps = _extends({
           id: _this.getItemId(sectionIndex, itemIndex),
           role: 'option'
-        }, _this.props.itemProps, {
+        }, theme(itemIndex, 'item', sectionIndex === focusedSectionIndex && itemIndex === focusedItemIndex && 'item--focused'), _this.props.itemProps, {
           onMouseEnter: onMouseEnterFn,
           onMouseLeave: onMouseLeaveFn,
-          onMouseDown: onMouseDownFn
-        }, theme(itemIndex, 'item', sectionIndex === focusedSectionIndex && itemIndex === focusedItemIndex && 'item--focused'));
+          onMouseDown: onMouseDownFn,
+          onClick: onClickFn
+        });
 
         return _react2['default'].createElement(
           'li',
@@ -265,13 +270,13 @@ var Autowhatever = (function (_Component) {
         'aria-owns': this.getItemsContainerId(),
         'aria-expanded': isOpen,
         'aria-activedescendant': ariaActivedescendant
-      }, theme('input', 'input', isOpen && 'input--open'), this.props.inputProps, {
+      }, theme('input', 'input'), this.props.inputProps, {
         onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
       });
 
       return _react2['default'].createElement(
         'div',
-        theme('container', 'container'),
+        theme('container', 'container', isOpen && 'container--open'),
         _react2['default'].createElement('input', inputProps),
         isOpen && multiSection && this.renderSections(theme),
         isOpen && !multiSection && this.renderItems(theme)

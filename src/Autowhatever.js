@@ -37,8 +37,8 @@ export default class Autowhatever extends Component {
     focusedItemIndex: null,
     theme: {
       container: 'react-autowhatever__container',
+      'container--open': 'react-autowhatever__container--open',
       input: 'react-autowhatever__input',
-      'input--open': 'react-autowhatever__input--open',
       'items-container': 'react-autowhatever__items-container',
       item: 'react-autowhatever__item',
       'item--focused': 'react-autowhatever__item--focused',
@@ -73,7 +73,7 @@ export default class Autowhatever extends Component {
 
   renderItemsList(theme, items, sectionIndex) {
     const { renderItem, focusedSectionIndex, focusedItemIndex } = this.props;
-    const { onMouseEnter, onMouseLeave, onMouseDown } = this.props.itemProps;
+    const { onMouseEnter, onMouseLeave, onMouseDown, onClick } = this.props.itemProps;
 
     return items.map((item, itemIndex) => {
       const onMouseEnterFn = onMouseEnter ?
@@ -85,16 +85,20 @@ export default class Autowhatever extends Component {
       const onMouseDownFn = onMouseDown ?
         event => onMouseDown(event, { sectionIndex, itemIndex }) :
         () => {};
+      const onClickFn = onClick ?
+        event => onClick(event, { sectionIndex, itemIndex }) :
+        () => {};
       const itemProps = {
         id: this.getItemId(sectionIndex, itemIndex),
         role: 'option',
+        ...theme(itemIndex, 'item', sectionIndex === focusedSectionIndex &&
+                                    itemIndex === focusedItemIndex &&
+                                    'item--focused'),
         ...this.props.itemProps,
         onMouseEnter: onMouseEnterFn,
         onMouseLeave: onMouseLeaveFn,
         onMouseDown: onMouseDownFn,
-        ...theme(itemIndex, 'item', sectionIndex === focusedSectionIndex &&
-                                    itemIndex === focusedItemIndex &&
-                                    'item--focused')
+        onClick: onClickFn
       };
 
       return (
@@ -186,13 +190,13 @@ export default class Autowhatever extends Component {
       'aria-owns': this.getItemsContainerId(),
       'aria-expanded': isOpen,
       'aria-activedescendant': ariaActivedescendant,
-      ...theme('input', 'input', isOpen && 'input--open'),
+      ...theme('input', 'input'),
       ...this.props.inputProps,
       onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
     };
 
     return (
-      <div {...theme('container', 'container')}>
+      <div {...theme('container', 'container', isOpen && 'container--open')}>
         <input {...inputProps} />
         {isOpen && multiSection && this.renderSections(theme)}
         {isOpen && !multiSection && this.renderItems(theme)}
