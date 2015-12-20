@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { devTools } from 'redux-devtools';
-import { DevTools } from 'redux-devtools/lib/react';
-import DiffMonitor from 'redux-devtools-diff-monitor';
+// import { devTools } from 'redux-devtools';
+// import { DevTools } from 'redux-devtools/lib/react';
+// import DiffMonitor from 'redux-devtools-diff-monitor';
 import appReducer from 'reducers/app';
 import App from 'App/App';
 

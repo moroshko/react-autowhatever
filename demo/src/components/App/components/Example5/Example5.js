@@ -37,10 +37,10 @@ function mapDispatchToProps(dispatch) {
     onMouseEnter: (event, { sectionIndex, itemIndex }) => {
       dispatch(updateFocusedItem(exampleId, sectionIndex, itemIndex));
     },
-    onMouseLeave: event => {
+    onMouseLeave: () => {
       dispatch(updateFocusedItem(exampleId, null, null));
     },
-    onMouseDown: (event, { sectionIndex, itemIndex }) => {
+    onMouseDown: (event, { itemIndex }) => {
       dispatch(updateInputValue(exampleId, items[itemIndex].text + ' clicked'));
     }
   };

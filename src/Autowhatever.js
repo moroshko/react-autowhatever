@@ -110,8 +110,7 @@ export default class Autowhatever extends Component {
   }
 
   renderSections(theme) {
-    const { id, items, shouldRenderSection,
-            renderSectionTitle, getSectionItems } = this.props;
+    const { items, shouldRenderSection, renderSectionTitle, getSectionItems } = this.props;
 
     return (
       <div id={this.getItemsContainerId()}
@@ -137,7 +136,7 @@ export default class Autowhatever extends Component {
   }
 
   renderItems(theme) {
-    const { id, items } = this.props;
+    const { items } = this.props;
 
     return (
       <ul id={this.getItemsContainerId()}
@@ -175,8 +174,7 @@ export default class Autowhatever extends Component {
   }
 
   render() {
-    const { id, multiSection, items,
-            focusedSectionIndex, focusedItemIndex } = this.props;
+    const { multiSection, items, focusedSectionIndex, focusedItemIndex } = this.props;
     const isOpen = (items.length > 0);
     const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
     const theme = themeable(this.props.theme);
