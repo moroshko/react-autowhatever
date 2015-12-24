@@ -118,12 +118,17 @@ export default class Autowhatever extends Component {
            {...theme('items-container', 'items-container')}>
         {
           items.map((section, sectionIndex) => {
+            const sectionTitle = renderSectionTitle(section);
+
             return shouldRenderSection(section) && (
               <div key={sectionIndex}
                    {...theme(sectionIndex, 'section-container')}>
-                <div {...theme('section-title', 'section-title')}>
-                  {renderSectionTitle(section)}
-                </div>
+                {
+                  sectionTitle &&
+                    <div {...theme('section-title', 'section-title')}>
+                      {sectionTitle}
+                    </div>
+                }
                 <ul {...theme('section-items-container', 'section-items-container')}>
                   {this.renderItemsList(theme, getSectionItems(section), sectionIndex)}
                 </ul>
