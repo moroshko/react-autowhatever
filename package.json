@@ -17,7 +17,9 @@
     "demo-dist": "rm -rf demo/dist && mkdir demo/dist && npm run copy-static-files && webpack --config webpack.gh-pages.config.js",
     "ci-build": "npm run lint && npm test && npm run dist",
     "gh-pages-build": "npm run lint && npm test && npm run demo-dist",
-    "deploy": "./scripts/deploy-to-gh-pages.sh"
+    "deploy": "./scripts/deploy-to-gh-pages.sh",
+    "postversion": "git push && git push --tags",
+    "prepublish": "npm run dist"
   },
   "dependencies": {
     "react": "^0.14.0-beta3",
@@ -47,6 +49,9 @@
     "webpack": "^1.12.1",
     "webpack-dev-server": "^1.10.1"
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "autosuggest",
     "autocomplete",
