@@ -155,6 +155,10 @@ export default class Autowhatever extends Component {
   renderItems(theme) {
     const { items } = this.props;
 
+    if (items.length === 0) {
+      return null;
+    }
+
     return (
       <ul id={this.getItemsContainerId()}
           role="listbox"
@@ -191,10 +195,11 @@ export default class Autowhatever extends Component {
   }
 
   render() {
-    const { multiSection, items, focusedSectionIndex, focusedItemIndex } = this.props;
-    const isOpen = (items.length > 0);
-    const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
+    const { multiSection, focusedSectionIndex, focusedItemIndex } = this.props;
     const theme = themeable(this.props.theme);
+    const renderedItems = multiSection ? this.renderSections(theme) : this.renderItems(theme);
+    const isOpen = (renderedItems !== null);
+    const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
     const inputProps = {
       type: 'text',
       value: '',
@@ -213,8 +218,7 @@ export default class Autowhatever extends Component {
     return (
       <div {...theme('container', 'container', isOpen && 'container--open')}>
         <input {...inputProps} />
-        {isOpen && multiSection && this.renderSections(theme)}
-        {isOpen && !multiSection && this.renderItems(theme)}
+        {renderedItems}
       </div>
     );
   }
