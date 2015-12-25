@@ -1,6 +1,6 @@
 {
   "name": "react-autowhatever",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "Accessible rendering layer for Autosuggest and Autocomplete components",
   "main": "dist/Autowhatever.js",
   "repository": {
