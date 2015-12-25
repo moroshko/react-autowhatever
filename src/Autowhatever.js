@@ -111,7 +111,8 @@ export default class Autowhatever extends Component {
 
   renderSections(theme) {
     const { items, getSectionItems } = this.props;
-    const noItemsExist = items.every(section => getSectionItems(section).length === 0);
+    const sectionItemsArray = items.map(section => getSectionItems(section));
+    const noItemsExist = sectionItemsArray.every(sectionItems => sectionItems.length === 0);
 
     if (noItemsExist) {
       return null;
@@ -141,7 +142,7 @@ export default class Autowhatever extends Component {
                     </div>
                 }
                 <ul {...theme('section-items-container', 'section-items-container')}>
-                  {this.renderItemsList(theme, getSectionItems(section), sectionIndex)}
+                  {this.renderItemsList(theme, sectionItemsArray[sectionIndex], sectionIndex)}
                 </ul>
               </div>
             );
