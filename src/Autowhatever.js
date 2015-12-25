@@ -110,7 +110,14 @@ export default class Autowhatever extends Component {
   }
 
   renderSections(theme) {
-    const { items, shouldRenderSection, renderSectionTitle, getSectionItems } = this.props;
+    const { items, getSectionItems } = this.props;
+    const noItemsExist = items.every(section => getSectionItems(section).length === 0);
+
+    if (noItemsExist) {
+      return null;
+    }
+
+    const { shouldRenderSection, renderSectionTitle } = this.props;
 
     return (
       <div id={this.getItemsContainerId()}
@@ -118,9 +125,13 @@ export default class Autowhatever extends Component {
            {...theme('items-container', 'items-container')}>
         {
           items.map((section, sectionIndex) => {
+            if (!shouldRenderSection(section)) {
+              return null;
+            }
+
             const sectionTitle = renderSectionTitle(section);
 
-            return shouldRenderSection(section) && (
+            return (
               <div key={sectionIndex}
                    {...theme(sectionIndex, 'section-container')}>
                 {
