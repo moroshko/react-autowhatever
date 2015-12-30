@@ -181,6 +181,7 @@ export default class Autowhatever extends Component {
                                                    //   "onKeyDown" is read-only
                                                    // on:
                                                    //   const { onKeyDown } = inputProps;
+
     switch (event.key) {
       case 'ArrowDown':
       case 'ArrowUp':
