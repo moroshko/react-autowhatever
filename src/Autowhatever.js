@@ -14,7 +14,10 @@ export default class Autowhatever extends Component {
     renderSectionTitle: PropTypes.func,    // This function gets a section and renders its title.
     getSectionItems: PropTypes.func,       // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
     inputProps: PropTypes.object,          // Arbitrary input props
-    itemProps: PropTypes.object,           // Arbitrary item props
+    itemProps: PropTypes.oneOfType([       // Arbitrary item props
+      PropTypes.object,
+      PropTypes.func
+    ]),
     focusedSectionIndex: PropTypes.number, // Section index of the focused item
     focusedItemIndex: PropTypes.number,    // Focused item index (within a section)
     theme: PropTypes.object                // Styles. See: https://github.com/markdalgleish/react-themeable
