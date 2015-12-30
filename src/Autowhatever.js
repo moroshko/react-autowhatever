@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import createSectionIterator from 'section-iterator';
 import themeable from 'react-themeable';
 
+function noop() {}
+
 export default class Autowhatever extends Component {
   static propTypes = {
     id: PropTypes.string,                  // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
@@ -51,7 +53,7 @@ export default class Autowhatever extends Component {
   constructor(props) {
     super(props);
 
-    this.onKeyDown = ::this.onKeyDown;
+    this.onKeyDown = this.onKeyDown.bind(this);
   }
 
   getItemId(sectionIndex, itemIndex) {
@@ -73,28 +75,33 @@ export default class Autowhatever extends Component {
 
   renderItemsList(theme, items, sectionIndex) {
     const { renderItem, focusedSectionIndex, focusedItemIndex } = this.props;
-    const { onMouseEnter, onMouseLeave, onMouseDown, onClick } = this.props.itemProps;
+    const isItemPropsFunction = (typeof this.props.itemProps === 'function');
 
     return items.map((item, itemIndex) => {
+      const itemPropsObj = isItemPropsFunction
+        ? this.props.itemProps({ sectionIndex, itemIndex })
+        : this.props.itemProps;
+      const { onMouseEnter, onMouseLeave, onMouseDown, onClick } = itemPropsObj;
+
       const onMouseEnterFn = onMouseEnter ?
         event => onMouseEnter(event, { sectionIndex, itemIndex }) :
-        () => {};
+        noop;
       const onMouseLeaveFn = onMouseLeave ?
         event => onMouseLeave(event, { sectionIndex, itemIndex }) :
-        () => {};
+        noop;
       const onMouseDownFn = onMouseDown ?
         event => onMouseDown(event, { sectionIndex, itemIndex }) :
-        () => {};
+        noop;
       const onClickFn = onClick ?
         event => onClick(event, { sectionIndex, itemIndex }) :
-        () => {};
+        noop;
       const itemProps = {
         id: this.getItemId(sectionIndex, itemIndex),
         role: 'option',
         ...theme(itemIndex, 'item', sectionIndex === focusedSectionIndex &&
                                     itemIndex === focusedItemIndex &&
                                     'item--focused'),
-        ...this.props.itemProps,
+        ...itemPropsObj,
         onMouseEnter: onMouseEnterFn,
         onMouseLeave: onMouseLeaveFn,
         onMouseDown: onMouseDownFn,
@@ -170,8 +177,10 @@ export default class Autowhatever extends Component {
 
   onKeyDown(event) {
     const { inputProps, focusedSectionIndex, focusedItemIndex } = this.props;
-    const { onKeyDown } = inputProps;
-
+    const { onKeyDown: onKeyDownFn } = inputProps; // Babel is throwing:
+                                                   //   "onKeyDown" is read-only
+                                                   // on:
+                                                   //   const { onKeyDown } = inputProps;
     switch (event.key) {
       case 'ArrowDown':
       case 'ArrowUp':
@@ -186,11 +195,11 @@ export default class Autowhatever extends Component {
         const [newFocusedSectionIndex, newFocusedItemIndex] =
           sectionIterator[nextPrev]([focusedSectionIndex, focusedItemIndex]);
 
-        onKeyDown(event, { newFocusedSectionIndex, newFocusedItemIndex });
+        onKeyDownFn(event, { newFocusedSectionIndex, newFocusedItemIndex });
         break;
 
       default:
-        onKeyDown(event, { focusedSectionIndex, focusedItemIndex });
+        onKeyDownFn(event, { focusedSectionIndex, focusedItemIndex });
     }
   }
 
