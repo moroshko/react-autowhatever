@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import createSectionIterator from 'section-iterator';
 import themeable from 'react-themeable';
 
+function noop() {}
+
 export default class Autowhatever extends Component {
   static propTypes = {
     id: PropTypes.string,                  // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
@@ -12,7 +14,10 @@ export default class Autowhatever extends Component {
     renderSectionTitle: PropTypes.func,    // This function gets a section and renders its title.
     getSectionItems: PropTypes.func,       // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
     inputProps: PropTypes.object,          // Arbitrary input props
-    itemProps: PropTypes.object,           // Arbitrary item props
+    itemProps: PropTypes.oneOfType([       // Arbitrary item props
+      PropTypes.object,
+      PropTypes.func
+    ]),
     focusedSectionIndex: PropTypes.number, // Section index of the focused item
     focusedItemIndex: PropTypes.number,    // Focused item index (within a section)
     theme: PropTypes.object                // Styles. See: https://github.com/markdalgleish/react-themeable
@@ -37,21 +42,21 @@ export default class Autowhatever extends Component {
     focusedItemIndex: null,
     theme: {
       container: 'react-autowhatever__container',
-      'container--open': 'react-autowhatever__container--open',
+      containerOpen: 'react-autowhatever__container--open',
       input: 'react-autowhatever__input',
-      'items-container': 'react-autowhatever__items-container',
+      itemsContainer: 'react-autowhatever__items-container',
       item: 'react-autowhatever__item',
-      'item--focused': 'react-autowhatever__item--focused',
-      'section-container': 'react-autowhatever__section-container',
-      'section-title': 'react-autowhatever__section-title',
-      'section-items-container': 'react-autowhatever__section-items-container'
+      itemFocused: 'react-autowhatever__item--focused',
+      sectionContainer: 'react-autowhatever__section-container',
+      sectionTitle: 'react-autowhatever__section-title',
+      sectionItemsContainer: 'react-autowhatever__section-items-container'
     }
   };
 
   constructor(props) {
     super(props);
 
-    this.onKeyDown = ::this.onKeyDown;
+    this.onKeyDown = this.onKeyDown.bind(this);
   }
 
   getItemId(sectionIndex, itemIndex) {
@@ -73,28 +78,33 @@ export default class Autowhatever extends Component {
 
   renderItemsList(theme, items, sectionIndex) {
     const { renderItem, focusedSectionIndex, focusedItemIndex } = this.props;
-    const { onMouseEnter, onMouseLeave, onMouseDown, onClick } = this.props.itemProps;
+    const isItemPropsFunction = (typeof this.props.itemProps === 'function');
 
     return items.map((item, itemIndex) => {
+      const itemPropsObj = isItemPropsFunction
+        ? this.props.itemProps({ sectionIndex, itemIndex })
+        : this.props.itemProps;
+      const { onMouseEnter, onMouseLeave, onMouseDown, onClick } = itemPropsObj;
+
       const onMouseEnterFn = onMouseEnter ?
         event => onMouseEnter(event, { sectionIndex, itemIndex }) :
-        () => {};
+        noop;
       const onMouseLeaveFn = onMouseLeave ?
         event => onMouseLeave(event, { sectionIndex, itemIndex }) :
-        () => {};
+        noop;
       const onMouseDownFn = onMouseDown ?
         event => onMouseDown(event, { sectionIndex, itemIndex }) :
-        () => {};
+        noop;
       const onClickFn = onClick ?
         event => onClick(event, { sectionIndex, itemIndex }) :
-        () => {};
+        noop;
       const itemProps = {
         id: this.getItemId(sectionIndex, itemIndex),
         role: 'option',
         ...theme(itemIndex, 'item', sectionIndex === focusedSectionIndex &&
                                     itemIndex === focusedItemIndex &&
-                                    'item--focused'),
-        ...this.props.itemProps,
+                                    'itemFocused'),
+        ...itemPropsObj,
         onMouseEnter: onMouseEnterFn,
         onMouseLeave: onMouseLeaveFn,
         onMouseDown: onMouseDownFn,
@@ -110,23 +120,39 @@ export default class Autowhatever extends Component {
   }
 
   renderSections(theme) {
-    const { id, items, shouldRenderSection,
-            renderSectionTitle, getSectionItems } = this.props;
+    const { items, getSectionItems } = this.props;
+    const sectionItemsArray = items.map(section => getSectionItems(section));
+    const noItemsExist = sectionItemsArray.every(sectionItems => sectionItems.length === 0);
+
+    if (noItemsExist) {
+      return null;
+    }
+
+    const { shouldRenderSection, renderSectionTitle } = this.props;
 
     return (
       <div id={this.getItemsContainerId()}
            role="listbox"
-           {...theme('items-container', 'items-container')}>
+           {...theme('itemsContainer', 'itemsContainer')}>
         {
           items.map((section, sectionIndex) => {
-            return shouldRenderSection(section) && (
+            if (!shouldRenderSection(section)) {
+              return null;
+            }
+
+            const sectionTitle = renderSectionTitle(section);
+
+            return (
               <div key={sectionIndex}
-                   {...theme(sectionIndex, 'section-container')}>
-                <div {...theme('section-title', 'section-title')}>
-                  {renderSectionTitle(section)}
-                </div>
-                <ul {...theme('section-items-container', 'section-items-container')}>
-                  {this.renderItemsList(theme, getSectionItems(section), sectionIndex)}
+                   {...theme(sectionIndex, 'sectionContainer')}>
+                {
+                  sectionTitle &&
+                    <div {...theme('sectionTitle', 'sectionTitle')}>
+                      {sectionTitle}
+                    </div>
+                }
+                <ul {...theme('sectionItemsContainer', 'sectionItemsContainer')}>
+                  {this.renderItemsList(theme, sectionItemsArray[sectionIndex], sectionIndex)}
                 </ul>
               </div>
             );
@@ -137,12 +163,16 @@ export default class Autowhatever extends Component {
   }
 
   renderItems(theme) {
-    const { id, items } = this.props;
+    const { items } = this.props;
+
+    if (items.length === 0) {
+      return null;
+    }
 
     return (
       <ul id={this.getItemsContainerId()}
           role="listbox"
-          {...theme('items-container', 'items-container')}>
+          {...theme('itemsContainer', 'itemsContainer')}>
         {this.renderItemsList(theme, items, null)}
       </ul>
     );
@@ -150,7 +180,10 @@ export default class Autowhatever extends Component {
 
   onKeyDown(event) {
     const { inputProps, focusedSectionIndex, focusedItemIndex } = this.props;
-    const { onKeyDown } = inputProps;
+    const { onKeyDown: onKeyDownFn } = inputProps; // Babel is throwing:
+                                                   //   "onKeyDown" is read-only
+                                                   // on:
+                                                   //   const { onKeyDown } = inputProps;
 
     switch (event.key) {
       case 'ArrowDown':
@@ -166,20 +199,20 @@ export default class Autowhatever extends Component {
         const [newFocusedSectionIndex, newFocusedItemIndex] =
           sectionIterator[nextPrev]([focusedSectionIndex, focusedItemIndex]);
 
-        onKeyDown(event, { newFocusedSectionIndex, newFocusedItemIndex });
+        onKeyDownFn(event, { newFocusedSectionIndex, newFocusedItemIndex });
         break;
 
       default:
-        onKeyDown(event, { focusedSectionIndex, focusedItemIndex });
+        onKeyDownFn(event, { focusedSectionIndex, focusedItemIndex });
     }
   }
 
   render() {
-    const { id, multiSection, items,
-            focusedSectionIndex, focusedItemIndex } = this.props;
-    const isOpen = (items.length > 0);
-    const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
+    const { multiSection, focusedSectionIndex, focusedItemIndex } = this.props;
     const theme = themeable(this.props.theme);
+    const renderedItems = multiSection ? this.renderSections(theme) : this.renderItems(theme);
+    const isOpen = (renderedItems !== null);
+    const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
     const inputProps = {
       type: 'text',
       value: '',
@@ -196,10 +229,9 @@ export default class Autowhatever extends Component {
     };
 
     return (
-      <div {...theme('container', 'container', isOpen && 'container--open')}>
+      <div {...theme('container', 'container', isOpen && 'containerOpen')}>
         <input {...inputProps} />
-        {isOpen && multiSection && this.renderSections(theme)}
-        {isOpen && !multiSection && this.renderItems(theme)}
+        {renderedItems}
       </div>
     );
   }
