@@ -15,7 +15,7 @@
     "copy-static-files": "cp demo/src/index.html demo/dist/",
     "dist": "rm -rf dist && mkdir dist && babel src/Autowhatever.js --out-file dist/Autowhatever.js",
     "demo-dist": "rm -rf demo/dist && mkdir demo/dist && npm run copy-static-files && webpack --config webpack.gh-pages.config.js",
-    "ci-build": "npm run lint && npm test && npm run dist",
+    "build": "npm run lint && npm test && npm run dist",
     "gh-pages-build": "npm run lint && npm test && npm run demo-dist",
     "deploy": "./scripts/deploy-to-gh-pages.sh",
     "postversion": "git push && git push --tags",
@@ -49,8 +49,6 @@
     "react-hot-loader": "^1.3.0",
     "react-redux": "^4.0.6",
     "redux": "^3.0.5",
-    "redux-devtools": "^3.0.1",
-    "redux-devtools-diff-monitor": "^3.0.0",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
