@@ -42,14 +42,14 @@ export default class Autowhatever extends Component {
     focusedItemIndex: null,
     theme: {
       container: 'react-autowhatever__container',
-      'container--open': 'react-autowhatever__container--open',
+      containerOpen: 'react-autowhatever__container--open',
       input: 'react-autowhatever__input',
-      'items-container': 'react-autowhatever__items-container',
+      itemsContainer: 'react-autowhatever__items-container',
       item: 'react-autowhatever__item',
-      'item--focused': 'react-autowhatever__item--focused',
-      'section-container': 'react-autowhatever__section-container',
-      'section-title': 'react-autowhatever__section-title',
-      'section-items-container': 'react-autowhatever__section-items-container'
+      itemFocused: 'react-autowhatever__item--focused',
+      sectionContainer: 'react-autowhatever__section-container',
+      sectionTitle: 'react-autowhatever__section-title',
+      sectionItemsContainer: 'react-autowhatever__section-items-container'
     }
   };
 
@@ -103,7 +103,7 @@ export default class Autowhatever extends Component {
         role: 'option',
         ...theme(itemIndex, 'item', sectionIndex === focusedSectionIndex &&
                                     itemIndex === focusedItemIndex &&
-                                    'item--focused'),
+                                    'itemFocused'),
         ...itemPropsObj,
         onMouseEnter: onMouseEnterFn,
         onMouseLeave: onMouseLeaveFn,
@@ -133,7 +133,7 @@ export default class Autowhatever extends Component {
     return (
       <div id={this.getItemsContainerId()}
            role="listbox"
-           {...theme('items-container', 'items-container')}>
+           {...theme('itemsContainer', 'itemsContainer')}>
         {
           items.map((section, sectionIndex) => {
             if (!shouldRenderSection(section)) {
@@ -144,14 +144,14 @@ export default class Autowhatever extends Component {
 
             return (
               <div key={sectionIndex}
-                   {...theme(sectionIndex, 'section-container')}>
+                   {...theme(sectionIndex, 'sectionContainer')}>
                 {
                   sectionTitle &&
-                    <div {...theme('section-title', 'section-title')}>
+                    <div {...theme('sectionTitle', 'sectionTitle')}>
                       {sectionTitle}
                     </div>
                 }
-                <ul {...theme('section-items-container', 'section-items-container')}>
+                <ul {...theme('sectionItemsContainer', 'sectionItemsContainer')}>
                   {this.renderItemsList(theme, sectionItemsArray[sectionIndex], sectionIndex)}
                 </ul>
               </div>
@@ -172,7 +172,7 @@ export default class Autowhatever extends Component {
     return (
       <ul id={this.getItemsContainerId()}
           role="listbox"
-          {...theme('items-container', 'items-container')}>
+          {...theme('itemsContainer', 'itemsContainer')}>
         {this.renderItemsList(theme, items, null)}
       </ul>
     );
@@ -229,7 +229,7 @@ export default class Autowhatever extends Component {
     };
 
     return (
-      <div {...theme('container', 'container', isOpen && 'container--open')}>
+      <div {...theme('container', 'container', isOpen && 'containerOpen')}>
         <input {...inputProps} />
         {renderedItems}
       </div>
