@@ -20,6 +20,7 @@ export default class Autowhatever extends Component {
     ]),
     focusedSectionIndex: PropTypes.number, // Section index of the focused item
     focusedItemIndex: PropTypes.number,    // Focused item index (within a section)
+    element: PropTypes.string,             // Tag to render input field
     theme: PropTypes.object                // Styles. See: https://github.com/markdalgleish/react-themeable
   };
 
@@ -40,6 +41,7 @@ export default class Autowhatever extends Component {
     itemProps: {},
     focusedSectionIndex: null,
     focusedItemIndex: null,
+    element: 'input',
     theme: {
       container: 'react-autowhatever__container',
       containerOpen: 'react-autowhatever__container--open',
@@ -213,6 +215,7 @@ export default class Autowhatever extends Component {
     const renderedItems = multiSection ? this.renderSections(theme) : this.renderItems(theme);
     const isOpen = (renderedItems !== null);
     const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
+    const Tag = this.props.element;
     const inputProps = {
       type: 'text',
       value: '',
@@ -230,7 +233,7 @@ export default class Autowhatever extends Component {
 
     return (
       <div {...theme('container', 'container', isOpen && 'containerOpen')}>
-        <input {...inputProps} />
+        <Tag {...inputProps} />
         {renderedItems}
       </div>
     );
