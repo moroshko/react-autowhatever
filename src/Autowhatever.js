@@ -14,6 +14,7 @@ export default class Autowhatever extends Component {
     renderSectionTitle: PropTypes.func,    // This function gets a section and renders its title.
     getSectionItems: PropTypes.func,       // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
     inputProps: PropTypes.object,          // Arbitrary input props
+    renderInput: PropTypes.func,           // This function gets inputProps and returns react element for input
     itemProps: PropTypes.oneOfType([       // Arbitrary item props
       PropTypes.object,
       PropTypes.func
@@ -178,6 +179,16 @@ export default class Autowhatever extends Component {
     );
   }
 
+  renderInput(inputProps) {
+    if (typeof this.props.renderInput === 'function') {
+      return this.props.renderInput(inputProps);
+    }
+
+    return (
+      <input {...inputProps} />
+    );
+  }
+
   onKeyDown(event) {
     const { inputProps, focusedSectionIndex, focusedItemIndex } = this.props;
     const { onKeyDown: onKeyDownFn } = inputProps; // Babel is throwing:
@@ -227,10 +238,11 @@ export default class Autowhatever extends Component {
       ...this.props.inputProps,
       onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
     };
+    const input = this.renderInput(inputProps);
 
     return (
       <div {...theme('container', 'container', isOpen && 'containerOpen')}>
-        <input {...inputProps} />
+        {input}
         {renderedItems}
       </div>
     );
