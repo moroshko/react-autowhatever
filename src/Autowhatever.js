@@ -100,7 +100,6 @@ export default class Autowhatever extends Component {
         noop;
       const itemProps = {
         id: this.getItemId(sectionIndex, itemIndex),
-        key: this.getItemId(sectionIndex, itemIndex),
         role: 'option',
         ...theme(itemIndex, 'item', sectionIndex === focusedSectionIndex &&
                                     itemIndex === focusedItemIndex &&
@@ -133,7 +132,6 @@ export default class Autowhatever extends Component {
 
     return (
       <div id={this.getItemsContainerId()}
-           key={this.getItemsContainerId()}
            role="listbox"
            {...theme('itemsContainer', 'itemsContainer')}>
         {
@@ -149,13 +147,11 @@ export default class Autowhatever extends Component {
                    {...theme(sectionIndex, 'sectionContainer')}>
                 {
                   sectionTitle &&
-                    <div key={`${this.getItemsContainerId()}--sectionTitle`}
-                         {...theme('sectionTitle', 'sectionTitle')}>
+                    <div {...theme('sectionTitle', 'sectionTitle')}>
                       {sectionTitle}
                     </div>
                 }
-                <ul key={`${this.getItemsContainerId()}--sectionItemsContainer`}
-                    {...theme('sectionItemsContainer', 'sectionItemsContainer')}>
+                <ul {...theme('sectionItemsContainer', 'sectionItemsContainer')}>
                   {this.renderItemsList(theme, sectionItemsArray[sectionIndex], sectionIndex)}
                 </ul>
               </div>
@@ -175,7 +171,6 @@ export default class Autowhatever extends Component {
 
     return (
       <ul id={this.getItemsContainerId()}
-          key={this.getItemsContainerId()}
           role="listbox"
           {...theme('itemsContainer', 'itemsContainer')}>
         {this.renderItemsList(theme, items, null)}
@@ -233,13 +228,8 @@ export default class Autowhatever extends Component {
       onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
     };
 
-    if(!this.props.inputProps.key) {
-      inputProps.key = 'react-autowhatever-input';
-    }
-
     return (
-      <div key={'react-autowhatever-container'}
-           {...theme('container', 'container', isOpen && 'containerOpen')}>
+      <div {...theme('container', 'container', isOpen && 'containerOpen')}>
         <input {...inputProps} />
         {renderedItems}
       </div>
