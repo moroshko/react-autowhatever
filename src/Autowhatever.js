@@ -77,7 +77,7 @@ export default class Autowhatever extends Component {
   }
 
   renderItemsList(theme, items, sectionIndex) {
-    const { renderItem, focusedSectionIndex, focusedItemIndex } = this.props;
+    const { id, renderItem, focusedSectionIndex, focusedItemIndex } = this.props;
     const isItemPropsFunction = (typeof this.props.itemProps === 'function');
 
     return items.map((item, itemIndex) => {
@@ -98,12 +98,14 @@ export default class Autowhatever extends Component {
       const onClickFn = onClick ?
         event => onClick(event, { sectionIndex, itemIndex }) :
         noop;
+      const sectionPrefix = (sectionIndex === null ? '' : `section-${sectionIndex}-`);
+      const itemKey = `react-autowhatever-${id}-${sectionPrefix}item-${itemIndex}`;
       const itemProps = {
         id: this.getItemId(sectionIndex, itemIndex),
         role: 'option',
-        ...theme(itemIndex, 'item', sectionIndex === focusedSectionIndex &&
-                                    itemIndex === focusedItemIndex &&
-                                    'itemFocused'),
+        ...theme(itemKey, 'item', sectionIndex === focusedSectionIndex &&
+                                  itemIndex === focusedItemIndex &&
+                                  'itemFocused'),
         ...itemPropsObj,
         onMouseEnter: onMouseEnterFn,
         onMouseLeave: onMouseLeaveFn,
@@ -128,12 +130,12 @@ export default class Autowhatever extends Component {
       return null;
     }
 
-    const { shouldRenderSection, renderSectionTitle } = this.props;
+    const { id, shouldRenderSection, renderSectionTitle } = this.props;
 
     return (
       <div id={this.getItemsContainerId()}
            role="listbox"
-           {...theme('itemsContainer', 'itemsContainer')}>
+           {...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer')}>
         {
           items.map((section, sectionIndex) => {
             if (!shouldRenderSection(section)) {
@@ -143,15 +145,14 @@ export default class Autowhatever extends Component {
             const sectionTitle = renderSectionTitle(section);
 
             return (
-              <div key={sectionIndex}
-                   {...theme(sectionIndex, 'sectionContainer')}>
+              <div {...theme(`react-autowhatever-${id}-section-${sectionIndex}-container`, 'sectionContainer')}>
                 {
                   sectionTitle &&
-                    <div {...theme('sectionTitle', 'sectionTitle')}>
+                    <div {...theme(`react-autowhatever-${id}-section-${sectionIndex}-title`, 'sectionTitle')}>
                       {sectionTitle}
                     </div>
                 }
-                <ul {...theme('sectionItemsContainer', 'sectionItemsContainer')}>
+                <ul {...theme(`react-autowhatever-${id}-section-${sectionIndex}-items-container`, 'sectionItemsContainer')}>
                   {this.renderItemsList(theme, sectionItemsArray[sectionIndex], sectionIndex)}
                 </ul>
               </div>
@@ -169,10 +170,12 @@ export default class Autowhatever extends Component {
       return null;
     }
 
+    const id = this.props;
+
     return (
       <ul id={this.getItemsContainerId()}
           role="listbox"
-          {...theme('itemsContainer', 'itemsContainer')}>
+          {...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer')}>
         {this.renderItemsList(theme, items, null)}
       </ul>
     );
@@ -208,7 +211,7 @@ export default class Autowhatever extends Component {
   }
 
   render() {
-    const { multiSection, focusedSectionIndex, focusedItemIndex } = this.props;
+    const { id, multiSection, focusedSectionIndex, focusedItemIndex } = this.props;
     const theme = themeable(this.props.theme);
     const renderedItems = multiSection ? this.renderSections(theme) : this.renderItems(theme);
     const isOpen = (renderedItems !== null);
@@ -223,13 +226,13 @@ export default class Autowhatever extends Component {
       'aria-owns': this.getItemsContainerId(),
       'aria-expanded': isOpen,
       'aria-activedescendant': ariaActivedescendant,
-      ...theme('input', 'input'),
+      ...theme(`react-autowhatever-${id}-input`, 'input'),
       ...this.props.inputProps,
       onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
     };
 
     return (
-      <div {...theme('container', 'container', isOpen && 'containerOpen')}>
+      <div {...theme(`react-autowhatever-${id}-container`, 'container', isOpen && 'containerOpen')}>
         <input {...inputProps} />
         {renderedItems}
       </div>
