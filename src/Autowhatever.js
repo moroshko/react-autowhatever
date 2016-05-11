@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { findDOMNode } from 'react-dom';
 import createSectionIterator from 'section-iterator';
 import themeable from 'react-themeable';
 
@@ -104,6 +103,7 @@ export default class Autowhatever extends Component {
       const isFocused = sectionIndex === focusedSectionIndex && itemIndex === focusedItemIndex;
       const itemProps = {
         id: this.getItemId(sectionIndex, itemIndex),
+        ref: isFocused ? 'focusedItem' : null,
         role: 'option',
         ...theme(itemKey, 'item', isFocused && 'itemFocused'),
         ...itemPropsObj,
@@ -112,10 +112,6 @@ export default class Autowhatever extends Component {
         onMouseDown: onMouseDownFn,
         onClick: onClickFn
       };
-
-      if (isFocused) {
-        itemProps.ref = 'focusedItem';
-      }
 
       return (
         <li {...itemProps}>
@@ -247,24 +243,22 @@ export default class Autowhatever extends Component {
 
   componentDidUpdate() {
     if (this.refs.focusedItem) {
-      const itemNode = findDOMNode(this.refs.focusedItem);
-      const containerNode = findDOMNode(this.refs.itemsContainer);
-
+      const { focusedItem, itemsContainer } = this.refs;
       const itemOffsetRelativeToContainer = (
-        itemNode.offsetParent === containerNode
-        ? itemNode.offsetTop
-        : itemNode.offsetTop - containerNode.offsetTop);
-      let scrollTop = containerNode.scrollTop;  // Top of visible area
+        focusedItem.offsetParent === itemsContainer
+        ? focusedItem.offsetTop
+        : focusedItem.offsetTop - itemsContainer.offsetTop);
 
+      let { scrollTop } = itemsContainer;  // Top of visible area
       if (itemOffsetRelativeToContainer < scrollTop) {
         // Item is off the top of visible area. Scroll so it is topmost item.
         scrollTop = itemOffsetRelativeToContainer;
-      } else if (itemOffsetRelativeToContainer + itemNode.offsetHeight > scrollTop + containerNode.offsetHeight) {
+      } else if (itemOffsetRelativeToContainer + focusedItem.offsetHeight > scrollTop + itemsContainer.offsetHeight) {
         // Item is off bottom of visible area. Scroll so it is at bottom.
-        scrollTop = itemOffsetRelativeToContainer + itemNode.offsetHeight - containerNode.offsetHeight;
+        scrollTop = itemOffsetRelativeToContainer + focusedItem.offsetHeight - itemsContainer.offsetHeight;
       }
-      if (scrollTop !== containerNode.scrollTop) {
-        containerNode.scrollTop = scrollTop;
+      if (scrollTop !== itemsContainer.scrollTop) {
+        itemsContainer.scrollTop = scrollTop;
       }
     }
   }
