@@ -241,7 +241,15 @@ export default class Autowhatever extends Component {
     );
   }
 
+  componentDidMount() {
+    this.ensureFocusedSuggestionIsVisible();
+  }
+
   componentDidUpdate() {
+    this.ensureFocusedSuggestionIsVisible();
+  }
+
+  ensureFocusedSuggestionIsVisible() {
     if (this.refs.focusedItem) {
       const { focusedItem, itemsContainer } = this.refs;
       const itemOffsetRelativeToContainer = (
