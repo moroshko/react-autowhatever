@@ -59,6 +59,14 @@ export default class Autowhatever extends Component {
     this.onKeyDown = this.onKeyDown.bind(this);
   }
 
+  componentDidMount() {
+    this.ensureFocusedSuggestionIsVisible();
+  }
+
+  componentDidUpdate() {
+    this.ensureFocusedSuggestionIsVisible();
+  }
+
   getItemId(sectionIndex, itemIndex) {
     if (itemIndex === null) {
       return null;
@@ -192,7 +200,7 @@ export default class Autowhatever extends Component {
 
     switch (event.key) {
       case 'ArrowDown':
-      case 'ArrowUp':
+      case 'ArrowUp': {
         const { multiSection, items, getSectionItems } = this.props;
         const sectionIterator = createSectionIterator({
           multiSection,
@@ -206,9 +214,36 @@ export default class Autowhatever extends Component {
 
         onKeyDownFn(event, { newFocusedSectionIndex, newFocusedItemIndex });
         break;
+      }
 
       default:
         onKeyDownFn(event, { focusedSectionIndex, focusedItemIndex });
+    }
+  }
+
+  ensureFocusedSuggestionIsVisible() {
+    if (!this.refs.focusedItem) {
+      return;
+    }
+
+    const { focusedItem, itemsContainer } = this.refs;
+    const itemOffsetRelativeToContainer =
+      focusedItem.offsetParent === itemsContainer
+        ? focusedItem.offsetTop
+        : focusedItem.offsetTop - itemsContainer.offsetTop;
+
+    let { scrollTop } = itemsContainer; // Top of the visible area
+
+    if (itemOffsetRelativeToContainer < scrollTop) {
+      // Item is off the top of the visible area
+      scrollTop = itemOffsetRelativeToContainer;
+    } else if (itemOffsetRelativeToContainer + focusedItem.offsetHeight > scrollTop + itemsContainer.offsetHeight) {
+      // Item is off the bottom of the visible area
+      scrollTop = itemOffsetRelativeToContainer + focusedItem.offsetHeight - itemsContainer.offsetHeight;
+    }
+
+    if (scrollTop !== itemsContainer.scrollTop) {
+      itemsContainer.scrollTop = scrollTop;
     }
   }
 
@@ -239,35 +274,5 @@ export default class Autowhatever extends Component {
         {renderedItems}
       </div>
     );
-  }
-
-  componentDidMount() {
-    this.ensureFocusedSuggestionIsVisible();
-  }
-
-  componentDidUpdate() {
-    this.ensureFocusedSuggestionIsVisible();
-  }
-
-  ensureFocusedSuggestionIsVisible() {
-    if (this.refs.focusedItem) {
-      const { focusedItem, itemsContainer } = this.refs;
-      const itemOffsetRelativeToContainer = (
-        focusedItem.offsetParent === itemsContainer
-        ? focusedItem.offsetTop
-        : focusedItem.offsetTop - itemsContainer.offsetTop);
-
-      let { scrollTop } = itemsContainer;  // Top of visible area
-      if (itemOffsetRelativeToContainer < scrollTop) {
-        // Item is off the top of visible area. Scroll so it is topmost item.
-        scrollTop = itemOffsetRelativeToContainer;
-      } else if (itemOffsetRelativeToContainer + focusedItem.offsetHeight > scrollTop + itemsContainer.offsetHeight) {
-        // Item is off bottom of visible area. Scroll so it is at bottom.
-        scrollTop = itemOffsetRelativeToContainer + focusedItem.offsetHeight - itemsContainer.offsetHeight;
-      }
-      if (scrollTop !== itemsContainer.scrollTop) {
-        itemsContainer.scrollTop = scrollTop;
-      }
-    }
   }
 }

@@ -10,43 +10,26 @@ const exampleId = '7';
 const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`;
 
 const items = [{
-  title: 'A',
-  items: [{
-    text: 'Apple'
-  }, {
-    text: 'Apricot'
-  }]
+  text: 'Apple cake'
 }, {
-  title: 'B',
-  items: [{
-    text: 'Banana'
-  }]
+  text: 'Apple pie'
 }, {
-  title: 'C',
-  items: [{
-    text: 'Cherry'
-  }]
+  text: 'Banana cake'
+}, {
+  text: 'Banana pie'
+}, {
+  text: 'Cherry cake'
+}, {
+  text: 'Cherry pie'
+}, {
+  text: 'Grapefruit cake'
+}, {
+  text: 'Grapefruit pie'
+}, {
+  text: 'Lemon cake'
+}, {
+  text: 'Lemon pie'
 }];
-
-function shouldRenderSection(section) {
-  return section.items.length > 0;
-}
-
-function renderSectionTitle(section) {
-  return (
-    <strong>{section.title}</strong>
-  );
-}
-
-function getSectionItems(section) {
-  return section.items;
-}
-
-function renderItem(item) {
-  return (
-    <span>{item.text}</span>
-  );
-}
 
 function mapStateToProps(state) {
   return {
@@ -61,20 +44,19 @@ function mapDispatchToProps(dispatch) {
     onChange: event => {
       dispatch(updateInputValue(exampleId, event.target.value));
     },
-    onKeyDown: (event, { focusedSectionIndex, focusedItemIndex, newFocusedSectionIndex, newFocusedItemIndex }) => {
-      switch (event.key) {
-        case 'ArrowDown':
-        case 'ArrowUp':
-          event.preventDefault();
-          dispatch(updateFocusedItem(exampleId, newFocusedSectionIndex, newFocusedItemIndex));
-          break;
-
-        case 'Enter':
-          dispatch(updateInputValue(exampleId, items[focusedSectionIndex].items[focusedItemIndex].text + ' selected'));
-          break;
+    onKeyDown: (event, { newFocusedSectionIndex, newFocusedItemIndex }) => {
+      if (typeof newFocusedItemIndex !== 'undefined') {
+        event.preventDefault();
+        dispatch(updateFocusedItem(exampleId, newFocusedSectionIndex, newFocusedItemIndex));
       }
     }
   };
+}
+
+function renderItem(item) {
+  return (
+    <span>{item.text}</span>
+  );
 }
 
 class Example extends Component {
@@ -94,11 +76,7 @@ class Example extends Component {
     return (
       <div>
         <Autowhatever id={exampleId}
-                      multiSection={true}
                       items={items}
-                      shouldRenderSection={shouldRenderSection}
-                      renderSectionTitle={renderSectionTitle}
-                      getSectionItems={getSectionItems}
                       renderItem={renderItem}
                       inputProps={inputProps}
                       focusedSectionIndex={focusedSectionIndex}

@@ -9,8 +9,8 @@ import Example3 from 'Example3/Example3';
 import Example4 from 'Example4/Example4';
 import Example5 from 'Example5/Example5';
 import Example6 from 'Example6/Example6';
-import Example6s from 'Example6s/Example6s';
 import Example7 from 'Example7/Example7';
+import Example8 from 'Example8/Example8';
 
 export default class App extends Component {
   render() {
@@ -47,10 +47,10 @@ export default class App extends Component {
             <Example6 />
           </div>
           <div className={styles.exampleContainer}>
-            <Example6s />
+            <Example7 />
           </div>
           <div className={styles.exampleContainer}>
-            <Example7 />
+            <Example8 />
           </div>
         </div>
         <ForkMeOnGitHub user="moroshko" repo="react-autowhatever" />

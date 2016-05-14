@@ -6,28 +6,46 @@ import { updateInputValue, updateFocusedItem } from 'actions/app';
 import Autowhatever from 'Autowhatever';
 import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
 
-const exampleId = '6s';
+const exampleId = '7';
 const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`;
 
-const items0 = [{
-  text: 'Apple'
+const items = [{
+  title: 'A',
+  items: [{
+    text: 'Apple'
+  }, {
+    text: 'Apricot'
+  }]
 }, {
-  text: 'Banana'
+  title: 'B',
+  items: [{
+    text: 'Banana'
+  }]
 }, {
-  text: 'Cherry'
-}, {
-  text: 'Grapefruit'
-}, {
-  text: 'Lemon'
+  title: 'C',
+  items: [{
+    text: 'Cherry'
+  }]
 }];
 
-// Make list longer!
-const items = [];
+function shouldRenderSection(section) {
+  return section.items.length > 0;
+}
 
-for (let { text } of items0) {
-  for (let w of ['cake', 'pie', 'soup', 'tart']) {
-    items.push({ text: `${text} ${w}` });
-  }
+function renderSectionTitle(section) {
+  return (
+    <strong>{section.title}</strong>
+  );
+}
+
+function getSectionItems(section) {
+  return section.items;
+}
+
+function renderItem(item) {
+  return (
+    <span>{item.text}</span>
+  );
 }
 
 function mapStateToProps(state) {
@@ -43,19 +61,20 @@ function mapDispatchToProps(dispatch) {
     onChange: event => {
       dispatch(updateInputValue(exampleId, event.target.value));
     },
-    onKeyDown: (event, { newFocusedSectionIndex, newFocusedItemIndex }) => {
-      if (typeof newFocusedItemIndex !== 'undefined') {
-        event.preventDefault();
-        dispatch(updateFocusedItem(exampleId, newFocusedSectionIndex, newFocusedItemIndex));
+    onKeyDown: (event, { focusedSectionIndex, focusedItemIndex, newFocusedSectionIndex, newFocusedItemIndex }) => {
+      switch (event.key) {
+        case 'ArrowDown':
+        case 'ArrowUp':
+          event.preventDefault();
+          dispatch(updateFocusedItem(exampleId, newFocusedSectionIndex, newFocusedItemIndex));
+          break;
+
+        case 'Enter':
+          dispatch(updateInputValue(exampleId, items[focusedSectionIndex].items[focusedItemIndex].text + ' selected'));
+          break;
       }
     }
   };
-}
-
-function renderItem(item) {
-  return (
-    <span>{item.text}</span>
-  );
 }
 
 class Example extends Component {
@@ -75,7 +94,11 @@ class Example extends Component {
     return (
       <div>
         <Autowhatever id={exampleId}
+                      multiSection={true}
                       items={items}
+                      shouldRenderSection={shouldRenderSection}
+                      renderSectionTitle={renderSectionTitle}
+                      getSectionItems={getSectionItems}
                       renderItem={renderItem}
                       inputProps={inputProps}
                       focusedSectionIndex={focusedSectionIndex}
