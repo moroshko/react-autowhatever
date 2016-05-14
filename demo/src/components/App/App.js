@@ -9,6 +9,7 @@ import Example3 from 'Example3/Example3';
 import Example4 from 'Example4/Example4';
 import Example5 from 'Example5/Example5';
 import Example6 from 'Example6/Example6';
+import Example6s from 'Example6s/Example6s';
 import Example7 from 'Example7/Example7';
 
 export default class App extends Component {
@@ -44,6 +45,9 @@ export default class App extends Component {
           </div>
           <div className={styles.exampleContainer}>
             <Example6 />
+          </div>
+          <div className={styles.exampleContainer}>
+            <Example6s />
           </div>
           <div className={styles.exampleContainer}>
             <Example7 />

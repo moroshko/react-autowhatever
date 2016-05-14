@@ -100,12 +100,12 @@ export default class Autowhatever extends Component {
         noop;
       const sectionPrefix = (sectionIndex === null ? '' : `section-${sectionIndex}-`);
       const itemKey = `react-autowhatever-${id}-${sectionPrefix}item-${itemIndex}`;
+      const isFocused = sectionIndex === focusedSectionIndex && itemIndex === focusedItemIndex;
       const itemProps = {
         id: this.getItemId(sectionIndex, itemIndex),
+        ref: isFocused ? 'focusedItem' : null,
         role: 'option',
-        ...theme(itemKey, 'item', sectionIndex === focusedSectionIndex &&
-                                  itemIndex === focusedItemIndex &&
-                                  'itemFocused'),
+        ...theme(itemKey, 'item', isFocused && 'itemFocused'),
         ...itemPropsObj,
         onMouseEnter: onMouseEnterFn,
         onMouseLeave: onMouseLeaveFn,
@@ -134,6 +134,7 @@ export default class Autowhatever extends Component {
 
     return (
       <div id={this.getItemsContainerId()}
+           ref="itemsContainer"
            role="listbox"
            {...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer')}>
         {
@@ -174,6 +175,7 @@ export default class Autowhatever extends Component {
 
     return (
       <ul id={this.getItemsContainerId()}
+          ref="itemsContainer"
           role="listbox"
           {...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer')}>
         {this.renderItemsList(theme, items, null)}
@@ -237,5 +239,35 @@ export default class Autowhatever extends Component {
         {renderedItems}
       </div>
     );
+  }
+
+  componentDidMount() {
+    this.ensureFocusedSuggestionIsVisible();
+  }
+
+  componentDidUpdate() {
+    this.ensureFocusedSuggestionIsVisible();
+  }
+
+  ensureFocusedSuggestionIsVisible() {
+    if (this.refs.focusedItem) {
+      const { focusedItem, itemsContainer } = this.refs;
+      const itemOffsetRelativeToContainer = (
+        focusedItem.offsetParent === itemsContainer
+        ? focusedItem.offsetTop
+        : focusedItem.offsetTop - itemsContainer.offsetTop);
+
+      let { scrollTop } = itemsContainer;  // Top of visible area
+      if (itemOffsetRelativeToContainer < scrollTop) {
+        // Item is off the top of visible area. Scroll so it is topmost item.
+        scrollTop = itemOffsetRelativeToContainer;
+      } else if (itemOffsetRelativeToContainer + focusedItem.offsetHeight > scrollTop + itemsContainer.offsetHeight) {
+        // Item is off bottom of visible area. Scroll so it is at bottom.
+        scrollTop = itemOffsetRelativeToContainer + focusedItem.offsetHeight - itemsContainer.offsetHeight;
+      }
+      if (scrollTop !== itemsContainer.scrollTop) {
+        itemsContainer.scrollTop = scrollTop;
+      }
+    }
   }
 }
