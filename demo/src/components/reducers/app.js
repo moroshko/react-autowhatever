@@ -27,6 +27,11 @@ const initialState = {
     focusedItemIndex: null
   },
   7: {
+    value: 'Up/Down (with scrollbar)',
+    focusedSectionIndex: null,
+    focusedItemIndex: 7
+  },
+  8: {
     value: 'Multi section - Up/Down/Enter',
     focusedSectionIndex: null,
     focusedItemIndex: null
