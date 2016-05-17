@@ -20,7 +20,8 @@ export default class Autowhatever extends Component {
     ]),
     focusedSectionIndex: PropTypes.number, // Section index of the focused item
     focusedItemIndex: PropTypes.number,    // Focused item index (within a section)
-    theme: PropTypes.object                // Styles. See: https://github.com/markdalgleish/react-themeable
+    theme: PropTypes.object,               // Styles. See: https://github.com/markdalgleish/react-themeable
+    isOpen: PropTypes.bool
   };
 
   static defaultProps = {
@@ -40,6 +41,7 @@ export default class Autowhatever extends Component {
     itemProps: {},
     focusedSectionIndex: null,
     focusedItemIndex: null,
+    isOpen: null,
     theme: {
       container: 'react-autowhatever__container',
       containerOpen: 'react-autowhatever__container--open',
@@ -251,7 +253,7 @@ export default class Autowhatever extends Component {
     const { id, multiSection, focusedSectionIndex, focusedItemIndex } = this.props;
     const theme = themeable(this.props.theme);
     const renderedItems = multiSection ? this.renderSections(theme) : this.renderItems(theme);
-    const isOpen = (renderedItems !== null);
+    const isOpen = this.props.isOpen !== null ? this.props.isOpen : (renderedItems !== null);
     const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
     const inputProps = {
       type: 'text',
