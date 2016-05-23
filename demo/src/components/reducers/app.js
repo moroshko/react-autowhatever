@@ -35,6 +35,16 @@ const initialState = {
     value: 'Multi section - Up/Down/Enter',
     focusedSectionIndex: null,
     focusedItemIndex: null
+  },
+  9: {
+    value: 'Custom input element',
+    focusedSectionIndex: null,
+    focusedItemIndex: null
+  },
+  10: {
+    value: 'Don\'t wrap focused suggestion',
+    focusedSectionIndex: null,
+    focusedItemIndex: null
   }
 };
 

@@ -11,6 +11,8 @@ import Example5 from 'Example5/Example5';
 import Example6 from 'Example6/Example6';
 import Example7 from 'Example7/Example7';
 import Example8 from 'Example8/Example8';
+import Example9 from 'Example9/Example9';
+import Example10 from 'Example10/Example10';
 
 export default class App extends Component {
   render() {
@@ -51,6 +53,12 @@ export default class App extends Component {
           </div>
           <div className={styles.exampleContainer}>
             <Example8 />
+          </div>
+          <div className={styles.exampleContainer}>
+            <Example9 />
+          </div>
+          <div className={styles.exampleContainer}>
+            <Example10 />
           </div>
         </div>
         <ForkMeOnGitHub user="moroshko" repo="react-autowhatever" />

@@ -1,4 +1,5 @@
 import theme from '../theme.less';
+import css from './customStyles.less';
 
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
@@ -6,47 +7,20 @@ import { updateInputValue, updateFocusedItem } from 'actions/app';
 import Autowhatever from 'Autowhatever';
 import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
 
-const exampleId = '8';
+const exampleId = '9';
 const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`;
 
 const items = [{
-  title: 'A',
-  items: [{
-    text: 'Apple'
-  }, {
-    text: 'Apricot'
-  }]
+  text: 'Apple'
 }, {
-  title: 'B',
-  items: [{
-    text: 'Banana'
-  }]
+  text: 'Banana'
 }, {
-  title: 'C',
-  items: [{
-    text: 'Cherry'
-  }]
+  text: 'Cherry'
+}, {
+  text: 'Grapefruit'
+}, {
+  text: 'Lemon'
 }];
-
-function shouldRenderSection(section) {
-  return section.items.length > 0;
-}
-
-function renderSectionTitle(section) {
-  return (
-    <strong>{section.title}</strong>
-  );
-}
-
-function getSectionItems(section) {
-  return section.items;
-}
-
-function renderItem(item) {
-  return (
-    <span>{item.text}</span>
-  );
-}
 
 function mapStateToProps(state) {
   return {
@@ -61,20 +35,28 @@ function mapDispatchToProps(dispatch) {
     onChange: event => {
       dispatch(updateInputValue(exampleId, event.target.value));
     },
-    onKeyDown: (event, { focusedSectionIndex, focusedItemIndex, newFocusedSectionIndex, newFocusedItemIndex }) => {
-      switch (event.key) {
-        case 'ArrowDown':
-        case 'ArrowUp':
-          event.preventDefault();
-          dispatch(updateFocusedItem(exampleId, newFocusedSectionIndex, newFocusedItemIndex));
-          break;
-
-        case 'Enter':
-          dispatch(updateInputValue(exampleId, items[focusedSectionIndex].items[focusedItemIndex].text + ' selected'));
-          break;
-      }
+    onMouseEnter: (event, { sectionIndex, itemIndex }) => {
+      dispatch(updateFocusedItem(exampleId, sectionIndex, itemIndex));
+    },
+    onMouseLeave: () => {
+      dispatch(updateFocusedItem(exampleId, null, null));
+    },
+    onMouseDown: (event, { itemIndex }) => {
+      dispatch(updateInputValue(exampleId, items[itemIndex].text + ' clicked'));
     }
   };
+}
+
+function renderItem(item) {
+  return (
+    <span>{item.text}</span>
+  );
+}
+
+function renderInput(inputProps) {
+  return (
+    <div {...inputProps} className={`${inputProps.className} ${css.input}`}>{inputProps.value}</div>
+  );
 }
 
 class Example extends Component {
@@ -84,23 +66,32 @@ class Example extends Component {
     focusedItemIndex: PropTypes.number,
 
     onChange: PropTypes.func.isRequired,
-    onKeyDown: PropTypes.func.isRequired
+    onMouseEnter: PropTypes.func.isRequired,
+    onMouseLeave: PropTypes.func.isRequired,
+    onMouseDown: PropTypes.func.isRequired
   };
 
   render() {
-    const { value, focusedSectionIndex, focusedItemIndex, onChange, onKeyDown } = this.props;
-    const inputProps = { value, onChange, onKeyDown };
+    const { value, focusedSectionIndex, focusedItemIndex, onChange,
+            onMouseEnter, onMouseLeave, onMouseDown } = this.props;
+    const inputProps = {
+      value,
+      onChange,
+      tabIndex: 0,
+      autoComplete: null,
+      type: null,
+      ref: null
+    };
+    const itemProps = { onMouseEnter, onMouseLeave, onMouseDown };
 
     return (
       <div>
         <Autowhatever id={exampleId}
-                      multiSection={true}
                       items={items}
-                      shouldRenderSection={shouldRenderSection}
-                      renderSectionTitle={renderSectionTitle}
-                      getSectionItems={getSectionItems}
                       renderItem={renderItem}
+                      renderInput={renderInput}
                       inputProps={inputProps}
+                      itemProps={itemProps}
                       focusedSectionIndex={focusedSectionIndex}
                       focusedItemIndex={focusedItemIndex}
                       theme={theme} />

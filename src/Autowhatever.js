@@ -10,6 +10,7 @@ export default class Autowhatever extends Component {
     multiSection: PropTypes.bool,          // Indicates whether a multi section layout should be rendered.
     items: PropTypes.array.isRequired,     // Array of items or sections to render.
     renderItem: PropTypes.func,            // This function renders a single item.
+    renderInput: PropTypes.func,           // This function renders the input element
     shouldRenderSection: PropTypes.func,   // This function gets a section and returns whether it should be rendered, or not.
     renderSectionTitle: PropTypes.func,    // This function gets a section and renders its title.
     getSectionItems: PropTypes.func,       // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
@@ -20,6 +21,7 @@ export default class Autowhatever extends Component {
     ]),
     focusedSectionIndex: PropTypes.number, // Section index of the focused item
     focusedItemIndex: PropTypes.number,    // Focused item index (within a section)
+    wrapItemFocus: PropTypes.bool,        // Should using arrow keys to navigate options result in null options
     theme: PropTypes.object                // Styles. See: https://github.com/markdalgleish/react-themeable
   };
 
@@ -27,6 +29,7 @@ export default class Autowhatever extends Component {
     id: '1',
     multiSection: false,
     shouldRenderSection: () => true,
+    renderInput: props => <input {...props} />,
     renderItem: () => {
       throw new Error('`renderItem` must be provided');
     },
@@ -40,6 +43,7 @@ export default class Autowhatever extends Component {
     itemProps: {},
     focusedSectionIndex: null,
     focusedItemIndex: null,
+    wrapItemFocus: true,
     theme: {
       container: 'react-autowhatever__container',
       containerOpen: 'react-autowhatever__container--open',
@@ -192,7 +196,7 @@ export default class Autowhatever extends Component {
   }
 
   onKeyDown(event) {
-    const { inputProps, focusedSectionIndex, focusedItemIndex } = this.props;
+    const { inputProps, focusedSectionIndex, focusedItemIndex, wrapItemFocus } = this.props;
     const { onKeyDown: onKeyDownFn } = inputProps; // Babel is throwing:
                                                    //   "onKeyDown" is read-only
                                                    // on:
@@ -204,6 +208,7 @@ export default class Autowhatever extends Component {
         const { multiSection, items, getSectionItems } = this.props;
         const sectionIterator = createSectionIterator({
           multiSection,
+          wrap: wrapItemFocus,
           data: multiSection ?
             items.map(section => getSectionItems(section).length) :
             items.length
@@ -248,7 +253,7 @@ export default class Autowhatever extends Component {
   }
 
   render() {
-    const { id, multiSection, focusedSectionIndex, focusedItemIndex } = this.props;
+    const { id, multiSection, focusedSectionIndex, focusedItemIndex, renderInput } = this.props;
     const theme = themeable(this.props.theme);
     const renderedItems = multiSection ? this.renderSections(theme) : this.renderItems(theme);
     const isOpen = (renderedItems !== null);
@@ -267,10 +272,11 @@ export default class Autowhatever extends Component {
       ...this.props.inputProps,
       onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
     };
+    const input = renderInput(inputProps);
 
     return (
       <div {...theme(`react-autowhatever-${id}-container`, 'container', isOpen && 'containerOpen')}>
-        <input {...inputProps} />
+        {input}
         {renderedItems}
       </div>
     );
