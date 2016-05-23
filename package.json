@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "react-themeable": "^1.0.1",
-    "section-iterator": "^2.0.0"
+    "section-iterator": "git://github.com/packetloop/section-iterator#dist"
   },
   "peerDependencies": {
     "react": "^0.14.7 || ^15.0.1"

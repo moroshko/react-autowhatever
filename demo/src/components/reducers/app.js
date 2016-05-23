@@ -40,6 +40,11 @@ const initialState = {
     value: 'Custom input element',
     focusedSectionIndex: null,
     focusedItemIndex: null
+  },
+  10: {
+    value: 'Don\'t wrap focused suggestion',
+    focusedSectionIndex: null,
+    focusedItemIndex: null
   }
 };
 
