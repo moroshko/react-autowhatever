@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
@@ -16,16 +16,14 @@ if (module.hot) {
   });
 }
 
-class Demo extends Component {
-  render() {
-    return (
-      <div>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </div>
-    );
-  }
+function Demo() {
+  return (
+    <div>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </div>
+  );
 }
 
 ReactDOM.render(

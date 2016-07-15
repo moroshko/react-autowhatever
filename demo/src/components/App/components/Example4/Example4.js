@@ -1,6 +1,6 @@
 import theme from '../theme.less';
 
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { updateInputValue } from 'actions/app';
 import Autowhatever from 'Autowhatever';
@@ -60,33 +60,32 @@ function renderItem(item) {
   );
 }
 
-class Example extends Component {
-  static propTypes = {
-    value: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired
-  };
+function Example(props) {
+  const { value, onChange } = props;
+  const inputProps = { value, onChange };
 
-  render() {
-    const { value, onChange } = this.props;
-    const inputProps = { value, onChange };
-
-    return (
-      <div>
-        <Autowhatever id={exampleId}
-                      multiSection={true}
-                      items={items}
-                      shouldRenderSection={shouldRenderSection}
-                      renderSectionTitle={renderSectionTitle}
-                      getSectionItems={getSectionItems}
-                      renderItem={renderItem}
-                      inputProps={inputProps}
-                      focusedSectionIndex={0}
-                      focusedItemIndex={1}
-                      theme={theme} />
-        <SourceCodeLink file={file} />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <Autowhatever
+        id={exampleId}
+        multiSection={true}
+        items={items}
+        shouldRenderSection={shouldRenderSection}
+        renderSectionTitle={renderSectionTitle}
+        getSectionItems={getSectionItems}
+        renderItem={renderItem}
+        inputProps={inputProps}
+        focusedSectionIndex={0}
+        focusedItemIndex={1}
+        theme={theme} />
+      <SourceCodeLink file={file} />
+    </div>
+  );
 }
+
+Example.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Example);

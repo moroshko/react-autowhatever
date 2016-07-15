@@ -57,6 +57,8 @@ export default class Autowhatever extends Component {
     super(props);
 
     this.onKeyDown = this.onKeyDown.bind(this);
+    this.storeItemsContainerReference = this.storeItemsContainerReference.bind(this);
+    this.storeFocusedItemReference = this.storeFocusedItemReference.bind(this);
   }
 
   componentDidMount() {
@@ -65,6 +67,18 @@ export default class Autowhatever extends Component {
 
   componentDidUpdate() {
     this.ensureFocusedSuggestionIsVisible();
+  }
+
+  storeItemsContainerReference(itemsContainer) {
+    if (itemsContainer !== null) {
+      this.itemsContainer = itemsContainer;
+    }
+  }
+
+  storeFocusedItemReference(focusedItem) {
+    if (focusedItem !== null) {
+      this.focusedItem = focusedItem;
+    }
   }
 
   getItemId(sectionIndex, itemIndex) {
@@ -111,7 +125,7 @@ export default class Autowhatever extends Component {
       const isFocused = sectionIndex === focusedSectionIndex && itemIndex === focusedItemIndex;
       const itemProps = {
         id: this.getItemId(sectionIndex, itemIndex),
-        ref: isFocused ? 'focusedItem' : null,
+        ref: isFocused ? this.storeFocusedItemReference : null,
         role: 'option',
         ...theme(itemKey, 'item', isFocused && 'itemFocused'),
         ...itemPropsObj,
@@ -121,11 +135,13 @@ export default class Autowhatever extends Component {
         onClick: onClickFn
       };
 
+      /* eslint-disable react/jsx-key */
       return (
         <li {...itemProps}>
           {renderItem(item)}
         </li>
       );
+      /* eslint-enable react/jsx-key */
     });
   }
 
@@ -141,10 +157,11 @@ export default class Autowhatever extends Component {
     const { id, shouldRenderSection, renderSectionTitle } = this.props;
 
     return (
-      <div id={this.getItemsContainerId()}
-           ref="itemsContainer"
-           role="listbox"
-           {...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer')}>
+      <div
+        id={this.getItemsContainerId()}
+        ref={this.storeItemsContainerReference}
+        role="listbox"
+        {...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer')}>
         {
           items.map((section, sectionIndex) => {
             if (!shouldRenderSection(section)) {
@@ -153,6 +170,7 @@ export default class Autowhatever extends Component {
 
             const sectionTitle = renderSectionTitle(section);
 
+            /* eslint-disable react/jsx-key */
             return (
               <div {...theme(`react-autowhatever-${id}-section-${sectionIndex}-container`, 'sectionContainer')}>
                 {
@@ -166,6 +184,7 @@ export default class Autowhatever extends Component {
                 </ul>
               </div>
             );
+            /* eslint-enable react/jsx-key */
           })
         }
       </div>
@@ -182,10 +201,11 @@ export default class Autowhatever extends Component {
     const id = this.props;
 
     return (
-      <ul id={this.getItemsContainerId()}
-          ref="itemsContainer"
-          role="listbox"
-          {...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer')}>
+      <ul
+        id={this.getItemsContainerId()}
+        ref={this.storeItemsContainerReference}
+        role="listbox"
+        {...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer')}>
         {this.renderItemsList(theme, items, null)}
       </ul>
     );
@@ -222,11 +242,11 @@ export default class Autowhatever extends Component {
   }
 
   ensureFocusedSuggestionIsVisible() {
-    if (!this.refs.focusedItem) {
+    if (!this.focusedItem) {
       return;
     }
 
-    const { focusedItem, itemsContainer } = this.refs;
+    const { focusedItem, itemsContainer } = this;
     const itemOffsetRelativeToContainer =
       focusedItem.offsetParent === itemsContainer
         ? focusedItem.offsetTop

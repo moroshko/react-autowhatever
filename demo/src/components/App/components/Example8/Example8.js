@@ -1,6 +1,6 @@
 import theme from '../theme.less';
 
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { updateInputValue, updateFocusedItem } from 'actions/app';
 import Autowhatever from 'Autowhatever';
@@ -77,37 +77,36 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-class Example extends Component {
-  static propTypes = {
-    value: PropTypes.string.isRequired,
-    focusedSectionIndex: PropTypes.number,
-    focusedItemIndex: PropTypes.number,
+function Example(props) {
+  const { value, focusedSectionIndex, focusedItemIndex, onChange, onKeyDown } = props;
+  const inputProps = { value, onChange, onKeyDown };
 
-    onChange: PropTypes.func.isRequired,
-    onKeyDown: PropTypes.func.isRequired
-  };
-
-  render() {
-    const { value, focusedSectionIndex, focusedItemIndex, onChange, onKeyDown } = this.props;
-    const inputProps = { value, onChange, onKeyDown };
-
-    return (
-      <div>
-        <Autowhatever id={exampleId}
-                      multiSection={true}
-                      items={items}
-                      shouldRenderSection={shouldRenderSection}
-                      renderSectionTitle={renderSectionTitle}
-                      getSectionItems={getSectionItems}
-                      renderItem={renderItem}
-                      inputProps={inputProps}
-                      focusedSectionIndex={focusedSectionIndex}
-                      focusedItemIndex={focusedItemIndex}
-                      theme={theme} />
-        <SourceCodeLink file={file} />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <Autowhatever
+        id={exampleId}
+        multiSection={true}
+        items={items}
+        shouldRenderSection={shouldRenderSection}
+        renderSectionTitle={renderSectionTitle}
+        getSectionItems={getSectionItems}
+        renderItem={renderItem}
+        inputProps={inputProps}
+        focusedSectionIndex={focusedSectionIndex}
+        focusedItemIndex={focusedItemIndex}
+        theme={theme} />
+      <SourceCodeLink file={file} />
+    </div>
+  );
 }
+
+Example.propTypes = {
+  value: PropTypes.string.isRequired,
+  focusedSectionIndex: PropTypes.number,
+  focusedItemIndex: PropTypes.number,
+
+  onChange: PropTypes.func.isRequired,
+  onKeyDown: PropTypes.func.isRequired
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Example);
