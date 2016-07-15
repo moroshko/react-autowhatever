@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import createSectionIterator from 'section-iterator';
 import themeable from 'react-themeable';
+import ListScrollBound from 'react-list-scroll-bound';
 
 function noop() {}
 
@@ -179,9 +180,9 @@ export default class Autowhatever extends Component {
                       {sectionTitle}
                     </div>
                 }
-                <ul {...theme(`react-autowhatever-${id}-section-${sectionIndex}-items-container`, 'sectionItemsContainer')}>
+                <ListScrollBound {...theme(`react-autowhatever-${id}-section-${sectionIndex}-items-container`, 'sectionItemsContainer')}>
                   {this.renderItemsList(theme, sectionItemsArray[sectionIndex], sectionIndex)}
-                </ul>
+                </ListScrollBound>
               </div>
             );
             /* eslint-enable react/jsx-key */

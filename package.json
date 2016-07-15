@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "react-themeable": "^1.0.1",
+    "react-list-scroll-bound": "^15.0.3",
     "section-iterator": "^2.0.0"
   },
   "peerDependencies": {
