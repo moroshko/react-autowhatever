@@ -137,7 +137,9 @@ export default class Autowhatever extends Component {
 
       /* eslint-disable react/jsx-key */
       return (
-        <li {...itemProps}>
+        <li
+          {...itemProps}
+          tabIndex="0">
           {renderItem(item)}
         </li>
       );
