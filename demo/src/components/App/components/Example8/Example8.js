@@ -6,7 +6,7 @@ import { updateInputValue, updateFocusedItem } from 'actions/app';
 import Autowhatever from 'Autowhatever';
 import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
 
-const exampleId = '7';
+const exampleId = '8';
 const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`;
 
 const items = [{
