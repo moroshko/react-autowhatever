@@ -152,6 +152,7 @@ export default class Autowhatever extends Component {
 
             const sectionTitle = renderSectionTitle(section);
 
+            // `key` is provided by theme()
             /* eslint-disable react/jsx-key */
             return (
               <div {...theme(`react-autowhatever-${id}-section-${sectionIndex}-container`, 'sectionContainer')}>
