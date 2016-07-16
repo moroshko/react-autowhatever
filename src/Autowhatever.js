@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import createSectionIterator from 'section-iterator';
 import themeable from 'react-themeable';
-
-function noop() {}
+import Item from './Item';
 
 export default class Autowhatever extends Component {
   static propTypes = {
@@ -57,6 +56,8 @@ export default class Autowhatever extends Component {
     super(props);
 
     this.onKeyDown = this.onKeyDown.bind(this);
+    this.storeItemsContainerReference = this.storeItemsContainerReference.bind(this);
+    this.storeFocusedItemReference = this.storeFocusedItemReference.bind(this);
   }
 
   componentDidMount() {
@@ -65,6 +66,18 @@ export default class Autowhatever extends Component {
 
   componentDidUpdate() {
     this.ensureFocusedSuggestionIsVisible();
+  }
+
+  storeItemsContainerReference(itemsContainer) {
+    if (itemsContainer !== null) {
+      this.itemsContainer = itemsContainer;
+    }
+  }
+
+  storeFocusedItemReference(focusedItem) {
+    if (focusedItem !== null) {
+      this.focusedItem = focusedItem;
+    }
   }
 
   getItemId(sectionIndex, itemIndex) {
@@ -85,46 +98,31 @@ export default class Autowhatever extends Component {
   }
 
   renderItemsList(theme, items, sectionIndex) {
-    const { id, renderItem, focusedSectionIndex, focusedItemIndex } = this.props;
-    const isItemPropsFunction = (typeof this.props.itemProps === 'function');
+    const { id, renderItem, focusedSectionIndex, focusedItemIndex, itemProps } = this.props;
+    const isItemPropsFunction = (typeof itemProps === 'function');
+    const sectionPrefix = (sectionIndex === null ? '' : `section-${sectionIndex}-`);
 
     return items.map((item, itemIndex) => {
-      const itemPropsObj = isItemPropsFunction
-        ? this.props.itemProps({ sectionIndex, itemIndex })
-        : this.props.itemProps;
-      const { onMouseEnter, onMouseLeave, onMouseDown, onClick } = itemPropsObj;
-
-      const onMouseEnterFn = onMouseEnter ?
-        event => onMouseEnter(event, { sectionIndex, itemIndex }) :
-        noop;
-      const onMouseLeaveFn = onMouseLeave ?
-        event => onMouseLeave(event, { sectionIndex, itemIndex }) :
-        noop;
-      const onMouseDownFn = onMouseDown ?
-        event => onMouseDown(event, { sectionIndex, itemIndex }) :
-        noop;
-      const onClickFn = onClick ?
-        event => onClick(event, { sectionIndex, itemIndex }) :
-        noop;
-      const sectionPrefix = (sectionIndex === null ? '' : `section-${sectionIndex}-`);
-      const itemKey = `react-autowhatever-${id}-${sectionPrefix}item-${itemIndex}`;
       const isFocused = sectionIndex === focusedSectionIndex && itemIndex === focusedItemIndex;
-      const itemProps = {
+      const itemKey = `react-autowhatever-${id}-${sectionPrefix}item-${itemIndex}`;
+      const itemPropsObj = isItemPropsFunction ? itemProps({ sectionIndex, itemIndex }) : itemProps;
+      const newItemProps = {
         id: this.getItemId(sectionIndex, itemIndex),
-        ref: isFocused ? 'focusedItem' : null,
-        role: 'option',
+        ref: isFocused ? this.storeFocusedItemReference : null,
         ...theme(itemKey, 'item', isFocused && 'itemFocused'),
-        ...itemPropsObj,
-        onMouseEnter: onMouseEnterFn,
-        onMouseLeave: onMouseLeaveFn,
-        onMouseDown: onMouseDownFn,
-        onClick: onClickFn
+        ...itemPropsObj
       };
 
+      delete newItemProps.key;
+
       return (
-        <li {...itemProps}>
-          {renderItem(item)}
-        </li>
+        <Item
+          sectionIndex={sectionIndex}
+          itemIndex={itemIndex}
+          item={item}
+          itemProps={newItemProps}
+          renderItem={renderItem}
+          key={itemKey} />
       );
     });
   }
@@ -141,10 +139,11 @@ export default class Autowhatever extends Component {
     const { id, shouldRenderSection, renderSectionTitle } = this.props;
 
     return (
-      <div id={this.getItemsContainerId()}
-           ref="itemsContainer"
-           role="listbox"
-           {...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer')}>
+      <div
+        id={this.getItemsContainerId()}
+        ref={this.storeItemsContainerReference}
+        role="listbox"
+        {...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer')}>
         {
           items.map((section, sectionIndex) => {
             if (!shouldRenderSection(section)) {
@@ -153,6 +152,7 @@ export default class Autowhatever extends Component {
 
             const sectionTitle = renderSectionTitle(section);
 
+            /* eslint-disable react/jsx-key */
             return (
               <div {...theme(`react-autowhatever-${id}-section-${sectionIndex}-container`, 'sectionContainer')}>
                 {
@@ -166,6 +166,7 @@ export default class Autowhatever extends Component {
                 </ul>
               </div>
             );
+            /* eslint-enable react/jsx-key */
           })
         }
       </div>
@@ -182,10 +183,11 @@ export default class Autowhatever extends Component {
     const id = this.props;
 
     return (
-      <ul id={this.getItemsContainerId()}
-          ref="itemsContainer"
-          role="listbox"
-          {...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer')}>
+      <ul
+        id={this.getItemsContainerId()}
+        ref={this.storeItemsContainerReference}
+        role="listbox"
+        {...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer')}>
         {this.renderItemsList(theme, items, null)}
       </ul>
     );
@@ -222,11 +224,11 @@ export default class Autowhatever extends Component {
   }
 
   ensureFocusedSuggestionIsVisible() {
-    if (!this.refs.focusedItem) {
+    if (!this.focusedItem) {
       return;
     }
 
-    const { focusedItem, itemsContainer } = this.refs;
+    const { focusedItem, itemsContainer } = this;
     const itemOffsetRelativeToContainer =
       focusedItem.offsetParent === itemsContainer
         ? focusedItem.offsetTop

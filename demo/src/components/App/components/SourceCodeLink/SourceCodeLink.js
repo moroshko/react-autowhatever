@@ -1,21 +1,21 @@
 import styles from './SourceCodeLink.less';
 
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
-export default class SourceCodeLink extends Component {
-  static propTypes = {
-    file: PropTypes.string.isRequired
-  };
+export default function SourceCodeLink(props) {
+  const { file } = props;
 
-  render() {
-    const { file } = this.props;
-
-    return (
-      <a className={styles.link}
-         href={`//github.com/moroshko/react-autowhatever/tree/master/${file}`}
-         target="_blank">
-        Source code
-      </a>
-    );
-  }
+  return (
+    <a
+      className={styles.link}
+      href={`//github.com/moroshko/react-autowhatever/tree/master/${file}`}
+      target="_blank"
+      rel="noopener noreferrer">
+      Source code
+    </a>
+  );
 }
+
+SourceCodeLink.propTypes = {
+  file: PropTypes.string.isRequired
+};

@@ -1,6 +1,6 @@
 import theme from '../theme.less';
 
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { updateInputValue, updateFocusedItem } from 'actions/app';
 import Autowhatever from 'Autowhatever';
@@ -52,38 +52,37 @@ function renderItem(item) {
   );
 }
 
-class Example extends Component {
-  static propTypes = {
-    value: PropTypes.string.isRequired,
-    focusedSectionIndex: PropTypes.number,
-    focusedItemIndex: PropTypes.number,
+function Example(props) {
+  const { value, focusedSectionIndex, focusedItemIndex, onChange,
+          onMouseEnter, onMouseLeave, onMouseDown } = props;
+  const inputProps = { value, onChange };
+  const itemProps = { onMouseEnter, onMouseLeave, onMouseDown };
 
-    onChange: PropTypes.func.isRequired,
-    onMouseEnter: PropTypes.func.isRequired,
-    onMouseLeave: PropTypes.func.isRequired,
-    onMouseDown: PropTypes.func.isRequired
-  };
-
-  render() {
-    const { value, focusedSectionIndex, focusedItemIndex, onChange,
-            onMouseEnter, onMouseLeave, onMouseDown } = this.props;
-    const inputProps = { value, onChange };
-    const itemProps = { onMouseEnter, onMouseLeave, onMouseDown };
-
-    return (
-      <div>
-        <Autowhatever id={exampleId}
-                      items={items}
-                      renderItem={renderItem}
-                      inputProps={inputProps}
-                      itemProps={itemProps}
-                      focusedSectionIndex={focusedSectionIndex}
-                      focusedItemIndex={focusedItemIndex}
-                      theme={theme} />
-        <SourceCodeLink file={file} />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <Autowhatever
+        id={exampleId}
+        items={items}
+        renderItem={renderItem}
+        inputProps={inputProps}
+        itemProps={itemProps}
+        focusedSectionIndex={focusedSectionIndex}
+        focusedItemIndex={focusedItemIndex}
+        theme={theme} />
+      <SourceCodeLink file={file} />
+    </div>
+  );
 }
+
+Example.propTypes = {
+  value: PropTypes.string.isRequired,
+  focusedSectionIndex: PropTypes.number,
+  focusedItemIndex: PropTypes.number,
+
+  onChange: PropTypes.func.isRequired,
+  onMouseEnter: PropTypes.func.isRequired,
+  onMouseLeave: PropTypes.func.isRequired,
+  onMouseDown: PropTypes.func.isRequired
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Example);
