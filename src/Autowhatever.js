@@ -113,8 +113,6 @@ export default class Autowhatever extends Component {
         ...itemPropsObj
       };
 
-      delete newItemProps.key;
-
       return (
         <Item
           sectionIndex={sectionIndex}
