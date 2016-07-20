@@ -56,6 +56,7 @@ export default class Autowhatever extends Component {
     super(props);
 
     this.onKeyDown = this.onKeyDown.bind(this);
+    this.storeInputReference = this.storeInputReference.bind(this);
     this.storeItemsContainerReference = this.storeItemsContainerReference.bind(this);
     this.storeFocusedItemReference = this.storeFocusedItemReference.bind(this);
   }
@@ -66,6 +67,12 @@ export default class Autowhatever extends Component {
 
   componentDidUpdate() {
     this.ensureFocusedSuggestionIsVisible();
+  }
+
+  storeInputReference(input) {
+    if (input !== null) {
+      this.input = input;
+    }
   }
 
   storeItemsContainerReference(itemsContainer) {
@@ -259,14 +266,14 @@ export default class Autowhatever extends Component {
       value: '',
       autoComplete: 'off',
       role: 'combobox',
-      ref: 'input',
       'aria-autocomplete': 'list',
       'aria-owns': this.getItemsContainerId(),
       'aria-expanded': isOpen,
       'aria-activedescendant': ariaActivedescendant,
       ...theme(`react-autowhatever-${id}-input`, 'input'),
       ...this.props.inputProps,
-      onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
+      onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown,
+      ref: this.storeInputReference
     };
 
     return (
