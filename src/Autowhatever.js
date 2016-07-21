@@ -113,19 +113,22 @@ export default class Autowhatever extends Component {
       const isFocused = sectionIndex === focusedSectionIndex && itemIndex === focusedItemIndex;
       const itemKey = `react-autowhatever-${id}-${sectionPrefix}item-${itemIndex}`;
       const itemPropsObj = isItemPropsFunction ? itemProps({ sectionIndex, itemIndex }) : itemProps;
-      const newItemProps = {
+      const allItemProps = {
         id: this.getItemId(sectionIndex, itemIndex),
-        ref: isFocused ? this.storeFocusedItemReference : null,
         ...theme(itemKey, 'item', isFocused && 'itemFocused'),
         ...itemPropsObj
       };
+
+      if (isFocused) {
+        allItemProps.ref = this.storeFocusedItemReference;
+      }
 
       return (
         <Item
           sectionIndex={sectionIndex}
           itemIndex={itemIndex}
           item={item}
-          itemProps={newItemProps}
+          itemProps={allItemProps}
           renderItem={renderItem}
           key={itemKey} />
       );
