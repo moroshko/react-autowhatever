@@ -83,7 +83,7 @@ export default class Autowhatever extends Component {
 
   storeFocusedItemReference(focusedItem) {
     if (focusedItem !== null) {
-      this.focusedItem = focusedItem;
+      this.focusedItem = focusedItem.item;
     }
   }
 
@@ -125,10 +125,10 @@ export default class Autowhatever extends Component {
 
       return (
         <Item
+          {...allItemProps}
           sectionIndex={sectionIndex}
           itemIndex={itemIndex}
           item={item}
-          itemProps={allItemProps}
           renderItem={renderItem}
           key={itemKey} />
       );
@@ -189,7 +189,7 @@ export default class Autowhatever extends Component {
       return null;
     }
 
-    const id = this.props;
+    const { id } = this.props;
 
     return (
       <ul

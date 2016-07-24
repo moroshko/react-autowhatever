@@ -1,5 +1,5 @@
-import jsdom from 'jsdom';
+import { jsdom } from 'jsdom';
 
-global.document = jsdom.jsdom('<!doctype html><html><body></body></html>');
+global.document = jsdom('');
 global.window = global.document.defaultView;
 global.navigator = global.window.navigator;
