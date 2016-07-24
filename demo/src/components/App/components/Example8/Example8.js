@@ -70,7 +70,9 @@ function mapDispatchToProps(dispatch) {
           break;
 
         case 'Enter':
-          dispatch(updateInputValue(exampleId, items[focusedSectionIndex].items[focusedItemIndex].text + ' selected'));
+          if (focusedItemIndex !== null) {
+            dispatch(updateInputValue(exampleId, items[focusedSectionIndex].items[focusedItemIndex].text + ' selected'));
+          }
           break;
       }
     }
