@@ -13,7 +13,7 @@ export function init(application) {
 }
 
 export const getStoredFocusedItemName = () => {
-  const { focusedItem } = app.autowhatever;
+  const { focusedItem } = app.autowhatever.itemsList;
 
   return focusedItem ? focusedItem.constructor.name : null;
 };
