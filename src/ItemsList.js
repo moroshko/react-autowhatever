@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Item from './Item';
+import compareObjects from './compareObjects';
 
 export default class ItemsList extends Component {
   static propTypes = {
@@ -30,6 +31,10 @@ export default class ItemsList extends Component {
 
   componentDidMount() {
     this.ensureFocusedSuggestionIsVisible();
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return compareObjects(nextProps, this.props, ['itemProps']);
   }
 
   componentDidUpdate() {

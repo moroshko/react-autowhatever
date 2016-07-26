@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import compareObjects from './compareObjects';
 
 export default class Item extends Component {
   static propTypes = {
@@ -23,13 +24,7 @@ export default class Item extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    for (const key in nextProps) {
-      if (nextProps[key] !== this.props[key]) {
-        return true;
-      }
-    }
-
-    return false;
+    return compareObjects(nextProps, this.props);
   }
 
   storeItemReference(item) {

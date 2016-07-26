@@ -37,12 +37,9 @@ export default class AutowhateverApp extends Component {
       focusedItemIndex: null
     };
 
-    this.itemProps = {
-      onMouseEnter: this.onMouseEnter.bind(this),
-      onMouseLeave: this.onMouseLeave.bind(this),
-      onClick: this.onClick.bind(this)
-    };
-
+    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
+    this.onClick = this.onClick.bind(this);
     this.storeAutowhateverReference = this.storeAutowhateverReference.bind(this);
   }
 
@@ -73,6 +70,11 @@ export default class AutowhateverApp extends Component {
   render() {
     const { value, focusedItemIndex } = this.state;
     const inputProps = { value, onChange };
+    const itemProps = {
+      onMouseEnter: this.onMouseEnter,
+      onMouseLeave: this.onMouseLeave,
+      onClick: this.onClick
+    };
 
     return (
       <Autowhatever
@@ -80,7 +82,7 @@ export default class AutowhateverApp extends Component {
         items={items}
         renderItem={renderItem}
         inputProps={inputProps}
-        itemProps={this.itemProps}
+        itemProps={itemProps}
         focusedItemIndex={focusedItemIndex}
         ref={this.storeAutowhateverReference} />
     );

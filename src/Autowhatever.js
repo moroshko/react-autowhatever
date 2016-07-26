@@ -55,10 +55,18 @@ export default class Autowhatever extends Component {
   constructor(props) {
     super(props);
 
+    this.theme = themeable(props.theme);
+
     this.onKeyDown = this.onKeyDown.bind(this);
     this.storeInputReference = this.storeInputReference.bind(this);
     this.storeItemsListReference = this.storeItemsListReference.bind(this);
     this.getItemId = this.getItemId.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.theme !== this.props.theme) {
+      this.theme = themeable(nextProps.theme);
+    }
   }
 
   storeInputReference(input) {
@@ -91,7 +99,8 @@ export default class Autowhatever extends Component {
     return `react-autowhatever-${id}`;
   }
 
-  renderSections(theme) {
+  renderSections() {
+    const { theme } = this;
     const { items, getSectionItems } = this.props;
     const sectionItemsArray = items.map(section => getSectionItems(section));
     const noItemsExist = sectionItemsArray.every(sectionItems => sectionItems.length === 0);
@@ -146,7 +155,8 @@ export default class Autowhatever extends Component {
     );
   }
 
-  renderItems(theme) {
+  renderItems() {
+    const { theme } = this;
     const { items } = this.props;
 
     if (items.length === 0) {
@@ -196,9 +206,9 @@ export default class Autowhatever extends Component {
   }
 
   render() {
+    const { theme } = this;
     const { id, multiSection, focusedSectionIndex, focusedItemIndex } = this.props;
-    const theme = themeable(this.props.theme);
-    const renderedItems = multiSection ? this.renderSections(theme) : this.renderItems(theme);
+    const renderedItems = multiSection ? this.renderSections() : this.renderItems();
     const isOpen = (renderedItems !== null);
     const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
     const inputProps = {
