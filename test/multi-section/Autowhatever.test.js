@@ -5,7 +5,9 @@ import sections from './sections';
 import {
   init,
   eventMatcher,
-  clickDown
+  clickUp,
+  clickDown,
+  clickEnter
 } from '../helpers';
 import AutowhateverApp, {
   getSectionItems,
@@ -52,7 +54,7 @@ describe('Multi Section Autowhatever', () => {
   });
 
   describe('inputProps.onKeyDown', () => {
-    it('should be called with the right parameters', () => {
+    it('should be called with the right parameters when Up/Down is pressed', () => {
       clickDown();
       expect(onKeyDown).to.be.calledOnce;
       expect(onKeyDown).to.be.calledWith(eventMatcher, {
@@ -82,6 +84,21 @@ describe('Multi Section Autowhatever', () => {
       expect(onKeyDown).to.be.calledWith(eventMatcher, {
         newFocusedSectionIndex: null,
         newFocusedItemIndex: null
+      });
+    });
+
+    it('should be called with the right parameters when Enter is pressed', () => {
+      clickEnter();
+      expect(onKeyDown).to.be.calledWith(eventMatcher, {
+        focusedSectionIndex: null,
+        focusedItemIndex: null
+      });
+
+      clickUp();
+      clickEnter();
+      expect(onKeyDown).to.be.calledWith(eventMatcher, {
+        focusedSectionIndex: 2,
+        focusedItemIndex: 0
       });
     });
   });

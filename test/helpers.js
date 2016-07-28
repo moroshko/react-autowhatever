@@ -53,5 +53,11 @@ export const mouseDownItem = itemIndex =>
 export const clickItem = itemIndex =>
   Simulate.click(getItem(itemIndex));
 
+export const clickUp = () =>
+  Simulate.keyDown(input, { key: 'ArrowUp' });
+
 export const clickDown = () =>
   Simulate.keyDown(input, { key: 'ArrowDown' });
+
+export const clickEnter = () =>
+  Simulate.keyDown(input, { key: 'Enter' });
