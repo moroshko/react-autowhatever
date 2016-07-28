@@ -65,7 +65,6 @@ function mapDispatchToProps(dispatch) {
       switch (event.key) {
         case 'ArrowDown':
         case 'ArrowUp':
-          event.preventDefault();
           dispatch(updateFocusedItem(exampleId, newFocusedSectionIndex, newFocusedItemIndex));
           break;
 

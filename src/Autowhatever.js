@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import createSectionIterator from 'section-iterator';
 import themeable from 'react-themeable';
+import SectionTitle from './SectionTitle';
 import ItemsList from './ItemsList';
+
+const alwaysTrue = () => true;
 
 export default class Autowhatever extends Component {
   static propTypes = {
@@ -25,7 +28,7 @@ export default class Autowhatever extends Component {
   static defaultProps = {
     id: '1',
     multiSection: false,
-    shouldRenderSection: () => true,
+    shouldRenderSection: alwaysTrue,
     renderItem: () => {
       throw new Error('`renderItem` must be provided');
     },
@@ -55,7 +58,8 @@ export default class Autowhatever extends Component {
   constructor(props) {
     super(props);
 
-    this.theme = themeable(props.theme);
+    this.setTheme(props);
+    this.setSectionsItems(props);
 
     this.onKeyDown = this.onKeyDown.bind(this);
     this.storeInputReference = this.storeInputReference.bind(this);
@@ -64,8 +68,24 @@ export default class Autowhatever extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.items !== this.props.items) {
+      this.setSectionsItems(nextProps);
+    }
+
     if (nextProps.theme !== this.props.theme) {
-      this.theme = themeable(nextProps.theme);
+      this.setTheme(nextProps);
+    }
+  }
+
+  setTheme(props) {
+    this.theme = themeable(props.theme);
+  }
+
+  setSectionsItems(props) {
+    if (props.multiSection) {
+      this.sectionsItems = props.items.map(section => props.getSectionItems(section));
+      this.sectionsLengths = this.sectionsItems.map(items => items.length);
+      this.allSectionsAreEmpty = this.sectionsLengths.every(itemsCount => itemsCount === 0);
     }
   }
 
@@ -100,17 +120,13 @@ export default class Autowhatever extends Component {
   }
 
   renderSections() {
-    const { theme } = this;
-    const { items, getSectionItems } = this.props;
-    const sectionItemsArray = items.map(section => getSectionItems(section));
-    const noItemsExist = sectionItemsArray.every(sectionItems => sectionItems.length === 0);
-
-    if (noItemsExist) {
+    if (this.allSectionsAreEmpty) {
       return null;
     }
 
+    const { theme } = this;
     const {
-      id, renderItem, shouldRenderSection, renderSectionTitle,
+      id, items, renderItem, shouldRenderSection, renderSectionTitle,
       focusedSectionIndex, focusedItemIndex, itemProps
     } = this.props;
 
@@ -123,28 +139,28 @@ export default class Autowhatever extends Component {
               return null;
             }
 
-            const sectionTitle = renderSectionTitle(section);
+            const keyPrefix = `react-autowhatever-${id}-`;
+            const sectionKeyPrefix = `${keyPrefix}section-${sectionIndex}-`;
 
             // `key` is provided by theme()
             /* eslint-disable react/jsx-key */
             return (
-              <div {...theme(`react-autowhatever-${id}-section-${sectionIndex}-container`, 'sectionContainer')}>
-                {
-                  sectionTitle &&
-                    <div {...theme(`react-autowhatever-${id}-section-${sectionIndex}-title`, 'sectionTitle')}>
-                      {sectionTitle}
-                    </div>
-                }
+              <div {...theme(`${sectionKeyPrefix}container`, 'sectionContainer')}>
+                <SectionTitle
+                  section={section}
+                  renderSectionTitle={renderSectionTitle}
+                  theme={theme}
+                  sectionKeyPrefix={sectionKeyPrefix} />
                 <ItemsList
                   id={this.getItemsContainerId()}
-                  items={sectionItemsArray[sectionIndex]}
+                  items={this.sectionsItems[sectionIndex]}
                   itemProps={itemProps}
                   renderItem={renderItem}
                   sectionIndex={sectionIndex}
                   focusedItemIndex={focusedSectionIndex === sectionIndex ? focusedItemIndex : null}
                   getItemId={this.getItemId}
                   theme={theme}
-                  keyPrefix={`react-autowhatever-${id}-`}
+                  keyPrefix={keyPrefix}
                   ref={this.storeItemsListReference} />
               </div>
             );
@@ -156,13 +172,13 @@ export default class Autowhatever extends Component {
   }
 
   renderItems() {
-    const { theme } = this;
     const { items } = this.props;
 
     if (items.length === 0) {
       return null;
     }
 
+    const { theme } = this;
     const { id, renderItem, focusedSectionIndex, focusedItemIndex, itemProps } = this.props;
 
     return (
@@ -185,12 +201,10 @@ export default class Autowhatever extends Component {
     switch (event.key) {
       case 'ArrowDown':
       case 'ArrowUp': {
-        const { multiSection, items, getSectionItems } = this.props;
+        const { multiSection, items } = this.props;
         const sectionIterator = createSectionIterator({
           multiSection,
-          data: multiSection ?
-            items.map(section => getSectionItems(section).length) :
-            items.length
+          data: multiSection ? this.sectionsLengths : items.length
         });
         const nextPrev = (event.key === 'ArrowDown' ? 'next' : 'prev');
         const [newFocusedSectionIndex, newFocusedItemIndex] =

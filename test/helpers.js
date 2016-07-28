@@ -6,11 +6,11 @@ chai.use(sinonChai);
 
 let app, input, itemsContainer;
 
-export function init(application) {
+export const init = application => {
   app = application;
   input = TestUtils.findRenderedDOMComponentWithTag(app, 'input');
   itemsContainer = TestUtils.findRenderedDOMComponentWithClass(app, 'react-autowhatever__items-container');
-}
+};
 
 export const getStoredFocusedItemName = () => {
   const { focusedItem } = app.autowhatever.itemsList;
@@ -48,3 +48,6 @@ export const mouseDownItem = itemIndex =>
 
 export const clickItem = itemIndex =>
   Simulate.click(getItem(itemIndex));
+
+export const clickDown = () =>
+  Simulate.keyDown(input, { key: 'ArrowDown' });
