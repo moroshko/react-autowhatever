@@ -4,21 +4,24 @@ import { expect } from 'chai';
 import sections from './sections';
 import {
   init,
+  eventMatcher,
   clickDown
 } from '../helpers';
 import AutowhateverApp, {
   getSectionItems,
-  renderSectionTitle
+  renderSectionTitle,
+  onKeyDown
 } from './AutowhateverApp';
 
 describe('Multi Section Autowhatever', () => {
   beforeEach(() => {
     getSectionItems.reset();
     renderSectionTitle.reset();
+    onKeyDown.reset();
     init(TestUtils.renderIntoDocument(<AutowhateverApp />));
   });
 
-  describe('renderSectionTitle()', () => {
+  describe('renderSectionTitle', () => {
     it('should be called once for every section', () => {
       expect(renderSectionTitle).to.have.callCount(3);
       expect(renderSectionTitle.getCall(0).args[0]).to.deep.equal(sections[0]);
@@ -33,7 +36,7 @@ describe('Multi Section Autowhatever', () => {
     });
   });
 
-  describe('getSectionItems()', () => {
+  describe('getSectionItems', () => {
     it('should be called once for every section', () => {
       expect(getSectionItems).to.have.callCount(3);
       expect(getSectionItems.getCall(0).args[0]).to.deep.equal(sections[0]);
@@ -45,6 +48,41 @@ describe('Multi Section Autowhatever', () => {
       getSectionItems.reset();
       clickDown();
       expect(getSectionItems).not.to.have.been.called;
+    });
+  });
+
+  describe('inputProps.onKeyDown', () => {
+    it('should be called with the right parameters', () => {
+      clickDown();
+      expect(onKeyDown).to.be.calledOnce;
+      expect(onKeyDown).to.be.calledWith(eventMatcher, {
+        newFocusedSectionIndex: 0,
+        newFocusedItemIndex: 0
+      });
+
+      clickDown();
+      expect(onKeyDown).to.be.calledWith(eventMatcher, {
+        newFocusedSectionIndex: 0,
+        newFocusedItemIndex: 1
+      });
+
+      clickDown();
+      expect(onKeyDown).to.be.calledWith(eventMatcher, {
+        newFocusedSectionIndex: 1,
+        newFocusedItemIndex: 0
+      });
+
+      clickDown();
+      expect(onKeyDown).to.be.calledWith(eventMatcher, {
+        newFocusedSectionIndex: 2,
+        newFocusedItemIndex: 0
+      });
+
+      clickDown();
+      expect(onKeyDown).to.be.calledWith(eventMatcher, {
+        newFocusedSectionIndex: null,
+        newFocusedItemIndex: null
+      });
     });
   });
 });

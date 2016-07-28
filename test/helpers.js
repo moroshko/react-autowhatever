@@ -1,5 +1,7 @@
 import chai from 'chai';
+import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import SyntheticEvent from 'react/lib/SyntheticEvent';
 import TestUtils, { Simulate } from 'react-addons-test-utils';
 
 chai.use(sinonChai);
@@ -11,6 +13,8 @@ export const init = application => {
   input = TestUtils.findRenderedDOMComponentWithTag(app, 'input');
   itemsContainer = TestUtils.findRenderedDOMComponentWithClass(app, 'react-autowhatever__items-container');
 };
+
+export const eventMatcher = sinon.match.instanceOf(SyntheticEvent);
 
 export const getStoredFocusedItemName = () => {
   const { focusedItem } = app.autowhatever.itemsList;

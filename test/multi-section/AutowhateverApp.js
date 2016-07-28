@@ -3,6 +3,8 @@ import sinon from 'sinon';
 import Autowhatever from '../../src/Autowhatever';
 import sections from './sections';
 
+let app;
+
 export const shouldRenderSection = sinon.spy(section => section.items.length > 0);
 
 export const renderSectionTitle = sinon.spy(section => (
@@ -15,9 +17,20 @@ export const renderItem = sinon.spy(item => (
   <span>{item.text}</span>
 ));
 
+export const onKeyDown = sinon.spy((event, { newFocusedSectionIndex, newFocusedItemIndex }) => {
+  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+    app.setState({
+      focusedSectionIndex: newFocusedSectionIndex,
+      focusedItemIndex: newFocusedItemIndex
+    });
+  }
+});
+
 export default class AutowhateverApp extends Component {
   constructor() {
     super();
+
+    app = this;
 
     this.state = {
       value: '',
@@ -27,7 +40,6 @@ export default class AutowhateverApp extends Component {
 
     this.storeAutowhateverReference = this.storeAutowhateverReference.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.onKeyDown = this.onKeyDown.bind(this);
   }
 
   storeAutowhateverReference(autowhatever) {
@@ -42,24 +54,12 @@ export default class AutowhateverApp extends Component {
     });
   }
 
-  onKeyDown(event, { newFocusedSectionIndex, newFocusedItemIndex }) {
-    switch (event.key) {
-      case 'ArrowDown':
-      case 'ArrowUp':
-        this.setState({
-          focusedSectionIndex: newFocusedSectionIndex,
-          focusedItemIndex: newFocusedItemIndex
-        });
-        break;
-    }
-  }
-
   render() {
     const { value, focusedSectionIndex, focusedItemIndex } = this.state;
     const inputProps = {
       value,
       onChange: this.onChange,
-      onKeyDown: this.onKeyDown
+      onKeyDown
     };
 
     return (

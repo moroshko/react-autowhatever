@@ -58,8 +58,9 @@ export default class Autowhatever extends Component {
   constructor(props) {
     super(props);
 
-    this.setTheme(props);
     this.setSectionsItems(props);
+    this.setSectionIterator(props);
+    this.setTheme(props);
 
     this.onKeyDown = this.onKeyDown.bind(this);
     this.storeInputReference = this.storeInputReference.bind(this);
@@ -72,13 +73,13 @@ export default class Autowhatever extends Component {
       this.setSectionsItems(nextProps);
     }
 
+    if (nextProps.items !== this.props.items || nextProps.multiSection !== this.props.multiSection) {
+      this.setSectionIterator(nextProps);
+    }
+
     if (nextProps.theme !== this.props.theme) {
       this.setTheme(nextProps);
     }
-  }
-
-  setTheme(props) {
-    this.theme = themeable(props.theme);
   }
 
   setSectionsItems(props) {
@@ -87,6 +88,17 @@ export default class Autowhatever extends Component {
       this.sectionsLengths = this.sectionsItems.map(items => items.length);
       this.allSectionsAreEmpty = this.sectionsLengths.every(itemsCount => itemsCount === 0);
     }
+  }
+
+  setSectionIterator(props) {
+    this.sectionIterator = createSectionIterator({
+      multiSection: props.multiSection,
+      data: props.multiSection ? this.sectionsLengths : props.items.length
+    });
+  }
+
+  setTheme(props) {
+    this.theme = themeable(props.theme);
   }
 
   storeInputReference(input) {
@@ -201,14 +213,9 @@ export default class Autowhatever extends Component {
     switch (event.key) {
       case 'ArrowDown':
       case 'ArrowUp': {
-        const { multiSection, items } = this.props;
-        const sectionIterator = createSectionIterator({
-          multiSection,
-          data: multiSection ? this.sectionsLengths : items.length
-        });
         const nextPrev = (event.key === 'ArrowDown' ? 'next' : 'prev');
         const [newFocusedSectionIndex, newFocusedItemIndex] =
-          sectionIterator[nextPrev]([focusedSectionIndex, focusedItemIndex]);
+          this.sectionIterator[nextPrev]([focusedSectionIndex, focusedItemIndex]);
 
         inputProps.onKeyDown(event, { newFocusedSectionIndex, newFocusedItemIndex });
         break;
