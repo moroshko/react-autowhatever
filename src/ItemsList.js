@@ -11,6 +11,7 @@ export default class ItemsList extends Component {
       PropTypes.func
     ]),
     renderItem: PropTypes.func.isRequired,
+    renderItemData: PropTypes.object.isRequired,
     sectionIndex: PropTypes.number,
     focusedItemIndex: PropTypes.number,
     getItemId: PropTypes.func.isRequired,
@@ -30,7 +31,7 @@ export default class ItemsList extends Component {
   }
 
   componentDidMount() {
-    this.ensureFocusedSuggestionIsVisible();
+    this.ensureFocusedItemIsVisible();
   }
 
   shouldComponentUpdate(nextProps) {
@@ -38,7 +39,7 @@ export default class ItemsList extends Component {
   }
 
   componentDidUpdate() {
-    this.ensureFocusedSuggestionIsVisible();
+    this.ensureFocusedItemIsVisible();
   }
 
   storeItemsContainerReference(itemsContainer) {
@@ -53,7 +54,7 @@ export default class ItemsList extends Component {
     }
   }
 
-  ensureFocusedSuggestionIsVisible() {
+  ensureFocusedItemIsVisible() {
     if (!this.focusedItem) {
       return;
     }
@@ -81,7 +82,7 @@ export default class ItemsList extends Component {
 
   render() {
     const {
-      id, items, itemProps, renderItem, sectionIndex,
+      id, items, itemProps, renderItem, renderItemData, sectionIndex,
       focusedItemIndex, getItemId, theme, keyPrefix
     } = this.props;
     const sectionPrefix = (sectionIndex === null ? keyPrefix : `${keyPrefix}section-${sectionIndex}-`);
@@ -117,7 +118,8 @@ export default class ItemsList extends Component {
                 sectionIndex={sectionIndex}
                 itemIndex={itemIndex}
                 item={item}
-                renderItem={renderItem} />
+                renderItem={renderItem}
+                renderItemData={renderItemData} />
             );
             /* eslint-enable react/jsx-key */
           })

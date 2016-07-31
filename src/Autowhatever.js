@@ -5,6 +5,18 @@ import SectionTitle from './SectionTitle';
 import ItemsList from './ItemsList';
 
 const alwaysTrue = () => true;
+const emptyObject = {};
+const defaultTheme = {
+  container: 'react-autowhatever__container',
+  containerOpen: 'react-autowhatever__container--open',
+  input: 'react-autowhatever__input',
+  itemsContainer: 'react-autowhatever__items-container',
+  item: 'react-autowhatever__item',
+  itemFocused: 'react-autowhatever__item--focused',
+  sectionContainer: 'react-autowhatever__section-container',
+  sectionTitle: 'react-autowhatever__section-title',
+  sectionItemsContainer: 'react-autowhatever__section-items-container'
+};
 
 export default class Autowhatever extends Component {
   static propTypes = {
@@ -12,6 +24,7 @@ export default class Autowhatever extends Component {
     multiSection: PropTypes.bool,          // Indicates whether a multi section layout should be rendered.
     items: PropTypes.array.isRequired,     // Array of items or sections to render.
     renderItem: PropTypes.func,            // This function renders a single item.
+    renderItemData: PropTypes.object,      // Arbitrary data that will be passed to renderItem()
     shouldRenderSection: PropTypes.func,   // This function gets a section and returns whether it should be rendered, or not.
     renderSectionTitle: PropTypes.func,    // This function gets a section and renders its title.
     getSectionItems: PropTypes.func,       // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
@@ -32,27 +45,18 @@ export default class Autowhatever extends Component {
     renderItem: () => {
       throw new Error('`renderItem` must be provided');
     },
+    renderItemData: emptyObject,
     renderSectionTitle: () => {
       throw new Error('`renderSectionTitle` must be provided');
     },
     getSectionItems: () => {
       throw new Error('`getSectionItems` must be provided');
     },
-    inputProps: {},
-    itemProps: {},
+    inputProps: emptyObject,
+    itemProps: emptyObject,
     focusedSectionIndex: null,
     focusedItemIndex: null,
-    theme: {
-      container: 'react-autowhatever__container',
-      containerOpen: 'react-autowhatever__container--open',
-      input: 'react-autowhatever__input',
-      itemsContainer: 'react-autowhatever__items-container',
-      item: 'react-autowhatever__item',
-      itemFocused: 'react-autowhatever__item--focused',
-      sectionContainer: 'react-autowhatever__section-container',
-      sectionTitle: 'react-autowhatever__section-title',
-      sectionItemsContainer: 'react-autowhatever__section-items-container'
-    }
+    theme: defaultTheme
   };
 
   constructor(props) {
@@ -138,8 +142,8 @@ export default class Autowhatever extends Component {
 
     const { theme } = this;
     const {
-      id, items, renderItem, shouldRenderSection, renderSectionTitle,
-      focusedSectionIndex, focusedItemIndex, itemProps
+      id, items, renderItem, renderItemData, shouldRenderSection,
+      renderSectionTitle, focusedSectionIndex, focusedItemIndex, itemProps
     } = this.props;
 
     return (
@@ -168,6 +172,7 @@ export default class Autowhatever extends Component {
                   items={this.sectionsItems[sectionIndex]}
                   itemProps={itemProps}
                   renderItem={renderItem}
+                  renderItemData={renderItemData}
                   sectionIndex={sectionIndex}
                   focusedItemIndex={focusedSectionIndex === sectionIndex ? focusedItemIndex : null}
                   getItemId={this.getItemId}
@@ -191,7 +196,10 @@ export default class Autowhatever extends Component {
     }
 
     const { theme } = this;
-    const { id, renderItem, focusedSectionIndex, focusedItemIndex, itemProps } = this.props;
+    const {
+      id, renderItem, renderItemData, focusedSectionIndex,
+      focusedItemIndex, itemProps
+    } = this.props;
 
     return (
       <ItemsList
@@ -199,6 +207,7 @@ export default class Autowhatever extends Component {
         items={items}
         itemProps={itemProps}
         renderItem={renderItem}
+        renderItemData={renderItemData}
         focusedItemIndex={focusedSectionIndex === null ? focusedItemIndex : null}
         getItemId={this.getItemId}
         theme={theme}
