@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import compareObjects from './compareObjects';
 
 export default class Item extends Component {
   static propTypes = {
@@ -6,6 +7,7 @@ export default class Item extends Component {
     itemIndex: PropTypes.number.isRequired,
     item: PropTypes.any.isRequired,
     renderItem: PropTypes.func.isRequired,
+    renderItemData: PropTypes.object.isRequired,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
     onMouseDown: PropTypes.func,
@@ -23,13 +25,7 @@ export default class Item extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    for (const key in nextProps) {
-      if (nextProps[key] !== this.props[key]) {
-        return true;
-      }
-    }
-
-    return false;
+    return compareObjects(nextProps, this.props, ['renderItemData']);
   }
 
   storeItemReference(item) {
@@ -63,7 +59,7 @@ export default class Item extends Component {
   }
 
   render() {
-    const { item, renderItem, ...restProps } = this.props;
+    const { item, renderItem, renderItemData, ...restProps } = this.props;
 
     delete restProps.sectionIndex;
     delete restProps.itemIndex;
@@ -86,7 +82,7 @@ export default class Item extends Component {
 
     return (
       <li role="option" {...restProps} ref={this.storeItemReference}>
-        {renderItem(item)}
+        {renderItem(item, renderItemData)}
       </li>
     );
   }

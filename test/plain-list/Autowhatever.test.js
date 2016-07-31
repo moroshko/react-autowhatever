@@ -11,12 +11,12 @@ import {
   mouseLeaveItem,
   mouseDownItem,
   clickItem
-} from './helpers';
+} from '../helpers';
 import AutowhateverApp, {
   renderItem
 } from './AutowhateverApp';
 
-describe('Autowhatever', () => {
+describe('Plain List Autowhatever', () => {
   beforeEach(() => {
     renderItem.reset();
     init(TestUtils.renderIntoDocument(<AutowhateverApp />));

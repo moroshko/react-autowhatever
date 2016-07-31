@@ -11,6 +11,7 @@ import Example5 from 'Example5/Example5';
 import Example6 from 'Example6/Example6';
 import Example7 from 'Example7/Example7';
 import Example8 from 'Example8/Example8';
+import Example9 from 'Example9/Example9';
 
 export default function App() {
   return (
@@ -50,6 +51,9 @@ export default function App() {
         </div>
         <div className={styles.exampleContainer}>
           <Example8 />
+        </div>
+        <div className={styles.exampleContainer}>
+          <Example9 />
         </div>
       </div>
       <ForkMeOnGitHub user="moroshko" repo="react-autowhatever" />
