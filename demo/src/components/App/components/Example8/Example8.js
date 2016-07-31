@@ -65,12 +65,13 @@ function mapDispatchToProps(dispatch) {
       switch (event.key) {
         case 'ArrowDown':
         case 'ArrowUp':
-          event.preventDefault();
           dispatch(updateFocusedItem(exampleId, newFocusedSectionIndex, newFocusedItemIndex));
           break;
 
         case 'Enter':
-          dispatch(updateInputValue(exampleId, items[focusedSectionIndex].items[focusedItemIndex].text + ' selected'));
+          if (focusedItemIndex !== null) {
+            dispatch(updateInputValue(exampleId, items[focusedSectionIndex].items[focusedItemIndex].text + ' selected'));
+          }
           break;
       }
     }

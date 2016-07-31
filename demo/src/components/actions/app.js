@@ -1,11 +1,12 @@
 export const UPDATE_INPUT_VALUE = 'UPDATE_INPUT_VALUE';
 export const UPDATE_FOCUSED_ITEM = 'UPDATE_FOCUSED_ITEM';
 
-export function updateInputValue(exampleNumber, value) {
+export function updateInputValue(exampleNumber, value, items) {
   return {
     type: UPDATE_INPUT_VALUE,
     exampleNumber,
-    value
+    value,
+    items
   };
 }
 

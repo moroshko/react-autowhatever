@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import compareObjects from './compareObjects';
 
 export default class Item extends Component {
   static propTypes = {
@@ -6,69 +7,82 @@ export default class Item extends Component {
     itemIndex: PropTypes.number.isRequired,
     item: PropTypes.any.isRequired,
     renderItem: PropTypes.func.isRequired,
-    itemProps: PropTypes.object.isRequired
+    renderItemData: PropTypes.object.isRequired,
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
+    onMouseDown: PropTypes.func,
+    onClick: PropTypes.func
   };
 
   constructor() {
     super();
 
+    this.storeItemReference = this.storeItemReference.bind(this);
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onClick = this.onClick.bind(this);
   }
 
-  onMouseEnter(event) {
-    const { sectionIndex, itemIndex, itemProps } = this.props;
+  shouldComponentUpdate(nextProps) {
+    return compareObjects(nextProps, this.props, ['renderItemData']);
+  }
 
-    itemProps.onMouseEnter(event, { sectionIndex, itemIndex });
+  storeItemReference(item) {
+    if (item !== null) {
+      this.item = item;
+    }
+  }
+
+  onMouseEnter(event) {
+    const { sectionIndex, itemIndex } = this.props;
+
+    this.props.onMouseEnter(event, { sectionIndex, itemIndex });
   }
 
   onMouseLeave(event) {
-    const { sectionIndex, itemIndex, itemProps } = this.props;
+    const { sectionIndex, itemIndex } = this.props;
 
-    itemProps.onMouseLeave(event, { sectionIndex, itemIndex });
+    this.props.onMouseLeave(event, { sectionIndex, itemIndex });
   }
 
   onMouseDown(event) {
-    const { sectionIndex, itemIndex, itemProps } = this.props;
+    const { sectionIndex, itemIndex } = this.props;
 
-    itemProps.onMouseDown(event, { sectionIndex, itemIndex });
+    this.props.onMouseDown(event, { sectionIndex, itemIndex });
   }
 
   onClick(event) {
-    const { sectionIndex, itemIndex, itemProps } = this.props;
+    const { sectionIndex, itemIndex } = this.props;
 
-    itemProps.onClick(event, { sectionIndex, itemIndex });
+    this.props.onClick(event, { sectionIndex, itemIndex });
   }
 
   render() {
-    const { item, renderItem, itemProps, ...restProps } = this.props;
+    const { item, renderItem, renderItemData, ...restProps } = this.props;
 
     delete restProps.sectionIndex;
     delete restProps.itemIndex;
 
-    const liProps = { ...itemProps };
-
-    if (typeof itemProps.onMouseEnter === 'function') {
-      liProps.onMouseEnter = this.onMouseEnter;
+    if (typeof restProps.onMouseEnter === 'function') {
+      restProps.onMouseEnter = this.onMouseEnter;
     }
 
-    if (typeof itemProps.onMouseLeave === 'function') {
-      liProps.onMouseLeave = this.onMouseLeave;
+    if (typeof restProps.onMouseLeave === 'function') {
+      restProps.onMouseLeave = this.onMouseLeave;
     }
 
-    if (typeof itemProps.onMouseDown === 'function') {
-      liProps.onMouseDown = this.onMouseDown;
+    if (typeof restProps.onMouseDown === 'function') {
+      restProps.onMouseDown = this.onMouseDown;
     }
 
-    if (typeof itemProps.onClick === 'function') {
-      liProps.onClick = this.onClick;
+    if (typeof restProps.onClick === 'function') {
+      restProps.onClick = this.onClick;
     }
 
     return (
-      <li role="option" {...restProps} {...liProps}>
-        {renderItem(item)}
+      <li role="option" {...restProps} ref={this.storeItemReference}>
+        {renderItem(item, renderItemData)}
       </li>
     );
   }

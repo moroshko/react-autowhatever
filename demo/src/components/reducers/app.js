@@ -37,30 +37,41 @@ const initialState = {
     focusedItemIndex: null
   },
   9: {
+    value: '',
+    items: []
+  },
+  10: {
     value: 'Custom Input'
   }
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case UPDATE_INPUT_VALUE:
-      return {
-        ...state,
-        [action.exampleNumber]: {
-          ...state[action.exampleNumber],
-          value: action.value
-        }
-      };
+    case UPDATE_INPUT_VALUE: {
+      const { exampleNumber, value, items } = action;
 
-    case UPDATE_FOCUSED_ITEM:
       return {
         ...state,
-        [action.exampleNumber]: {
-          ...state[action.exampleNumber],
-          focusedSectionIndex: action.focusedSectionIndex,
-          focusedItemIndex: action.focusedItemIndex
+        [exampleNumber]: {
+          ...state[exampleNumber],
+          value,
+          ...(items ? { items } : {})
         }
       };
+    }
+
+    case UPDATE_FOCUSED_ITEM: {
+      const { exampleNumber, focusedSectionIndex, focusedItemIndex } = action;
+
+      return {
+        ...state,
+        [exampleNumber]: {
+          ...state[exampleNumber],
+          focusedSectionIndex: focusedSectionIndex,
+          focusedItemIndex: focusedItemIndex
+        }
+      };
+    }
 
     default:
       return state;

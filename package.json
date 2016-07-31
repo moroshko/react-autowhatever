@@ -1,6 +1,6 @@
 {
   "name": "react-autowhatever",
-  "version": "4.0.0",
+  "version": "4.3.0",
   "description": "Accessible rendering layer for Autosuggest and Autocomplete components",
   "main": "dist/Autowhatever.js",
   "repository": {
@@ -10,8 +10,8 @@
   "author": "Misha Moroshko <michael.moroshko@gmail.com>",
   "scripts": {
     "start": "mkdir -p demo/dist && npm run copy-static-files && node server",
-    "lint": "eslint demo/src src server.js webpack.dev.config.js webpack.gh-pages.config.js",
-    "test": "mocha 'test/*.test.js' --compilers js:babel-register --require test/setup.js",
+    "lint": "eslint src test demo/src server.js webpack.dev.config.js webpack.gh-pages.config.js",
+    "test": "mocha 'test/**/*.test.js' --compilers js:babel-register --require test/setup.js",
     "copy-static-files": "cp demo/src/index.html demo/dist/",
     "dist": "rm -rf dist && mkdir dist && babel src -d dist",
     "demo-dist": "rm -rf demo/dist && mkdir demo/dist && npm run copy-static-files && webpack --config webpack.gh-pages.config.js",
@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
+    "autosuggest-highlight": "^2.1.1",
     "babel-cli": "^6.8.0",
     "babel-core": "^6.8.0",
     "babel-eslint": "^6.0.4",
@@ -41,8 +42,9 @@
     "babel-register": "^6.8.0",
     "chai": "^3.5.0",
     "css-loader": "^0.23.1",
-    "eslint": "^3.0.1",
-    "eslint-plugin-react": "^6.0.0-alpha.1",
+    "eslint": "^3.2.0",
+    "eslint-plugin-mocha": "^4.2.0",
+    "eslint-plugin-react": "^6.0.0-rc.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "jsdom": "^9.4.1",
     "less": "^2.7.1",

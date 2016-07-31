@@ -36,7 +36,6 @@ function mapDispatchToProps(dispatch) {
     },
     onKeyDown: (event, { newFocusedSectionIndex, newFocusedItemIndex }) => {
       if (typeof newFocusedItemIndex !== 'undefined') {
-        event.preventDefault();
         dispatch(updateFocusedItem(exampleId, newFocusedSectionIndex, newFocusedItemIndex));
       }
     }
