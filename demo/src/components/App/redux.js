@@ -1,4 +1,6 @@
-import { UPDATE_INPUT_VALUE, UPDATE_FOCUSED_ITEM } from 'actions/app';
+const UPDATE_INPUT_VALUE = 'UPDATE_INPUT_VALUE';
+const HIDE_ITEMS = 'HIDE_ITEMS';
+const UPDATE_FOCUSED_ITEM = 'UPDATE_FOCUSED_ITEM';
 
 const initialState = {
   0: {
@@ -38,9 +40,36 @@ const initialState = {
   },
   9: {
     value: '',
-    items: []
+    items: [],
+    focusedSectionIndex: null,
+    focusedItemIndex: null
   }
 };
+
+export function updateInputValue(exampleNumber, value, items) {
+  return {
+    type: UPDATE_INPUT_VALUE,
+    exampleNumber,
+    value,
+    items
+  };
+}
+
+export function hideItems(exampleNumber) {
+  return {
+    type: HIDE_ITEMS,
+    exampleNumber
+  };
+}
+
+export function updateFocusedItem(exampleNumber, focusedSectionIndex, focusedItemIndex) {
+  return {
+    type: UPDATE_FOCUSED_ITEM,
+    exampleNumber,
+    focusedSectionIndex,
+    focusedItemIndex
+  };
+}
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -53,6 +82,20 @@ export default function(state = initialState, action) {
           ...state[exampleNumber],
           value,
           ...(items ? { items } : {})
+        }
+      };
+    }
+
+    case HIDE_ITEMS: {
+      const { exampleNumber } = action;
+
+      return {
+        ...state,
+        [exampleNumber]: {
+          ...state[exampleNumber],
+          items: [],
+          focusedSectionIndex: null,
+          focusedItemIndex: null
         }
       };
     }
