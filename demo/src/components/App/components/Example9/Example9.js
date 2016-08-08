@@ -59,15 +59,17 @@ function mapDispatchToProps(dispatch) {
     onFocus: () => {
       dispatch(updateInputValue(exampleId, ''));
     },
+    onBlur: () => {
+      dispatch(hideItems(exampleId));
+    },
     onMouseEnter: (event, { sectionIndex, itemIndex }) => {
       dispatch(updateFocusedItem(exampleId, sectionIndex, itemIndex));
     },
     onMouseLeave: () => {
       dispatch(updateFocusedItem(exampleId, null, null));
     },
-    onClick: clickedItem => {
+    onMouseDown: clickedItem => {
       dispatch(updateInputValue(exampleId, clickedItem.name));
-      dispatch(hideItems(exampleId));
     }
   };
 }
@@ -94,23 +96,24 @@ function renderItem(country, { value }) {
 function Example(props) {
   const {
     value, focusedSectionIndex, focusedItemIndex, items,
-    onChange, onFocus, onMouseEnter, onMouseLeave, onClick
+    onChange, onFocus, onBlur, onMouseEnter, onMouseLeave, onMouseDown
   } = props;
   const inputProps = {
     placeholder: 'Search and click countries',
     value,
     onChange,
-    onFocus
+    onFocus,
+    onBlur
   };
   const itemProps = ({ itemIndex }) => ({
     'data-item-index': itemIndex,
     onMouseEnter,
     onMouseLeave,
-    onClick: event => {
+    onMouseDown: event => {
       const clickedItem = findItemElement(event.target);
       const clickedItemIndex = clickedItem.getAttribute('data-item-index');
 
-      onClick(items[clickedItemIndex]);
+      onMouseDown(items[clickedItemIndex]);
     }
   });
 
@@ -138,9 +141,10 @@ Example.propTypes = {
   items: PropTypes.array.isRequired,
   onChange: PropTypes.func.isRequired,
   onFocus: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
   onMouseEnter: PropTypes.func.isRequired,
   onMouseLeave: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired
+  onMouseDown: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Example);
