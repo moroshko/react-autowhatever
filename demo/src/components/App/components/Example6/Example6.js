@@ -35,6 +35,8 @@ function mapDispatchToProps(dispatch) {
       dispatch(updateInputValue(exampleId, event.target.value));
     },
     onKeyDown: (event, { newFocusedSectionIndex, newFocusedItemIndex }) => {
+      event.preventDefault(); // Don't move the cursor to start/end
+
       if (typeof newFocusedItemIndex !== 'undefined') {
         dispatch(updateFocusedItem(exampleId, newFocusedSectionIndex, newFocusedItemIndex));
       }

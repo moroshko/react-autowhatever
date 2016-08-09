@@ -139,6 +139,7 @@ Example.propTypes = {
   focusedSectionIndex: PropTypes.number,
   focusedItemIndex: PropTypes.number,
   items: PropTypes.array.isRequired,
+
   onChange: PropTypes.func.isRequired,
   onFocus: PropTypes.func.isRequired,
   onBlur: PropTypes.func.isRequired,
