@@ -1,4 +1,3 @@
-@font-size: 16px;
 @border-color: #aaa;
 @border-radius: 4px;
 
@@ -10,9 +9,11 @@
   width: 240px;
   height: 30px;
   padding: 10px 20px;
-  font-size: @font-size;
+  font-size: 16px;
+  font-family: Helvetica, Arial, sans-serif;
   border: 1px solid @border-color;
   border-radius: @border-radius;
+  box-sizing: content-box;
 
   &:focus {
     outline: none;
@@ -25,21 +26,29 @@
 }
 
 .itemsContainer {
-  position: relative;
-  top: -1px;
-  width: 280px;
+  display: none;
+
+  .containerOpen & {
+    display: block;
+    position: relative;
+    top: -1px;
+    width: 280px;
+    border: 1px solid @border-color;
+    background-color: #fff;
+    font-size: 16px;
+    line-height: 1.25;
+    border-bottom-left-radius: @border-radius;
+    border-bottom-right-radius: @border-radius;
+    z-index: 2;
+    max-height: 260px;
+    overflow-y: auto;
+  }
+}
+
+.itemsList {
   margin: 0;
   padding: 0;
   list-style-type: none;
-  border: 1px solid @border-color;
-  background-color: #fff;
-  font-size: @font-size;
-  line-height: 1.25;
-  border-bottom-left-radius: @border-radius;
-  border-bottom-right-radius: @border-radius;
-  z-index: 2;
-  max-height: 260px;
-  overflow-y: auto;
 }
 
 .item {
@@ -60,12 +69,6 @@
   .sectionContainer:first-child & {
     border-top: 0;
   }
-}
-
-.sectionItemsContainer {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
 }
 
 .highlight {

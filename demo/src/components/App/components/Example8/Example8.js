@@ -2,7 +2,7 @@ import theme from '../theme.less';
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { updateInputValue, updateFocusedItem } from 'actions/app';
+import { updateInputValue, updateFocusedItem } from '../../redux';
 import Autowhatever from 'Autowhatever';
 import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
 
@@ -65,6 +65,7 @@ function mapDispatchToProps(dispatch) {
       switch (event.key) {
         case 'ArrowDown':
         case 'ArrowUp':
+          event.preventDefault(); // Don't move the cursor to start/end
           dispatch(updateFocusedItem(exampleId, newFocusedSectionIndex, newFocusedItemIndex));
           break;
 
