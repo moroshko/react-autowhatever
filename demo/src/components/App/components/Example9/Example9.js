@@ -75,9 +75,13 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-function renderItemsContainer(props) {
+function renderItemsContainer({ ref, ...rest }) {
   return (
-    <IsolatedScroll {...props} />
+    <IsolatedScroll ref={isolatedScroll => {
+      if (isolatedScroll !== null) {
+        ref(isolatedScroll.component);
+      }
+    }} {...rest} />
   );
 }
 
