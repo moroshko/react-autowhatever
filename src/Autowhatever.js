@@ -6,6 +6,7 @@ import ItemsList from './ItemsList';
 
 const alwaysTrue = () => true;
 const emptyObject = {};
+const defaultRenderItemsContainer = props => <div {...props} />;
 const defaultTheme = {
   container: 'react-autowhatever__container',
   containerOpen: 'react-autowhatever__container--open',
@@ -23,6 +24,7 @@ export default class Autowhatever extends Component {
     id: PropTypes.string,                  // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
     multiSection: PropTypes.bool,          // Indicates whether a multi section layout should be rendered.
     items: PropTypes.array.isRequired,     // Array of items or sections to render.
+    renderItemsContainer: PropTypes.func,  // Renders the items container.
     renderItem: PropTypes.func,            // This function renders a single item.
     renderItemData: PropTypes.object,      // Arbitrary data that will be passed to renderItem()
     shouldRenderSection: PropTypes.func,   // This function gets a section and returns whether it should be rendered, or not.
@@ -41,6 +43,7 @@ export default class Autowhatever extends Component {
   static defaultProps = {
     id: '1',
     multiSection: false,
+    renderItemsContainer: defaultRenderItemsContainer,
     shouldRenderSection: alwaysTrue,
     renderItem: () => {
       throw new Error('`renderItem` must be provided');
@@ -265,7 +268,10 @@ export default class Autowhatever extends Component {
 
   render() {
     const { theme } = this;
-    const { id, multiSection, focusedSectionIndex, focusedItemIndex } = this.props;
+    const {
+      id, multiSection, renderItemsContainer,
+      focusedSectionIndex, focusedItemIndex
+    } = this.props;
     const renderedItems = multiSection ? this.renderSections() : this.renderItems();
     const isOpen = (renderedItems !== null);
     const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
@@ -295,13 +301,15 @@ export default class Autowhatever extends Component {
       ...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer'),
       ref: this.storeItemsContainerReference
     };
+    const itemsContainer = renderItemsContainer({
+      ...itemsContainerProps,
+      children: renderedItems
+    });
 
     return (
       <div {...containerProps}>
         <input {...inputProps} />
-        <div {...itemsContainerProps}>
-          {renderedItems}
-        </div>
+        {itemsContainer}
       </div>
     );
   }
