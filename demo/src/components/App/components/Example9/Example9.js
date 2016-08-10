@@ -75,9 +75,15 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-function renderItemsContainer(props) {
+function renderItemsContainer({ ref, ...rest }) { // eslint-disable-line react/prop-types
+  const callRef = isolatedScroll => {
+    if (isolatedScroll !== null) {
+      ref(isolatedScroll.component);
+    }
+  };
+
   return (
-    <IsolatedScroll {...props} />
+    <IsolatedScroll {...rest} ref={callRef} />
   );
 }
 
