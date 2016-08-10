@@ -55,7 +55,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-function renderItemsContainer({ children, ...rest }) {
+function renderItemsContainer(props) {
   return (
     <IsolatedScroll {...props} />
   );

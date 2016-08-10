@@ -19,6 +19,7 @@
     "build": "npm run dist",
     "gh-pages-build": "npm run prebuild && npm run demo-dist",
     "deploy": "./scripts/deploy-to-gh-pages.sh",
+    "preversion": "npm run prebuild",
     "postversion": "git push && git push --tags",
     "prepublish": "npm run dist"
   },
