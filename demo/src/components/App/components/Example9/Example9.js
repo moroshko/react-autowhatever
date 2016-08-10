@@ -8,6 +8,7 @@ import Autowhatever from 'Autowhatever';
 import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
 import countries from './countries';
 import { escapeRegexCharacters } from '../../utils';
+import IsolatedScroll from 'react-isolated-scroll';
 
 const exampleId = '9';
 const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`;
@@ -74,6 +75,12 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+function renderItemsContainer(props) {
+  return (
+    <IsolatedScroll {...props} />
+  );
+}
+
 function renderItem(country, { value }) {
   const matches = highlight.match(country.name, value.trim());
   const parts = highlight.parse(country.name, matches);
@@ -122,6 +129,7 @@ function Example(props) {
       <Autowhatever
         id={exampleId}
         items={items}
+        renderItemsContainer={renderItemsContainer}
         renderItem={renderItem}
         renderItemData={{ value }}
         inputProps={inputProps}

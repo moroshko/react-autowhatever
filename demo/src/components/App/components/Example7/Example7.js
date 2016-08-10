@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { updateInputValue, updateFocusedItem } from '../../redux';
 import Autowhatever from 'Autowhatever';
 import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
+import IsolatedScroll from 'react-isolated-scroll';
 
 const exampleId = '7';
 const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`;
@@ -54,6 +55,12 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+function renderItemsContainer(props) {
+  return (
+    <IsolatedScroll {...props} />
+  );
+}
+
 function renderItem(item) {
   return (
     <span>{item.text}</span>
@@ -69,6 +76,7 @@ function Example(props) {
       <Autowhatever
         id={exampleId}
         items={items}
+        renderItemsContainer={renderItemsContainer}
         renderItem={renderItem}
         inputProps={inputProps}
         focusedSectionIndex={focusedSectionIndex}
