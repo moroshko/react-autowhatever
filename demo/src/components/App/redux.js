@@ -24,17 +24,17 @@ const initialState = {
     focusedItemIndex: null
   },
   6: {
-    value: 'Up/Down',
+    value: 'Up/Down/Tab',
     focusedSectionIndex: null,
     focusedItemIndex: null
   },
   7: {
-    value: 'Up/Down (with scrollbar)',
+    value: 'Up/Down/Tab (with scrollbar)',
     focusedSectionIndex: null,
     focusedItemIndex: 7
   },
   8: {
-    value: 'Multi section - Up/Down/Enter',
+    value: 'Multi section - Up/Down/Tab/Enter',
     focusedSectionIndex: null,
     focusedItemIndex: null
   },

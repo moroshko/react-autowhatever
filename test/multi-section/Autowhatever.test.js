@@ -7,7 +7,9 @@ import {
   eventMatcher,
   clickUp,
   clickDown,
-  clickEnter
+  clickEnter,
+  tabUp,
+  tabDown
 } from '../helpers';
 import AutowhateverApp, {
   getSectionItems,
@@ -84,6 +86,51 @@ describe('Multi Section Autowhatever', () => {
       expect(onKeyDown).to.be.calledWith(eventMatcher, {
         newFocusedSectionIndex: null,
         newFocusedItemIndex: null
+      });
+    });
+
+    it('should be called with the right parameters when Tab/Shift-tab is pressed', () => {
+      tabDown();
+      expect(onKeyDown).to.be.calledOnce;
+      expect(onKeyDown).to.be.calledWith(eventMatcher, {
+        newFocusedSectionIndex: 0,
+        newFocusedItemIndex: 0
+      });
+
+      tabDown();
+      expect(onKeyDown).to.be.calledWith(eventMatcher, {
+        newFocusedSectionIndex: 0,
+        newFocusedItemIndex: 1
+      });
+
+      tabDown();
+      expect(onKeyDown).to.be.calledWith(eventMatcher, {
+        newFocusedSectionIndex: 1,
+        newFocusedItemIndex: 0
+      });
+
+      tabDown();
+      expect(onKeyDown).to.be.calledWith(eventMatcher, {
+        newFocusedSectionIndex: 2,
+        newFocusedItemIndex: 0
+      });
+
+      tabDown();
+      expect(onKeyDown).to.be.calledWith(eventMatcher, {
+        newFocusedSectionIndex: null,
+        newFocusedItemIndex: null
+      });
+
+      tabUp();
+      expect(onKeyDown).to.be.calledWith(eventMatcher, {
+        newFocusedSectionIndex: 2,
+        newFocusedItemIndex: 0
+      });
+
+      tabUp();
+      expect(onKeyDown).to.be.calledWith(eventMatcher, {
+        newFocusedSectionIndex: 1,
+        newFocusedItemIndex: 0
       });
     });
 
