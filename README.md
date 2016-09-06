@@ -8,3 +8,12 @@
 
 
 <a href="http://react-autowhatever.js.org" target="_blank">Demo</a>
+
+
+# React Autowhatever
+
+Accessible rendering layer for Autosuggest and Autocomplete components
+
+## Demo
+
+Check out the <a href="http://react-autowhatever.js.org" target="_blank">Homepage</a> and the <a href="http://codepen.io/collection/nmZqgW" target="_blank">Codepen examples</a>.
