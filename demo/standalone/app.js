@@ -23,9 +23,9 @@ class App extends React.Component { // eslint-disable-line no-undef
     };
   }
 
-  onChange = (event, { newValue }) => {
+  onChange = event => {
     this.setState({
-      value: newValue
+      value: event.target.value
     });
   };
 
