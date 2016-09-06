@@ -40,7 +40,7 @@ export default class Autowhatever extends Component {
     theme: PropTypes.oneOfType([           // Styles. See: https://github.com/markdalgleish/react-themeable
       PropTypes.object,
       PropTypes.array
-    ]),
+    ])
   };
 
   static defaultProps = {
