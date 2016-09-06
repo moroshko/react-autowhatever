@@ -37,7 +37,10 @@ export default class Autowhatever extends Component {
     ]),
     focusedSectionIndex: PropTypes.number, // Section index of the focused item
     focusedItemIndex: PropTypes.number,    // Focused item index (within a section)
-    theme: PropTypes.object                // Styles. See: https://github.com/markdalgleish/react-themeable
+    theme: PropTypes.oneOfType([           // Styles. See: https://github.com/markdalgleish/react-themeable
+      PropTypes.object,
+      PropTypes.array
+    ])
   };
 
   static defaultProps = {
