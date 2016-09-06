@@ -8,7 +8,7 @@
 
 # React Autowhatever
 
-Accessible rendering layer for Autosuggest and Autocomplete components
+Accessible rendering layer for Autosuggest and Autocomplete components.
 
 ## Demo
 
