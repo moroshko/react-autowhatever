@@ -57,5 +57,11 @@ export const clickUp = () =>
 export const clickDown = () =>
   Simulate.keyDown(input, { key: 'ArrowDown' });
 
+export const tabUp = () =>
+  Simulate.keyDown(input, { key: 'Tab', shiftKey: true });
+
+export const tabDown = () =>
+  Simulate.keyDown(input, { key: 'Tab' });
+
 export const clickEnter = () =>
   Simulate.keyDown(input, { key: 'Enter' });

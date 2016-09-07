@@ -235,6 +235,15 @@ export default class Autowhatever extends Component {
         inputProps.onKeyDown(event, { newFocusedSectionIndex, newFocusedItemIndex });
         break;
       }
+      case 'Tab': {
+        event.preventDefault();
+        const nextPrev = (event.shiftKey ? 'prev' : 'next');
+        const [newFocusedSectionIndex, newFocusedItemIndex] =
+          this.sectionIterator[nextPrev]([focusedSectionIndex, focusedItemIndex]);
+
+        inputProps.onKeyDown(event, { newFocusedSectionIndex, newFocusedItemIndex });
+        break;
+      }
 
       default:
         inputProps.onKeyDown(event, { focusedSectionIndex, focusedItemIndex });

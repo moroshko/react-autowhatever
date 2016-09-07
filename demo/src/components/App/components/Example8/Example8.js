@@ -65,6 +65,7 @@ function mapDispatchToProps(dispatch) {
       switch (event.key) {
         case 'ArrowDown':
         case 'ArrowUp':
+        case 'Tab':
           event.preventDefault(); // Don't move the cursor to start/end
           dispatch(updateFocusedItem(exampleId, newFocusedSectionIndex, newFocusedItemIndex));
           break;

@@ -18,7 +18,7 @@ export const renderItem = sinon.spy(item => (
 ));
 
 export const onKeyDown = sinon.spy((event, { newFocusedSectionIndex, newFocusedItemIndex }) => {
-  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+  if (event.key === 'ArrowDown' || event.key === 'ArrowUp' || event.key === 'Tab') {
     app.setState({
       focusedSectionIndex: newFocusedSectionIndex,
       focusedItemIndex: newFocusedItemIndex
