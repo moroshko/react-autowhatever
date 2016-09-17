@@ -4,7 +4,6 @@ import compareObjects from './compareObjects';
 
 export default class ItemsList extends Component {
   static propTypes = {
-    id: PropTypes.string.isRequired,
     items: PropTypes.array.isRequired,
     itemProps: PropTypes.oneOfType([
       PropTypes.object,
@@ -14,6 +13,7 @@ export default class ItemsList extends Component {
     renderItemData: PropTypes.object.isRequired,
     sectionIndex: PropTypes.number,
     focusedItemIndex: PropTypes.number,
+    onFocusedItemChange: PropTypes.func.isRequired,
     getItemId: PropTypes.func.isRequired,
     theme: PropTypes.func.isRequired,
     keyPrefix: PropTypes.string.isRequired
@@ -26,75 +26,27 @@ export default class ItemsList extends Component {
   constructor() {
     super();
 
-    this.storeItemsContainerReference = this.storeItemsContainerReference.bind(this);
     this.storeFocusedItemReference = this.storeFocusedItemReference.bind(this);
-  }
-
-  componentDidMount() {
-    this.ensureFocusedItemIsVisible();
   }
 
   shouldComponentUpdate(nextProps) {
     return compareObjects(nextProps, this.props, ['itemProps']);
   }
 
-  componentDidUpdate() {
-    this.ensureFocusedItemIsVisible();
-  }
-
-  storeItemsContainerReference(itemsContainer) {
-    if (itemsContainer !== null) {
-      this.itemsContainer = itemsContainer;
-    }
-  }
-
   storeFocusedItemReference(focusedItem) {
-    if (focusedItem !== null) {
-      this.focusedItem = focusedItem.item;
-    }
-  }
-
-  ensureFocusedItemIsVisible() {
-    if (!this.focusedItem) {
-      return;
-    }
-
-    const { focusedItem, itemsContainer } = this;
-    const itemOffsetRelativeToContainer =
-      focusedItem.offsetParent === itemsContainer
-        ? focusedItem.offsetTop
-        : focusedItem.offsetTop - itemsContainer.offsetTop;
-
-    let { scrollTop } = itemsContainer; // Top of the visible area
-
-    if (itemOffsetRelativeToContainer < scrollTop) {
-      // Item is off the top of the visible area
-      scrollTop = itemOffsetRelativeToContainer;
-    } else if (itemOffsetRelativeToContainer + focusedItem.offsetHeight > scrollTop + itemsContainer.offsetHeight) {
-      // Item is off the bottom of the visible area
-      scrollTop = itemOffsetRelativeToContainer + focusedItem.offsetHeight - itemsContainer.offsetHeight;
-    }
-
-    if (scrollTop !== itemsContainer.scrollTop) {
-      itemsContainer.scrollTop = scrollTop;
-    }
+    this.props.onFocusedItemChange(focusedItem === null ? null : focusedItem.item);
   }
 
   render() {
     const {
-      id, items, itemProps, renderItem, renderItemData, sectionIndex,
+      items, itemProps, renderItem, renderItemData, sectionIndex,
       focusedItemIndex, getItemId, theme, keyPrefix
     } = this.props;
     const sectionPrefix = (sectionIndex === null ? keyPrefix : `${keyPrefix}section-${sectionIndex}-`);
-    const itemsContainerClass = (sectionIndex === null ? 'itemsContainer' : 'sectionItemsContainer');
     const isItemPropsFunction = (typeof itemProps === 'function');
 
     return (
-      <ul
-        id={id}
-        ref={this.storeItemsContainerReference}
-        role="listbox"
-        {...theme(`${sectionPrefix}items-container`, itemsContainerClass)}>
+      <ul role="listbox" {...theme(`${sectionPrefix}items-list`, 'itemsList')}>
         {
           items.map((item, itemIndex) => {
             const isFocused = (itemIndex === focusedItemIndex);

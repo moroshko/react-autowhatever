@@ -3,7 +3,9 @@ import TestUtils from 'react-addons-test-utils';
 import { expect } from 'chai';
 import {
   init,
-  getStoredFocusedItemName,
+  getStoredInput,
+  getStoredItemsContainer,
+  getStoredFocusedItem,
   getInputAttribute,
   getItemsContainerAttribute,
   getItems,
@@ -33,6 +35,18 @@ describe('Plain List Autowhatever', () => {
 
     it('should call `renderItem` exactly `items.length` times', () => {
       expect(renderItem).to.have.callCount(5);
+    });
+
+    it('should store the input on the instance', () => {
+      expect(getStoredInput().getAttribute('id')).to.equal('my-fancy-input');
+    });
+
+    it('should store the items container on the instance', () => {
+      expect(getStoredItemsContainer().getAttribute('id')).to.equal('react-autowhatever-my-fancy-component');
+    });
+
+    it('should set the stored focused item on the instance to null', () => {
+      expect(getStoredFocusedItem()).to.equal(null);
     });
   });
 
@@ -68,7 +82,15 @@ describe('Plain List Autowhatever', () => {
 
     it('should store the focused item on the instance', () => {
       mouseEnterItem(2);
-      expect(getStoredFocusedItemName()).to.equal('HTMLLIElement');
+      expect(getStoredFocusedItem().getAttribute('id'))
+        .to.equal('react-autowhatever-my-fancy-component--item-2');
+
+      mouseLeaveItem(2);
+      expect(getStoredFocusedItem()).to.equal(null);
+
+      mouseEnterItem(3);
+      expect(getStoredFocusedItem().getAttribute('id'))
+        .to.equal('react-autowhatever-my-fancy-component--item-3');
     });
   });
 });

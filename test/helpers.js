@@ -16,11 +16,9 @@ export const init = application => {
 
 export const eventMatcher = sinon.match.instanceOf(SyntheticEvent);
 
-export const getStoredFocusedItemName = () => {
-  const { focusedItem } = app.autowhatever.itemsList;
-
-  return focusedItem ? focusedItem.constructor.name : null;
-};
+export const getStoredInput = () => app.autowhatever.input;
+export const getStoredItemsContainer = () => app.autowhatever.itemsContainer;
+export const getStoredFocusedItem = () => app.autowhatever.focusedItem;
 
 export const getInputAttribute = attr =>
   input.getAttribute(attr);

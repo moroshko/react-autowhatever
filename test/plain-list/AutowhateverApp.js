@@ -56,6 +56,7 @@ export default class AutowhateverApp extends Component {
   render() {
     const { value, focusedItemIndex } = this.state;
     const inputProps = {
+      id: 'my-fancy-input',
       value,
       onChange: this.onChange
     };
