@@ -2,7 +2,7 @@ import theme from '../theme.less';
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { updateInputValue } from 'actions/app';
+import { updateInputValue } from '../../redux';
 import Autowhatever from 'Autowhatever';
 import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
 

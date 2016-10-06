@@ -30,7 +30,10 @@ export default class Autowhatever extends Component {
     shouldRenderSection: PropTypes.func,   // This function gets a section and returns whether it should be rendered, or not.
     renderSectionTitle: PropTypes.func,    // This function gets a section and renders its title.
     getSectionItems: PropTypes.func,       // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
-    inputElement: PropTypes.node,          // This element is used to render the input
+    inputElement: PropTypes.oneOfType([    // This element is used to render the input
+      PropTypes.func,
+      PropTypes.string
+    ]),
     inputProps: PropTypes.object,          // Arbitrary input props
     itemProps: PropTypes.oneOfType([       // Arbitrary item props
       PropTypes.object,
