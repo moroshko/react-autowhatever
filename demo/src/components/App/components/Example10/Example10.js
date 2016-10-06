@@ -1,6 +1,6 @@
 import theme from '../theme.less';
 
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { updateInputValue } from '../../redux';
 import Autowhatever from 'Autowhatever';
@@ -9,12 +9,10 @@ import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
 const exampleId = '10';
 const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`;
 
-class CustomInput extends Component {
-  render() {
-    return (
-      <input style={{ border: '0 solid green', borderBottomWidth: '1px', borderRadius: 0 }} {...this.props} />
-    );
-  }
+function CustomInput(props) {
+  return (
+    <input style={{ border: '0 solid green', borderBottomWidth: '1px', borderRadius: 0 }} {...props} />
+  );
 }
 
 function mapStateToProps(state) {
