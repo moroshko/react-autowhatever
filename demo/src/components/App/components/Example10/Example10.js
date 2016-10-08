@@ -10,8 +10,14 @@ const exampleId = '10';
 const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`;
 
 function CustomInput(props) {
+  const style = {
+    border: '0 solid green',
+    borderBottomWidth: '1px',
+    borderRadius: 0
+  };
+
   return (
-    <input style={{ border: '0 solid green', borderBottomWidth: '1px', borderRadius: 0 }} {...props} />
+    <input style={style} {...props} />
   );
 }
 
@@ -29,7 +35,11 @@ function mapDispatchToProps(dispatch) {
 
 function Example(props) {
   const { value, onChange } = props;
-  const inputProps = { value, onChange };
+  const inputProps = {
+    placeholder: 'Custom input',
+    value,
+    onChange
+  };
 
   return (
     <div>
