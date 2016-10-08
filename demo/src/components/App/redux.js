@@ -43,6 +43,9 @@ const initialState = {
     items: [],
     focusedSectionIndex: null,
     focusedItemIndex: null
+  },
+  10: {
+    value: ''
   }
 };
 
