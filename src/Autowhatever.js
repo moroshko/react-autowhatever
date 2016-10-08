@@ -309,7 +309,7 @@ export default class Autowhatever extends Component {
       ...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer'),
       ref: this.storeItemsContainerReference
     };
-    const InputTag = this.props.inputElement;
+    const InputElement = this.props.inputElement;
     const itemsContainer = renderItemsContainer({
       ...itemsContainerProps,
       children: renderedItems
@@ -317,7 +317,7 @@ export default class Autowhatever extends Component {
 
     return (
       <div {...containerProps}>
-        <InputTag {...inputProps} />
+        <InputElement {...inputProps} />
         {itemsContainer}
       </div>
     );
