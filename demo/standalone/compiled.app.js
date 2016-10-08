@@ -88,11 +88,9 @@
 
 	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
-	    _this.onChange = function (event, _ref) {
-	      var newValue = _ref.newValue;
-
+	    _this.onChange = function (event) {
 	      _this.setState({
-	        value: newValue
+	        value: event.target.value
 	      });
 	    };
 

@@ -2,7 +2,8 @@ import theme from '../theme.less';
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import highlight  from 'autosuggest-highlight';
+import match from 'autosuggest-highlight/match';
+import parse from 'autosuggest-highlight/parse';
 import { updateInputValue, hideItems, updateFocusedItem } from '../../redux';
 import Autowhatever from 'Autowhatever';
 import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
@@ -88,8 +89,8 @@ function renderItemsContainer({ ref, ...rest }) { // eslint-disable-line react/p
 }
 
 function renderItem(country, { value }) {
-  const matches = highlight.match(country.name, value.trim());
-  const parts = highlight.parse(country.name, matches);
+  const matches = match(country.name, value.trim());
+  const parts = parse(country.name, matches);
 
   return (
     <span>

@@ -6,5 +6,10 @@
   <img src="https://www.bithound.io/github/moroshko/react-autowhatever/badges/score.svg" alt="bitHound Overall Score">
 </a>
 
+# React Autowhatever
 
-<a href="http://react-autowhatever.js.org" target="_blank">Demo</a>
+Accessible rendering layer for Autosuggest and Autocomplete components.
+
+## Demo
+
+Check out the <a href="http://react-autowhatever.js.org" target="_blank">Homepage</a> and the <a href="http://codepen.io/collection/nmZqgW" target="_blank">Codepen examples</a>.
