@@ -46,7 +46,7 @@ function Example(props) {
       <Autowhatever
         id={exampleId}
         items={[]}
-        inputElement={CustomInput}
+        inputComponent={CustomInput}
         inputProps={inputProps}
         theme={theme} />
       <SourceCodeLink file={file} />

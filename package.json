@@ -11,7 +11,7 @@
   "scripts": {
     "start": "mkdir -p demo/dist && npm run copy-static-files && node server",
     "lint": "eslint src test demo/src demo/standalone/app.js server.js webpack.*.js",
-    "test": "mocha 'test/**/*.test.js' --compilers js:babel-register --require test/setup.js",
+    "test": "mocha \"test/**/*.test.js\" --compilers js:babel-register --require test/setup.js",
     "copy-static-files": "cp demo/src/index.html demo/dist/",
     "dist": "rm -rf dist && mkdir dist && babel src -d dist",
     "demo-dist": "rm -rf demo/dist && mkdir demo/dist && npm run copy-static-files && webpack --config webpack.gh-pages.config.js",
@@ -32,7 +32,7 @@
     "react": "^0.14.7 || ^15.0.1"
   },
   "devDependencies": {
-    "autoprefixer": "^6.3.6",
+    "autoprefixer": "^6.5.1",
     "autosuggest-highlight": "^3.0.0",
     "babel-cli": "^6.16.0",
     "babel-core": "^6.17.0",
@@ -45,13 +45,12 @@
     "chai": "^3.5.0",
     "css-loader": "^0.25.0",
     "eslint": "^3.7.1",
-    "eslint-plugin-mocha": "^4.6.0",
-    "eslint-plugin-react": "^6.3.0",
+    "eslint-plugin-react": "^6.4.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "jsdom": "^9.6.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
-    "mocha": "^3.1.0",
+    "mocha": "^3.1.2",
     "openurl": "^1.1.1",
     "postcss-loader": "^0.13.0",
     "react": "^15.3.2",
@@ -64,7 +63,7 @@
     "sinon": "^1.17.6",
     "sinon-chai": "^2.8.0",
     "style-loader": "^0.13.1",
-    "webpack": "^1.13.0",
+    "webpack": "^1.13.2",
     "webpack-dev-server": "^1.16.2"
   },
   "files": [

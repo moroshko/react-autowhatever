@@ -30,10 +30,7 @@ export default class Autowhatever extends Component {
     shouldRenderSection: PropTypes.func,   // This function gets a section and returns whether it should be rendered, or not.
     renderSectionTitle: PropTypes.func,    // This function gets a section and renders its title.
     getSectionItems: PropTypes.func,       // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
-    inputElement: PropTypes.oneOfType([    // This element is used to render the input
-      PropTypes.func,
-      PropTypes.string
-    ]),
+    inputComponent: PropTypes.func,        // When specified, it is used to render the input element
     inputProps: PropTypes.object,          // Arbitrary input props
     itemProps: PropTypes.oneOfType([       // Arbitrary item props
       PropTypes.object,
@@ -62,7 +59,6 @@ export default class Autowhatever extends Component {
     getSectionItems: () => {
       throw new Error('`getSectionItems` must be provided');
     },
-    inputElement: 'input',
     inputProps: emptyObject,
     itemProps: emptyObject,
     focusedSectionIndex: null,
@@ -309,7 +305,7 @@ export default class Autowhatever extends Component {
       ...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer'),
       ref: this.storeItemsContainerReference
     };
-    const InputElement = this.props.inputElement;
+    const InputComponent = this.props.inputComponent || 'input';
     const itemsContainer = renderItemsContainer({
       ...itemsContainerProps,
       children: renderedItems
@@ -317,7 +313,7 @@ export default class Autowhatever extends Component {
 
     return (
       <div {...containerProps}>
-        <InputElement {...inputProps} />
+        <InputComponent {...inputProps} />
         {itemsContainer}
       </div>
     );

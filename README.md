@@ -1,10 +1,11 @@
-<a href="https://codeship.com/projects/96953" target="_blank">
-  <img src="https://img.shields.io/codeship/6c79f8c0-2565-0133-4af8-72f090cba113/master.svg?style=flat-square"
-       alt="Build Status" />
-</a>
-<a href="https://www.bithound.io/github/moroshko/react-autowhatever" target="_blank">
-  <img src="https://www.bithound.io/github/moroshko/react-autowhatever/badges/score.svg" alt="bitHound Overall Score">
-</a>
+[![Build Status](https://img.shields.io/codeship/6c79f8c0-2565-0133-4af8-72f090cba113/master.svg?style=flat-square)](https://codeship.com/projects/96953)
+[![bitHound Overall Score](https://www.bithound.io/github/moroshko/react-autowhatever/badges/score.svg)](https://www.bithound.io/github/moroshko/react-autowhatever)
+
+[![Pull Requests stats](https://img.shields.io/issuestats/p/long/github/moroshko/react-autowhatever.svg?style=flat-square)](http://issuestats.com/github/moroshko/react-autowhatever)
+[![Issues stats](https://img.shields.io/issuestats/i/long/github/moroshko/react-autowhatever.svg?style=flat-square)](http://issuestats.com/github/moroshko/react-autowhatever)
+
+[![npm Downloads](https://img.shields.io/npm/dm/react-autowhatever.svg?style=flat-square)](https://npmjs.org/package/react-autowhatever)
+[![npm Version](https://img.shields.io/npm/v/react-autowhatever.svg?style=flat-square)](https://npmjs.org/package/react-autowhatever)
 
 # React Autowhatever
 
@@ -12,4 +13,24 @@ Accessible rendering layer for Autosuggest and Autocomplete components.
 
 ## Demo
 
-Check out the <a href="http://react-autowhatever.js.org" target="_blank">Homepage</a> and the <a href="http://codepen.io/collection/nmZqgW" target="_blank">Codepen examples</a>.
+Check out the [Homepage](http://react-autowhatever.js.org) and the [Codepen examples](http://codepen.io/collection/nmZqgW).
+
+## Installation
+
+```shell
+yarn add react-autowhatever
+```
+
+or
+
+```shell
+npm install react-autowhatever --save
+```
+
+## Related
+
+* [react-autosuggest](https://github.com/moroshko/react-autosuggest) - WAI-ARIA compliant React autosuggest component
+
+## License
+
+[MIT](http://moroshko.mit-license.org)
