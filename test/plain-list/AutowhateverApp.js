@@ -55,6 +55,11 @@ export default class AutowhateverApp extends Component {
 
   render() {
     const { value, focusedItemIndex } = this.state;
+    const inputComponent = props => (
+      <div id="my-custom-input-component">
+        <input {...props} type="text" />
+      </div>
+    );
     const inputProps = {
       id: 'my-fancy-input',
       value,
@@ -71,6 +76,7 @@ export default class AutowhateverApp extends Component {
         id="my-fancy-component"
         items={items}
         renderItem={renderItem}
+        inputComponent={inputComponent}
         inputProps={inputProps}
         itemProps={itemProps}
         focusedItemIndex={focusedItemIndex}
