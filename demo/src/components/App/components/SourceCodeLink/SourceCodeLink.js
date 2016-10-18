@@ -10,7 +10,8 @@ export default function SourceCodeLink(props) {
       className={styles.link}
       href={`//github.com/moroshko/react-autowhatever/tree/master/${file}`}
       target="_blank"
-      rel="noopener noreferrer">
+      rel="noopener noreferrer"
+    >
       Source code
     </a>
   );

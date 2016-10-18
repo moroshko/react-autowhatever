@@ -75,7 +75,8 @@ function Example(props) {
         getSectionItems={getSectionItems}
         renderItem={renderItem}
         inputProps={inputProps}
-        theme={theme} />
+        theme={theme}
+      />
       <SourceCodeLink file={file} />
     </div>
   );

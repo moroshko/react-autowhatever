@@ -1,26 +1,25 @@
 import React, { Component } from 'react';
-import sinon from 'sinon';
 import Autowhatever from '../../src/Autowhatever';
 import items from './items';
 
-export const renderItem = sinon.spy(item => (
-  <span>{item.text}</span>
-));
+export const renderItem = item => item.text;
+
+export const inputComponent = props => (
+  <div>
+    <input {...props} />
+  </div>
+);
 
 export default class AutowhateverApp extends Component {
   constructor() {
     super();
 
     this.state = {
-      value: '',
-      focusedItemIndex: null
+      value: ''
     };
 
     this.storeAutowhateverReference = this.storeAutowhateverReference.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.onMouseEnter = this.onMouseEnter.bind(this);
-    this.onMouseLeave = this.onMouseLeave.bind(this);
-    this.onClick = this.onClick.bind(this);
   }
 
   storeAutowhateverReference(autowhatever) {
@@ -35,18 +34,6 @@ export default class AutowhateverApp extends Component {
     });
   }
 
-  onMouseEnter(event, { itemIndex }) {
-    this.setState({
-      focusedItemIndex: itemIndex
-    });
-  }
-
-  onMouseLeave() {
-    this.setState({
-      focusedItemIndex: null
-    });
-  }
-
   onClick(event, { itemIndex }) {
     this.setState({
       value: items[itemIndex].text
@@ -54,26 +41,19 @@ export default class AutowhateverApp extends Component {
   }
 
   render() {
-    const { value, focusedItemIndex } = this.state;
+    const { value } = this.state;
     const inputProps = {
-      id: 'my-fancy-input',
+      id: 'my-custom-input',
       value,
       onChange: this.onChange
-    };
-    const itemProps = {
-      onMouseEnter: this.onMouseEnter,
-      onMouseLeave: this.onMouseLeave,
-      onClick: this.onClick
     };
 
     return (
       <Autowhatever
-        id="my-fancy-component"
+        inputComponent={inputComponent}
         items={items}
         renderItem={renderItem}
         inputProps={inputProps}
-        itemProps={itemProps}
-        focusedItemIndex={focusedItemIndex}
         ref={this.storeAutowhateverReference}
       />
     );

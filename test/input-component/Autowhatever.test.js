@@ -1,0 +1,15 @@
+import React from 'react';
+import TestUtils from 'react-addons-test-utils';
+import { expect } from 'chai';
+import { init, getStoredInput } from '../helpers';
+import AutowhateverApp from './AutowhateverApp';
+
+describe('Autowhatever with inputComponent', () => {
+  beforeEach(() => {
+    init(TestUtils.renderIntoDocument(<AutowhateverApp />));
+  });
+
+  it('should store the input on the instance', () => {
+    expect(getStoredInput().getAttribute('id')).to.equal('my-custom-input');
+  });
+});

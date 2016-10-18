@@ -73,7 +73,8 @@ export default class AutowhateverApp extends Component {
         inputProps={inputProps}
         focusedSectionIndex={focusedSectionIndex}
         focusedItemIndex={focusedItemIndex}
-        ref={this.storeAutowhateverReference} />
+        ref={this.storeAutowhateverReference}
+      />
     );
   }
 }
