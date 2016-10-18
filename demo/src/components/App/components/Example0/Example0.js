@@ -31,7 +31,8 @@ function Example(props) {
         id={exampleId}
         items={[]}
         inputProps={inputProps}
-        theme={theme} />
+        theme={theme}
+      />
       <SourceCodeLink file={file} />
     </div>
   );

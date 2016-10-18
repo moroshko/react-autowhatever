@@ -143,7 +143,8 @@ function Example(props) {
         focusedSectionIndex={focusedSectionIndex}
         focusedItemIndex={focusedItemIndex}
         itemProps={itemProps}
-        theme={theme} />
+        theme={theme}
+      />
       <SourceCodeLink file={file} />
     </div>
   );

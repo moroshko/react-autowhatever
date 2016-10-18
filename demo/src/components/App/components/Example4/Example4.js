@@ -77,7 +77,8 @@ function Example(props) {
         inputProps={inputProps}
         focusedSectionIndex={0}
         focusedItemIndex={1}
-        theme={theme} />
+        theme={theme}
+      />
       <SourceCodeLink file={file} />
     </div>
   );

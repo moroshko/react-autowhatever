@@ -6,6 +6,7 @@ import ItemsList from './ItemsList';
 
 const alwaysTrue = () => true;
 const emptyObject = {};
+const defaultRenderInputComponent = props => <input {...props} />;
 const defaultRenderItemsContainer = props => <div {...props} />;
 const defaultTheme = {
   container: 'react-autowhatever__container',
@@ -23,6 +24,7 @@ export default class Autowhatever extends Component {
   static propTypes = {
     id: PropTypes.string,                  // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
     multiSection: PropTypes.bool,          // Indicates whether a multi section layout should be rendered.
+    renderInputComponent: PropTypes.func,  // Renders the input component.
     items: PropTypes.array.isRequired,     // Array of items or sections to render.
     renderItemsContainer: PropTypes.func,  // Renders the items container.
     renderItem: PropTypes.func,            // This function renders a single item.
@@ -47,6 +49,7 @@ export default class Autowhatever extends Component {
   static defaultProps = {
     id: '1',
     multiSection: false,
+    renderInputComponent: defaultRenderInputComponent,
     renderItemsContainer: defaultRenderItemsContainer,
     shouldRenderSection: alwaysTrue,
     renderItem: () => {
@@ -177,7 +180,8 @@ export default class Autowhatever extends Component {
             section={section}
             renderSectionTitle={renderSectionTitle}
             theme={theme}
-            sectionKeyPrefix={sectionKeyPrefix} />
+            sectionKeyPrefix={sectionKeyPrefix}
+          />
           <ItemsList
             items={this.sectionsItems[sectionIndex]}
             itemProps={itemProps}
@@ -189,7 +193,8 @@ export default class Autowhatever extends Component {
             getItemId={this.getItemId}
             theme={theme}
             keyPrefix={keyPrefix}
-            ref={this.storeItemsListReference} />
+            ref={this.storeItemsListReference}
+          />
         </div>
       );
       /* eslint-enable react/jsx-key */
@@ -219,7 +224,8 @@ export default class Autowhatever extends Component {
         onFocusedItemChange={this.onFocusedItemChange}
         getItemId={this.getItemId}
         theme={theme}
-        keyPrefix={`react-autowhatever-${id}-`} />
+        keyPrefix={`react-autowhatever-${id}-`}
+      />
     );
   }
 
@@ -273,7 +279,7 @@ export default class Autowhatever extends Component {
   render() {
     const { theme } = this;
     const {
-      id, multiSection, renderItemsContainer,
+      id, multiSection, renderInputComponent, renderItemsContainer,
       focusedSectionIndex, focusedItemIndex
     } = this.props;
     const renderedItems = multiSection ? this.renderSections() : this.renderItems();
@@ -285,7 +291,7 @@ export default class Autowhatever extends Component {
       isOpen && 'containerOpen'
     );
     const itemsContainerId = `react-autowhatever-${id}`;
-    const inputProps = {
+    const inputComponent = renderInputComponent({
       type: 'text',
       value: '',
       autoComplete: 'off',
@@ -299,21 +305,17 @@ export default class Autowhatever extends Component {
       ...this.props.inputProps,
       onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown,
       ref: this.storeInputReference
-    };
-    const itemsContainerProps = {
+    });
+    const itemsContainer = renderItemsContainer({
       id: itemsContainerId,
       ...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer'),
-      ref: this.storeItemsContainerReference
-    };
-    const InputComponent = this.props.inputComponent || 'input';
-    const itemsContainer = renderItemsContainer({
-      ...itemsContainerProps,
+      ref: this.storeItemsContainerReference,
       children: renderedItems
     });
 
     return (
       <div {...containerProps}>
-        <InputComponent {...inputProps} />
+        {inputComponent}
         {itemsContainer}
       </div>
     );

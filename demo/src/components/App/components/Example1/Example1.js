@@ -50,7 +50,8 @@ function Example(props) {
         items={items}
         renderItem={renderItem}
         inputProps={inputProps}
-        theme={theme} />
+        theme={theme}
+      />
       <SourceCodeLink file={file} />
     </div>
   );

@@ -42,7 +42,8 @@ class App extends React.Component { // eslint-disable-line no-undef
         items={items}
         renderItem={renderItem}
         inputProps={inputProps}
-        focusedItemIndex={2} />
+        focusedItemIndex={2}
+      />
     );
   }
 }

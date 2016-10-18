@@ -71,7 +71,8 @@ export default class ItemsList extends Component {
                 itemIndex={itemIndex}
                 item={item}
                 renderItem={renderItem}
-                renderItemData={renderItemData} />
+                renderItemData={renderItemData}
+              />
             );
             /* eslint-enable react/jsx-key */
           })

@@ -94,7 +94,7 @@ module.exports = {
     'react/style-prop-object': 2,
 
     'react/jsx-boolean-value': [2, 'always'],
-    'react/jsx-closing-bracket-location': [2, { 'selfClosing': 'after-props', 'nonEmpty': 'after-props' }],
+    'react/jsx-closing-bracket-location': [2, 'tag-aligned'],
     'react/jsx-curly-spacing': [2, 'never', { 'allowMultiline': true }],
     'react/jsx-equals-spacing': [2, 'never'],
     'react/jsx-filename-extension': [2, { 'extensions': ['.js'] }],
