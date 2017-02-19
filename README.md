@@ -1,8 +1,5 @@
 [![Build Status](https://img.shields.io/codeship/6c79f8c0-2565-0133-4af8-72f090cba113/master.svg?style=flat-square)](https://codeship.com/projects/96953)
 
-[![Pull Requests stats](https://img.shields.io/issuestats/p/long/github/moroshko/react-autowhatever.svg?style=flat-square)](http://issuestats.com/github/moroshko/react-autowhatever)
-[![Issues stats](https://img.shields.io/issuestats/i/long/github/moroshko/react-autowhatever.svg?style=flat-square)](http://issuestats.com/github/moroshko/react-autowhatever)
-
 [![npm Downloads](https://img.shields.io/npm/dm/react-autowhatever.svg?style=flat-square)](https://npmjs.org/package/react-autowhatever)
 [![npm Version](https://img.shields.io/npm/v/react-autowhatever.svg?style=flat-square)](https://npmjs.org/package/react-autowhatever)
 
