@@ -37,22 +37,19 @@ export default class AutowhateverApp extends Component {
       focusedSectionIndex: null,
       focusedItemIndex: null
     };
-
-    this.storeAutowhateverReference = this.storeAutowhateverReference.bind(this);
-    this.onChange = this.onChange.bind(this);
   }
 
-  storeAutowhateverReference(autowhatever) {
+  storeAutowhateverReference = autowhatever => {
     if (autowhatever !== null) {
       this.autowhatever = autowhatever;
     }
-  }
+  };
 
-  onChange(event) {
+  onChange = event => {
     this.setState({
       value: event.target.value
     });
-  }
+  };
 
   render() {
     const { value, focusedSectionIndex, focusedItemIndex } = this.state;

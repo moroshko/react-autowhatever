@@ -15,7 +15,16 @@ export const init = application => {
 };
 
 export const eventMatcher = sinon.match.instanceOf(SyntheticEvent);
+export const childrenMatcher = sinon.match.any;
+export const containerPropsMatcher = sinon.match({
+  id: sinon.match.string,
+  key: sinon.match.string,
+  className: sinon.match.string,
+  ref: sinon.match.func
+});
 
+export const getElementWithClass =
+  className => TestUtils.findRenderedDOMComponentWithClass(app, className);
 export const getStoredInput = () => app.autowhatever.input;
 export const getStoredItemsContainer = () => app.autowhatever.itemsContainer;
 export const getStoredFocusedItem = () => app.autowhatever.focusedItem;

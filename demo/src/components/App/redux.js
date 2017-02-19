@@ -46,6 +46,9 @@ const initialState = {
   },
   10: {
     value: ''
+  },
+  11: {
+    value: ''
   }
 };
 

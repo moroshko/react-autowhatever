@@ -23,19 +23,13 @@ export default class ItemsList extends Component {
     sectionIndex: null
   };
 
-  constructor() {
-    super();
-
-    this.storeFocusedItemReference = this.storeFocusedItemReference.bind(this);
-  }
-
   shouldComponentUpdate(nextProps) {
     return compareObjects(nextProps, this.props, ['itemProps']);
   }
 
-  storeFocusedItemReference(focusedItem) {
+  storeFocusedItemReference = focusedItem => {
     this.props.onFocusedItemChange(focusedItem === null ? null : focusedItem.item);
-  }
+  };
 
   render() {
     const {

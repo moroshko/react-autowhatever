@@ -15,43 +15,37 @@ export default class AutowhateverApp extends Component {
       value: '',
       focusedItemIndex: null
     };
-
-    this.storeAutowhateverReference = this.storeAutowhateverReference.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.onMouseEnter = this.onMouseEnter.bind(this);
-    this.onMouseLeave = this.onMouseLeave.bind(this);
-    this.onClick = this.onClick.bind(this);
   }
 
-  storeAutowhateverReference(autowhatever) {
+  storeAutowhateverReference = autowhatever => {
     if (autowhatever !== null) {
       this.autowhatever = autowhatever;
     }
-  }
+  };
 
-  onChange(event) {
+  onChange = event => {
     this.setState({
       value: event.target.value
     });
-  }
+  };
 
-  onMouseEnter(event, { itemIndex }) {
+  onMouseEnter = (event, { itemIndex }) => {
     this.setState({
       focusedItemIndex: itemIndex
     });
-  }
+  };
 
-  onMouseLeave() {
+  onMouseLeave = () => {
     this.setState({
       focusedItemIndex: null
     });
-  }
+  };
 
-  onClick(event, { itemIndex }) {
+  onClick = (event, { itemIndex }) => {
     this.setState({
       value: items[itemIndex].text
     });
-  }
+  };
 
   render() {
     const { value, focusedItemIndex } = this.state;

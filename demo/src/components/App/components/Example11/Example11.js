@@ -1,3 +1,4 @@
+import styles from './Example11.less';
 import theme from '../theme.less';
 
 import React, { PropTypes } from 'react';
@@ -6,20 +7,21 @@ import { updateInputValue } from '../../redux';
 import Autowhatever from 'Autowhatever';
 import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
 
-const exampleId = '10';
+const exampleId = '11';
 const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`;
 
-const renderInputComponent = inputProps => {
-  const style = {
-    border: '0 solid green',
-    borderBottomWidth: '1px',
-    borderRadius: 0
-  };
-
-  return (
-    <input style={style} {...inputProps} />
-  );
-};
+const renderItemsContainer = ({ children, containerProps, data }) => (
+  <div {...containerProps}>
+    {children}
+    <div className={styles.footer}>
+      {
+        data.query
+          ? <span>Press Enter to search <strong>{data.query}</strong></span>
+          : <span>Powered by react-autowhatever</span>
+      }
+    </div>
+  </div>
+);
 
 const mapStateToProps = state => ({
   value: state[exampleId].value
@@ -29,20 +31,43 @@ const mapDispatchToProps = dispatch => ({
   onChange: event => dispatch(updateInputValue(exampleId, event.target.value))
 });
 
+const items = [{
+  text: 'Apple'
+}, {
+  text: 'Banana'
+}, {
+  text: 'Cherry'
+}, {
+  text: 'Grapefruit'
+}, {
+  text: 'Lemon'
+}];
+
+function renderItem(item) {
+  return (
+    <span>{item.text}</span>
+  );
+}
+
 const Example = props => {
   const { value, onChange } = props;
   const inputProps = {
-    placeholder: 'Custom input, no items here',
+    placeholder: 'Custom items container',
     value,
     onChange
+  };
+  const renderItemsContainerData = {
+    query: value.trim()
   };
 
   return (
     <div>
       <Autowhatever
         id={exampleId}
-        renderInputComponent={renderInputComponent}
-        items={[]}
+        renderItemsContainer={renderItemsContainer}
+        renderItemsContainerData={renderItemsContainerData}
+        items={items}
+        renderItem={renderItem}
         inputProps={inputProps}
         theme={theme}
       />

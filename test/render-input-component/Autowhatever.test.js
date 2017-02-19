@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { init, getStoredInput } from '../helpers';
 import AutowhateverApp from './AutowhateverApp';
 
-describe('Autowhatever with inputComponent', () => {
+describe('Autowhatever with renderInputComponent', () => {
   beforeEach(() => {
     init(TestUtils.renderIntoDocument(<AutowhateverApp />));
   });

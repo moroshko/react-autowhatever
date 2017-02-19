@@ -7,7 +7,8 @@ import ItemsList from './ItemsList';
 const alwaysTrue = () => true;
 const emptyObject = {};
 const defaultRenderInputComponent = props => <input {...props} />;
-const defaultRenderItemsContainer = props => <div {...props} />;
+const defaultRenderItemsContainer =
+  ({ children, containerProps }) => <div children={children} {...containerProps} />;
 const defaultTheme = {
   container: 'react-autowhatever__container',
   containerOpen: 'react-autowhatever__container--open',
@@ -22,19 +23,19 @@ const defaultTheme = {
 
 export default class Autowhatever extends Component {
   static propTypes = {
-    id: PropTypes.string,                  // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
-    multiSection: PropTypes.bool,          // Indicates whether a multi section layout should be rendered.
-    renderInputComponent: PropTypes.func,  // Renders the input component.
-    items: PropTypes.array.isRequired,     // Array of items or sections to render.
-    renderItemsContainer: PropTypes.func,  // Renders the items container.
-    renderItem: PropTypes.func,            // This function renders a single item.
-    renderItemData: PropTypes.object,      // Arbitrary data that will be passed to renderItem()
-    shouldRenderSection: PropTypes.func,   // This function gets a section and returns whether it should be rendered, or not.
-    renderSectionTitle: PropTypes.func,    // This function gets a section and renders its title.
-    getSectionItems: PropTypes.func,       // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
-    inputComponent: PropTypes.func,        // When specified, it is used to render the input element
-    inputProps: PropTypes.object,          // Arbitrary input props
-    itemProps: PropTypes.oneOfType([       // Arbitrary item props
+    id: PropTypes.string,                       // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
+    multiSection: PropTypes.bool,               // Indicates whether a multi section layout should be rendered.
+    renderInputComponent: PropTypes.func,       // When specified, it is used to render the input element.
+    renderItemsContainer: PropTypes.func,       // Renders the items container.
+    renderItemsContainerData: PropTypes.object, // Arbitrary data that will be passed to renderItemsContainer()
+    items: PropTypes.array.isRequired,          // Array of items or sections to render.
+    renderItem: PropTypes.func,                 // This function renders a single item.
+    renderItemData: PropTypes.object,           // Arbitrary data that will be passed to renderItem()
+    shouldRenderSection: PropTypes.func,        // This function gets a section and returns whether it should be rendered, or not.
+    renderSectionTitle: PropTypes.func,         // This function gets a section and renders its title.
+    getSectionItems: PropTypes.func,            // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
+    inputProps: PropTypes.object,               // Arbitrary input props
+    itemProps: PropTypes.oneOfType([            // Arbitrary item props
       PropTypes.object,
       PropTypes.func
     ]),
@@ -51,6 +52,7 @@ export default class Autowhatever extends Component {
     multiSection: false,
     renderInputComponent: defaultRenderInputComponent,
     renderItemsContainer: defaultRenderItemsContainer,
+    renderItemsContainerData: emptyObject,
     shouldRenderSection: alwaysTrue,
     renderItem: () => {
       throw new Error('`renderItem` must be provided');
@@ -77,12 +79,6 @@ export default class Autowhatever extends Component {
     this.setSectionsItems(props);
     this.setSectionIterator(props);
     this.setTheme(props);
-
-    this.onKeyDown = this.onKeyDown.bind(this);
-    this.storeInputReference = this.storeInputReference.bind(this);
-    this.storeItemsContainerReference = this.storeItemsContainerReference.bind(this);
-    this.onFocusedItemChange = this.onFocusedItemChange.bind(this);
-    this.getItemId = this.getItemId.bind(this);
   }
 
   componentDidMount() {
@@ -126,23 +122,23 @@ export default class Autowhatever extends Component {
     this.theme = themeable(props.theme);
   }
 
-  storeInputReference(input) {
+  storeInputReference = input => {
     if (input !== null) {
       this.input = input;
     }
-  }
+  };
 
-  storeItemsContainerReference(itemsContainer) {
+  storeItemsContainerReference = itemsContainer => {
     if (itemsContainer !== null) {
       this.itemsContainer = itemsContainer;
     }
-  }
+  };
 
-  onFocusedItemChange(focusedItem) {
+  onFocusedItemChange = focusedItem => {
     this.focusedItem = focusedItem;
-  }
+  };
 
-  getItemId(sectionIndex, itemIndex) {
+  getItemId = (sectionIndex, itemIndex) => {
     if (itemIndex === null) {
       return null;
     }
@@ -151,7 +147,7 @@ export default class Autowhatever extends Component {
     const section = (sectionIndex === null ? '' : `section-${sectionIndex}`);
 
     return `react-autowhatever-${id}-${section}-item-${itemIndex}`;
-  }
+  };
 
   renderSections() {
     if (this.allSectionsAreEmpty) {
@@ -229,7 +225,7 @@ export default class Autowhatever extends Component {
     );
   }
 
-  onKeyDown(event) {
+  onKeyDown = event => {
     const { inputProps, focusedSectionIndex, focusedItemIndex } = this.props;
 
     switch (event.key) {
@@ -246,7 +242,7 @@ export default class Autowhatever extends Component {
       default:
         inputProps.onKeyDown(event, { focusedSectionIndex, focusedItemIndex });
     }
-  }
+  };
 
   ensureFocusedItemIsVisible() {
     const { focusedItem } = this;
@@ -280,7 +276,7 @@ export default class Autowhatever extends Component {
     const { theme } = this;
     const {
       id, multiSection, renderInputComponent, renderItemsContainer,
-      focusedSectionIndex, focusedItemIndex
+      renderItemsContainerData, focusedSectionIndex, focusedItemIndex
     } = this.props;
     const renderedItems = multiSection ? this.renderSections() : this.renderItems();
     const isOpen = (renderedItems !== null);
@@ -307,10 +303,13 @@ export default class Autowhatever extends Component {
       ref: this.storeInputReference
     });
     const itemsContainer = renderItemsContainer({
-      id: itemsContainerId,
-      ...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer'),
-      ref: this.storeItemsContainerReference,
-      children: renderedItems
+      children: renderedItems,
+      containerProps: {
+        id: itemsContainerId,
+        ...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer'),
+        ref: this.storeItemsContainerReference
+      },
+      data: renderItemsContainerData
     });
 
     return (

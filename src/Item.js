@@ -14,49 +14,39 @@ export default class Item extends Component {
     onClick: PropTypes.func
   };
 
-  constructor() {
-    super();
-
-    this.storeItemReference = this.storeItemReference.bind(this);
-    this.onMouseEnter = this.onMouseEnter.bind(this);
-    this.onMouseLeave = this.onMouseLeave.bind(this);
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onClick = this.onClick.bind(this);
-  }
-
   shouldComponentUpdate(nextProps) {
     return compareObjects(nextProps, this.props, ['renderItemData']);
   }
 
-  storeItemReference(item) {
+  storeItemReference = item => {
     if (item !== null) {
       this.item = item;
     }
-  }
+  };
 
-  onMouseEnter(event) {
+  onMouseEnter = event => {
     const { sectionIndex, itemIndex } = this.props;
 
     this.props.onMouseEnter(event, { sectionIndex, itemIndex });
-  }
+  };
 
-  onMouseLeave(event) {
+  onMouseLeave = event => {
     const { sectionIndex, itemIndex } = this.props;
 
     this.props.onMouseLeave(event, { sectionIndex, itemIndex });
-  }
+  };
 
-  onMouseDown(event) {
+  onMouseDown = event => {
     const { sectionIndex, itemIndex } = this.props;
 
     this.props.onMouseDown(event, { sectionIndex, itemIndex });
-  }
+  };
 
-  onClick(event) {
+  onClick = event => {
     const { sectionIndex, itemIndex } = this.props;
 
     this.props.onClick(event, { sectionIndex, itemIndex });
-  }
+  };
 
   render() {
     const { item, renderItem, renderItemData, ...restProps } = this.props;
