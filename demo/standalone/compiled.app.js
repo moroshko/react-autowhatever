@@ -115,7 +115,7 @@
 	      , { items: items,
 	        renderItem: renderItem,
 	        inputProps: inputProps,
-	        focusedItemIndex: 2
+	        highlightedItemIndex: 2
 	      });
 	    }
 	  }]);

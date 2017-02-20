@@ -58,47 +58,47 @@ describe('Multi Section Autowhatever', () => {
       clickDown();
       expect(onKeyDown).to.be.calledOnce;
       expect(onKeyDown).to.be.calledWith(eventMatcher, {
-        newFocusedSectionIndex: 0,
-        newFocusedItemIndex: 0
+        newHighlightedSectionIndex: 0,
+        newHighlightedItemIndex: 0
       });
 
       clickDown();
       expect(onKeyDown).to.be.calledWith(eventMatcher, {
-        newFocusedSectionIndex: 0,
-        newFocusedItemIndex: 1
+        newHighlightedSectionIndex: 0,
+        newHighlightedItemIndex: 1
       });
 
       clickDown();
       expect(onKeyDown).to.be.calledWith(eventMatcher, {
-        newFocusedSectionIndex: 1,
-        newFocusedItemIndex: 0
+        newHighlightedSectionIndex: 1,
+        newHighlightedItemIndex: 0
       });
 
       clickDown();
       expect(onKeyDown).to.be.calledWith(eventMatcher, {
-        newFocusedSectionIndex: 2,
-        newFocusedItemIndex: 0
+        newHighlightedSectionIndex: 2,
+        newHighlightedItemIndex: 0
       });
 
       clickDown();
       expect(onKeyDown).to.be.calledWith(eventMatcher, {
-        newFocusedSectionIndex: null,
-        newFocusedItemIndex: null
+        newHighlightedSectionIndex: null,
+        newHighlightedItemIndex: null
       });
     });
 
     it('should be called with the right parameters when Enter is pressed', () => {
       clickEnter();
       expect(onKeyDown).to.be.calledWith(eventMatcher, {
-        focusedSectionIndex: null,
-        focusedItemIndex: null
+        highlightedSectionIndex: null,
+        highlightedItemIndex: null
       });
 
       clickUp();
       clickEnter();
       expect(onKeyDown).to.be.calledWith(eventMatcher, {
-        focusedSectionIndex: 2,
-        focusedItemIndex: 0
+        highlightedSectionIndex: 2,
+        highlightedItemIndex: 0
       });
     });
   });

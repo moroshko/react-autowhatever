@@ -2,7 +2,7 @@ import theme from '../theme.less';
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { updateInputValue, updateFocusedItem } from '../../redux';
+import { updateInputValue, updateHighlightedItem } from '../../redux';
 import Autowhatever from 'Autowhatever';
 import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
 import IsolatedScroll from 'react-isolated-scroll';
@@ -35,8 +35,8 @@ const items = [{
 function mapStateToProps(state) {
   return {
     value: state[exampleId].value,
-    focusedSectionIndex: state[exampleId].focusedSectionIndex,
-    focusedItemIndex: state[exampleId].focusedItemIndex
+    highlightedSectionIndex: state[exampleId].highlightedSectionIndex,
+    highlightedItemIndex: state[exampleId].highlightedItemIndex
   };
 }
 
@@ -45,11 +45,11 @@ function mapDispatchToProps(dispatch) {
     onChange: event => {
       dispatch(updateInputValue(exampleId, event.target.value));
     },
-    onKeyDown: (event, { newFocusedSectionIndex, newFocusedItemIndex }) => {
+    onKeyDown: (event, { newHighlightedSectionIndex, newHighlightedItemIndex }) => {
       event.preventDefault(); // Don't move the cursor to start/end
 
-      if (typeof newFocusedItemIndex !== 'undefined') {
-        dispatch(updateFocusedItem(exampleId, newFocusedSectionIndex, newFocusedItemIndex));
+      if (typeof newHighlightedItemIndex !== 'undefined') {
+        dispatch(updateHighlightedItem(exampleId, newHighlightedSectionIndex, newHighlightedItemIndex));
       }
     }
   };
@@ -75,7 +75,7 @@ function renderItem(item) {
 }
 
 function Example(props) {
-  const { value, focusedSectionIndex, focusedItemIndex, onChange, onKeyDown } = props;
+  const { value, highlightedSectionIndex, highlightedItemIndex, onChange, onKeyDown } = props;
   const inputProps = { value, onChange, onKeyDown };
 
   return (
@@ -86,8 +86,8 @@ function Example(props) {
         renderItemsContainer={renderItemsContainer}
         renderItem={renderItem}
         inputProps={inputProps}
-        focusedSectionIndex={focusedSectionIndex}
-        focusedItemIndex={focusedItemIndex}
+        highlightedSectionIndex={highlightedSectionIndex}
+        highlightedItemIndex={highlightedItemIndex}
         theme={theme}
       />
       <SourceCodeLink file={file} />
@@ -97,8 +97,8 @@ function Example(props) {
 
 Example.propTypes = {
   value: PropTypes.string.isRequired,
-  focusedSectionIndex: PropTypes.number,
-  focusedItemIndex: PropTypes.number,
+  highlightedSectionIndex: PropTypes.number,
+  highlightedItemIndex: PropTypes.number,
 
   onChange: PropTypes.func.isRequired,
   onKeyDown: PropTypes.func.isRequired

@@ -27,7 +27,7 @@ export const getElementWithClass =
   className => TestUtils.findRenderedDOMComponentWithClass(app, className);
 export const getStoredInput = () => app.autowhatever.input;
 export const getStoredItemsContainer = () => app.autowhatever.itemsContainer;
-export const getStoredFocusedItem = () => app.autowhatever.focusedItem;
+export const getStoredHighlightedItem = () => app.autowhatever.highlightedItem;
 
 export const getInputAttribute = attr =>
   input.getAttribute(attr);

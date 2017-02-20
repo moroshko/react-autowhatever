@@ -2,7 +2,7 @@ import theme from '../theme.less';
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { updateInputValue, updateFocusedItem } from '../../redux';
+import { updateInputValue, updateHighlightedItem } from '../../redux';
 import Autowhatever from 'Autowhatever';
 import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
 
@@ -24,8 +24,8 @@ const items = [{
 function mapStateToProps(state) {
   return {
     value: state[exampleId].value,
-    focusedSectionIndex: state[exampleId].focusedSectionIndex,
-    focusedItemIndex: state[exampleId].focusedItemIndex
+    highlightedSectionIndex: state[exampleId].highlightedSectionIndex,
+    highlightedItemIndex: state[exampleId].highlightedItemIndex
   };
 }
 
@@ -35,10 +35,10 @@ function mapDispatchToProps(dispatch) {
       dispatch(updateInputValue(exampleId, event.target.value));
     },
     onMouseEnter: (event, { sectionIndex, itemIndex }) => {
-      dispatch(updateFocusedItem(exampleId, sectionIndex, itemIndex));
+      dispatch(updateHighlightedItem(exampleId, sectionIndex, itemIndex));
     },
     onMouseLeave: () => {
-      dispatch(updateFocusedItem(exampleId, null, null));
+      dispatch(updateHighlightedItem(exampleId, null, null));
     },
     onMouseDown: (event, { itemIndex }) => {
       dispatch(updateInputValue(exampleId, items[itemIndex].text + ' clicked'));
@@ -53,7 +53,7 @@ function renderItem(item) {
 }
 
 function Example(props) {
-  const { value, focusedSectionIndex, focusedItemIndex, onChange,
+  const { value, highlightedSectionIndex, highlightedItemIndex, onChange,
           onMouseEnter, onMouseLeave, onMouseDown } = props;
   const inputProps = { value, onChange };
   const itemProps = { onMouseEnter, onMouseLeave, onMouseDown };
@@ -66,8 +66,8 @@ function Example(props) {
         renderItem={renderItem}
         inputProps={inputProps}
         itemProps={itemProps}
-        focusedSectionIndex={focusedSectionIndex}
-        focusedItemIndex={focusedItemIndex}
+        highlightedSectionIndex={highlightedSectionIndex}
+        highlightedItemIndex={highlightedItemIndex}
         theme={theme}
       />
       <SourceCodeLink file={file} />
@@ -77,8 +77,8 @@ function Example(props) {
 
 Example.propTypes = {
   value: PropTypes.string.isRequired,
-  focusedSectionIndex: PropTypes.number,
-  focusedItemIndex: PropTypes.number,
+  highlightedSectionIndex: PropTypes.number,
+  highlightedItemIndex: PropTypes.number,
 
   onChange: PropTypes.func.isRequired,
   onMouseEnter: PropTypes.func.isRequired,

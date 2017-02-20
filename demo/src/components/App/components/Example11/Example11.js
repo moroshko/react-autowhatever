@@ -1,11 +1,63 @@
 import styles from './Example11.less';
-import theme from '../theme.less';
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { updateInputValue } from '../../redux';
 import Autowhatever from 'Autowhatever';
 import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
+
+const theme = {
+  container: {
+    position: 'relative'
+  },
+  input: {
+    width: '240px',
+    height: '30px',
+    padding: '10px 20px',
+    fontSize: '16px',
+    fontFamily: 'Helvetica, Arial, sans-serif',
+    border: '1px solid #aaa',
+    borderRadius: '4px',
+    boxSizing: 'content-box'
+  },
+  inputOpen: {
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0
+  },
+  inputFocus: {
+    outline: 'none'
+  },
+  itemsContainer: {
+    display: 'none'
+  },
+  itemsContainerOpen: {
+    display: 'block',
+    position: 'relative',
+    top: '-1px',
+    width: '280px',
+    border: '1px solid #aaa',
+    backgroundColor: '#fff',
+    fontSize: '16px',
+    lineHeight: 1.25,
+    borderBottomLeftRadius: '4px',
+    borderBottomRightRadius: '4px',
+    zIndex: 2,
+    maxHeight: '260px',
+    overflowY: 'auto'
+  },
+  itemsList: {
+    margin: 0,
+    padding: 0,
+    listStyleType: 'none'
+  },
+  item: {
+    cursor: 'pointer',
+    padding: '10px 20px'
+  },
+  itemHighlight: {
+    backgroundColor: '#ddd'
+  }
+};
 
 const exampleId = '11';
 const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`;
