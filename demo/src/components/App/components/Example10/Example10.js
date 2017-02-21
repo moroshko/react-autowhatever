@@ -32,7 +32,7 @@ const mapDispatchToProps = dispatch => ({
 const Example = props => {
   const { value, onChange } = props;
   const inputProps = {
-    placeholder: 'Custom input',
+    placeholder: 'Custom input, no items here',
     value,
     onChange
   };

@@ -5,7 +5,7 @@ import {
   init,
   getStoredInput,
   getStoredItemsContainer,
-  getStoredFocusedItem,
+  getStoredHighlightedItem,
   getInputAttribute,
   getItemsContainerAttribute,
   getItems,
@@ -45,8 +45,8 @@ describe('Plain List Autowhatever', () => {
       expect(getStoredItemsContainer().getAttribute('id')).to.equal('react-autowhatever-my-fancy-component');
     });
 
-    it('should set the stored focused item on the instance to null', () => {
-      expect(getStoredFocusedItem()).to.equal(null);
+    it('should set the stored highlighted item on the instance to null', () => {
+      expect(getStoredHighlightedItem()).to.equal(null);
     });
   });
 
@@ -58,7 +58,7 @@ describe('Plain List Autowhatever', () => {
       expect(renderItem).to.be.calledWith({ text: 'Apple' });
     });
 
-    it('should call `renderItem` twice when the focused item is changed', () => {
+    it('should call `renderItem` twice when the highlighted item is changed', () => {
       mouseEnterItem(1);
       renderItem.reset();
       mouseLeaveItem(1);
@@ -80,16 +80,16 @@ describe('Plain List Autowhatever', () => {
       expect(renderItem).not.to.have.been.called;
     });
 
-    it('should store the focused item on the instance', () => {
+    it('should store the highlighted item on the instance', () => {
       mouseEnterItem(2);
-      expect(getStoredFocusedItem().getAttribute('id'))
+      expect(getStoredHighlightedItem().getAttribute('id'))
         .to.equal('react-autowhatever-my-fancy-component--item-2');
 
       mouseLeaveItem(2);
-      expect(getStoredFocusedItem()).to.equal(null);
+      expect(getStoredHighlightedItem()).to.equal(null);
 
       mouseEnterItem(3);
-      expect(getStoredFocusedItem().getAttribute('id'))
+      expect(getStoredHighlightedItem().getAttribute('id'))
         .to.equal('react-autowhatever-my-fancy-component--item-3');
     });
   });

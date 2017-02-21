@@ -17,11 +17,11 @@ export const renderItem = sinon.spy(item => (
   <span>{item.text}</span>
 ));
 
-export const onKeyDown = sinon.spy((event, { newFocusedSectionIndex, newFocusedItemIndex }) => {
+export const onKeyDown = sinon.spy((event, { newHighlightedSectionIndex, newHighlightedItemIndex }) => {
   if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
     app.setState({
-      focusedSectionIndex: newFocusedSectionIndex,
-      focusedItemIndex: newFocusedItemIndex
+      highlightedSectionIndex: newHighlightedSectionIndex,
+      highlightedItemIndex: newHighlightedItemIndex
     });
   }
 });
@@ -34,28 +34,25 @@ export default class AutowhateverApp extends Component {
 
     this.state = {
       value: '',
-      focusedSectionIndex: null,
-      focusedItemIndex: null
+      highlightedSectionIndex: null,
+      highlightedItemIndex: null
     };
-
-    this.storeAutowhateverReference = this.storeAutowhateverReference.bind(this);
-    this.onChange = this.onChange.bind(this);
   }
 
-  storeAutowhateverReference(autowhatever) {
+  storeAutowhateverReference = autowhatever => {
     if (autowhatever !== null) {
       this.autowhatever = autowhatever;
     }
-  }
+  };
 
-  onChange(event) {
+  onChange = event => {
     this.setState({
       value: event.target.value
     });
-  }
+  };
 
   render() {
-    const { value, focusedSectionIndex, focusedItemIndex } = this.state;
+    const { value, highlightedSectionIndex, highlightedItemIndex } = this.state;
     const inputProps = {
       value,
       onChange: this.onChange,
@@ -71,8 +68,8 @@ export default class AutowhateverApp extends Component {
         getSectionItems={getSectionItems}
         renderItem={renderItem}
         inputProps={inputProps}
-        focusedSectionIndex={focusedSectionIndex}
-        focusedItemIndex={focusedItemIndex}
+        highlightedSectionIndex={highlightedSectionIndex}
+        highlightedItemIndex={highlightedItemIndex}
         ref={this.storeAutowhateverReference}
       />
     );

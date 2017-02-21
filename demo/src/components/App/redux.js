@@ -1,50 +1,53 @@
 const UPDATE_INPUT_VALUE = 'UPDATE_INPUT_VALUE';
 const HIDE_ITEMS = 'HIDE_ITEMS';
-const UPDATE_FOCUSED_ITEM = 'UPDATE_FOCUSED_ITEM';
+const UPDATE_HIGHLIGHTED_ITEM = 'UPDATE_HIGHLIGHTED_ITEM';
 
 const initialState = {
   0: {
     value: 'Items not displayed'
   },
   1: {
-    value: 'No focused item'
+    value: 'No highlighted item'
   },
   2: {
-    value: 'Focused item'
+    value: 'Highlighted item'
   },
   3: {
-    value: 'Multi section - No focused item'
+    value: 'Multi section - No highlighted item'
   },
   4: {
-    value: 'Multi section - focused item'
+    value: 'Multi section - highlighted item'
   },
   5: {
     value: 'Hover and click items',
-    focusedSectionIndex: null,
-    focusedItemIndex: null
+    highlightedSectionIndex: null,
+    highlightedItemIndex: null
   },
   6: {
     value: 'Up/Down',
-    focusedSectionIndex: null,
-    focusedItemIndex: null
+    highlightedSectionIndex: null,
+    highlightedItemIndex: null
   },
   7: {
     value: 'Up/Down (with scrollbar)',
-    focusedSectionIndex: null,
-    focusedItemIndex: 7
+    highlightedSectionIndex: null,
+    highlightedItemIndex: 7
   },
   8: {
     value: 'Multi section - Up/Down/Enter',
-    focusedSectionIndex: null,
-    focusedItemIndex: null
+    highlightedSectionIndex: null,
+    highlightedItemIndex: null
   },
   9: {
     value: '',
     items: [],
-    focusedSectionIndex: null,
-    focusedItemIndex: null
+    highlightedSectionIndex: null,
+    highlightedItemIndex: null
   },
   10: {
+    value: ''
+  },
+  11: {
     value: ''
   }
 };
@@ -65,12 +68,12 @@ export function hideItems(exampleNumber) {
   };
 }
 
-export function updateFocusedItem(exampleNumber, focusedSectionIndex, focusedItemIndex) {
+export function updateHighlightedItem(exampleNumber, highlightedSectionIndex, highlightedItemIndex) {
   return {
-    type: UPDATE_FOCUSED_ITEM,
+    type: UPDATE_HIGHLIGHTED_ITEM,
     exampleNumber,
-    focusedSectionIndex,
-    focusedItemIndex
+    highlightedSectionIndex,
+    highlightedItemIndex
   };
 }
 
@@ -97,21 +100,21 @@ export default function(state = initialState, action) {
         [exampleNumber]: {
           ...state[exampleNumber],
           items: [],
-          focusedSectionIndex: null,
-          focusedItemIndex: null
+          highlightedSectionIndex: null,
+          highlightedItemIndex: null
         }
       };
     }
 
-    case UPDATE_FOCUSED_ITEM: {
-      const { exampleNumber, focusedSectionIndex, focusedItemIndex } = action;
+    case UPDATE_HIGHLIGHTED_ITEM: {
+      const { exampleNumber, highlightedSectionIndex, highlightedItemIndex } = action;
 
       return {
         ...state,
         [exampleNumber]: {
           ...state[exampleNumber],
-          focusedSectionIndex: focusedSectionIndex,
-          focusedItemIndex: focusedItemIndex
+          highlightedSectionIndex: highlightedSectionIndex,
+          highlightedItemIndex: highlightedItemIndex
         }
       };
     }

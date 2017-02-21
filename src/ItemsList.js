@@ -12,8 +12,8 @@ export default class ItemsList extends Component {
     renderItem: PropTypes.func.isRequired,
     renderItemData: PropTypes.object.isRequired,
     sectionIndex: PropTypes.number,
-    focusedItemIndex: PropTypes.number,
-    onFocusedItemChange: PropTypes.func.isRequired,
+    highlightedItemIndex: PropTypes.number,
+    onHighlightedItemChange: PropTypes.func.isRequired,
     getItemId: PropTypes.func.isRequired,
     theme: PropTypes.func.isRequired,
     keyPrefix: PropTypes.string.isRequired
@@ -23,24 +23,18 @@ export default class ItemsList extends Component {
     sectionIndex: null
   };
 
-  constructor() {
-    super();
-
-    this.storeFocusedItemReference = this.storeFocusedItemReference.bind(this);
-  }
-
   shouldComponentUpdate(nextProps) {
     return compareObjects(nextProps, this.props, ['itemProps']);
   }
 
-  storeFocusedItemReference(focusedItem) {
-    this.props.onFocusedItemChange(focusedItem === null ? null : focusedItem.item);
-  }
+  storeHighlightedItemReference = highlightedItem => {
+    this.props.onHighlightedItemChange(highlightedItem === null ? null : highlightedItem.item);
+  };
 
   render() {
     const {
       items, itemProps, renderItem, renderItemData, sectionIndex,
-      focusedItemIndex, getItemId, theme, keyPrefix
+      highlightedItemIndex, getItemId, theme, keyPrefix
     } = this.props;
     const sectionPrefix = (sectionIndex === null ? keyPrefix : `${keyPrefix}section-${sectionIndex}-`);
     const isItemPropsFunction = (typeof itemProps === 'function');
@@ -49,17 +43,17 @@ export default class ItemsList extends Component {
       <ul role="listbox" {...theme(`${sectionPrefix}items-list`, 'itemsList')}>
         {
           items.map((item, itemIndex) => {
-            const isFocused = (itemIndex === focusedItemIndex);
+            const isHighlighted = (itemIndex === highlightedItemIndex);
             const itemKey = `${sectionPrefix}item-${itemIndex}`;
             const itemPropsObj = isItemPropsFunction ? itemProps({ sectionIndex, itemIndex }) : itemProps;
             const allItemProps = {
               id: getItemId(sectionIndex, itemIndex),
-              ...theme(itemKey, 'item', isFocused && 'itemFocused'),
+              ...theme(itemKey, 'item', isHighlighted && 'itemHighlight'),
               ...itemPropsObj
             };
 
-            if (isFocused) {
-              allItemProps.ref = this.storeFocusedItemReference;
+            if (isHighlighted) {
+              allItemProps.ref = this.storeHighlightedItemReference;
             }
 
             // `key` is provided by theme()

@@ -13,48 +13,42 @@ export default class AutowhateverApp extends Component {
 
     this.state = {
       value: '',
-      focusedItemIndex: null
+      highlightedItemIndex: null
     };
-
-    this.storeAutowhateverReference = this.storeAutowhateverReference.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.onMouseEnter = this.onMouseEnter.bind(this);
-    this.onMouseLeave = this.onMouseLeave.bind(this);
-    this.onClick = this.onClick.bind(this);
   }
 
-  storeAutowhateverReference(autowhatever) {
+  storeAutowhateverReference = autowhatever => {
     if (autowhatever !== null) {
       this.autowhatever = autowhatever;
     }
-  }
+  };
 
-  onChange(event) {
+  onChange = event => {
     this.setState({
       value: event.target.value
     });
-  }
+  };
 
-  onMouseEnter(event, { itemIndex }) {
+  onMouseEnter = (event, { itemIndex }) => {
     this.setState({
-      focusedItemIndex: itemIndex
+      highlightedItemIndex: itemIndex
     });
-  }
+  };
 
-  onMouseLeave() {
+  onMouseLeave = () => {
     this.setState({
-      focusedItemIndex: null
+      highlightedItemIndex: null
     });
-  }
+  };
 
-  onClick(event, { itemIndex }) {
+  onClick = (event, { itemIndex }) => {
     this.setState({
       value: items[itemIndex].text
     });
-  }
+  };
 
   render() {
-    const { value, focusedItemIndex } = this.state;
+    const { value, highlightedItemIndex } = this.state;
     const inputProps = {
       id: 'my-fancy-input',
       value,
@@ -73,7 +67,7 @@ export default class AutowhateverApp extends Component {
         renderItem={renderItem}
         inputProps={inputProps}
         itemProps={itemProps}
-        focusedItemIndex={focusedItemIndex}
+        highlightedItemIndex={highlightedItemIndex}
         ref={this.storeAutowhateverReference}
       />
     );

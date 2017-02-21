@@ -75,8 +75,8 @@ function Example(props) {
         getSectionItems={getSectionItems}
         renderItem={renderItem}
         inputProps={inputProps}
-        focusedSectionIndex={0}
-        focusedItemIndex={1}
+        highlightedSectionIndex={0}
+        highlightedItemIndex={1}
         theme={theme}
       />
       <SourceCodeLink file={file} />

@@ -4,7 +4,7 @@ import items from './items';
 
 export const renderItem = item => item.text;
 
-export const inputComponent = props => (
+export const renderInputComponent = props => (
   <div>
     <input {...props} />
   </div>
@@ -17,28 +17,19 @@ export default class AutowhateverApp extends Component {
     this.state = {
       value: ''
     };
-
-    this.storeAutowhateverReference = this.storeAutowhateverReference.bind(this);
-    this.onChange = this.onChange.bind(this);
   }
 
-  storeAutowhateverReference(autowhatever) {
+  storeAutowhateverReference = autowhatever => {
     if (autowhatever !== null) {
-      this.autowhatever = autowhatever;
+      this.autowhatever = autowhatever; // used by the getStoredInput() helper
     }
-  }
+  };
 
-  onChange(event) {
+  onChange = event => {
     this.setState({
       value: event.target.value
     });
-  }
-
-  onClick(event, { itemIndex }) {
-    this.setState({
-      value: items[itemIndex].text
-    });
-  }
+  };
 
   render() {
     const { value } = this.state;
@@ -50,7 +41,7 @@ export default class AutowhateverApp extends Component {
 
     return (
       <Autowhatever
-        inputComponent={inputComponent}
+        renderInputComponent={renderInputComponent}
         items={items}
         renderItem={renderItem}
         inputProps={inputProps}

@@ -7,40 +7,44 @@ import ItemsList from './ItemsList';
 const alwaysTrue = () => true;
 const emptyObject = {};
 const defaultRenderInputComponent = props => <input {...props} />;
-const defaultRenderItemsContainer = props => <div {...props} />;
+const defaultRenderItemsContainer =
+  ({ children, containerProps }) => <div children={children} {...containerProps} />;
 const defaultTheme = {
   container: 'react-autowhatever__container',
   containerOpen: 'react-autowhatever__container--open',
   input: 'react-autowhatever__input',
+  inputOpen: 'react-autowhatever__input--open',
+  inputFocus: 'react-autowhatever__input--focus',
   itemsContainer: 'react-autowhatever__items-container',
+  itemsContainerOpen: 'react-autowhatever__items-container--open',
   itemsList: 'react-autowhatever__items-list',
   item: 'react-autowhatever__item',
-  itemFocused: 'react-autowhatever__item--focused',
+  itemHighlight: 'react-autowhatever__item--highlight',
   sectionContainer: 'react-autowhatever__section-container',
+  sectionContainerFirst: 'react-autowhatever__section-container--first',
   sectionTitle: 'react-autowhatever__section-title'
 };
 
 export default class Autowhatever extends Component {
   static propTypes = {
-    id: PropTypes.string,                  // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
-    multiSection: PropTypes.bool,          // Indicates whether a multi section layout should be rendered.
-    renderInputComponent: PropTypes.func,  // Renders the input component.
-    items: PropTypes.array.isRequired,     // Array of items or sections to render.
-    renderItemsContainer: PropTypes.func,  // Renders the items container.
-    renderItem: PropTypes.func,            // This function renders a single item.
-    renderItemData: PropTypes.object,      // Arbitrary data that will be passed to renderItem()
-    shouldRenderSection: PropTypes.func,   // This function gets a section and returns whether it should be rendered, or not.
-    renderSectionTitle: PropTypes.func,    // This function gets a section and renders its title.
-    getSectionItems: PropTypes.func,       // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
-    inputComponent: PropTypes.func,        // When specified, it is used to render the input element
-    inputProps: PropTypes.object,          // Arbitrary input props
-    itemProps: PropTypes.oneOfType([       // Arbitrary item props
+    id: PropTypes.string,                       // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
+    multiSection: PropTypes.bool,               // Indicates whether a multi section layout should be rendered.
+    renderInputComponent: PropTypes.func,       // When specified, it is used to render the input element.
+    renderItemsContainer: PropTypes.func,       // Renders the items container.
+    items: PropTypes.array.isRequired,          // Array of items or sections to render.
+    renderItem: PropTypes.func,                 // This function renders a single item.
+    renderItemData: PropTypes.object,           // Arbitrary data that will be passed to renderItem()
+    shouldRenderSection: PropTypes.func,        // This function gets a section and returns whether it should be rendered, or not.
+    renderSectionTitle: PropTypes.func,         // This function gets a section and renders its title.
+    getSectionItems: PropTypes.func,            // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
+    inputProps: PropTypes.object,               // Arbitrary input props
+    itemProps: PropTypes.oneOfType([            // Arbitrary item props
       PropTypes.object,
       PropTypes.func
     ]),
-    focusedSectionIndex: PropTypes.number, // Section index of the focused item
-    focusedItemIndex: PropTypes.number,    // Focused item index (within a section)
-    theme: PropTypes.oneOfType([           // Styles. See: https://github.com/markdalgleish/react-themeable
+    highlightedSectionIndex: PropTypes.number, // Section index of the highlighted item
+    highlightedItemIndex: PropTypes.number,    // Highlighted item index (within a section)
+    theme: PropTypes.oneOfType([               // Styles. See: https://github.com/markdalgleish/react-themeable
       PropTypes.object,
       PropTypes.array
     ])
@@ -64,29 +68,27 @@ export default class Autowhatever extends Component {
     },
     inputProps: emptyObject,
     itemProps: emptyObject,
-    focusedSectionIndex: null,
-    focusedItemIndex: null,
+    highlightedSectionIndex: null,
+    highlightedItemIndex: null,
     theme: defaultTheme
   };
 
   constructor(props) {
     super(props);
 
-    this.focusedItem = null;
+    this.highlightedItem = null;
+
+    this.state = {
+      isInputFocused: false
+    };
 
     this.setSectionsItems(props);
     this.setSectionIterator(props);
     this.setTheme(props);
-
-    this.onKeyDown = this.onKeyDown.bind(this);
-    this.storeInputReference = this.storeInputReference.bind(this);
-    this.storeItemsContainerReference = this.storeItemsContainerReference.bind(this);
-    this.onFocusedItemChange = this.onFocusedItemChange.bind(this);
-    this.getItemId = this.getItemId.bind(this);
   }
 
   componentDidMount() {
-    this.ensureFocusedItemIsVisible();
+    this.ensureHighlightedItemIsVisible();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -104,7 +106,7 @@ export default class Autowhatever extends Component {
   }
 
   componentDidUpdate() {
-    this.ensureFocusedItemIsVisible();
+    this.ensureHighlightedItemIsVisible();
   }
 
   setSectionsItems(props) {
@@ -126,23 +128,23 @@ export default class Autowhatever extends Component {
     this.theme = themeable(props.theme);
   }
 
-  storeInputReference(input) {
+  storeInputReference = input => {
     if (input !== null) {
       this.input = input;
     }
-  }
+  };
 
-  storeItemsContainerReference(itemsContainer) {
+  storeItemsContainerReference = itemsContainer => {
     if (itemsContainer !== null) {
       this.itemsContainer = itemsContainer;
     }
-  }
+  };
 
-  onFocusedItemChange(focusedItem) {
-    this.focusedItem = focusedItem;
-  }
+  onHighlightedItemChange = highlightedItem => {
+    this.highlightedItem = highlightedItem;
+  };
 
-  getItemId(sectionIndex, itemIndex) {
+  getItemId = (sectionIndex, itemIndex) => {
     if (itemIndex === null) {
       return null;
     }
@@ -151,7 +153,7 @@ export default class Autowhatever extends Component {
     const section = (sectionIndex === null ? '' : `section-${sectionIndex}`);
 
     return `react-autowhatever-${id}-${section}-item-${itemIndex}`;
-  }
+  };
 
   renderSections() {
     if (this.allSectionsAreEmpty) {
@@ -161,7 +163,7 @@ export default class Autowhatever extends Component {
     const { theme } = this;
     const {
       id, items, renderItem, renderItemData, shouldRenderSection,
-      renderSectionTitle, focusedSectionIndex, focusedItemIndex, itemProps
+      renderSectionTitle, highlightedSectionIndex, highlightedItemIndex, itemProps
     } = this.props;
 
     return items.map((section, sectionIndex) => {
@@ -171,11 +173,12 @@ export default class Autowhatever extends Component {
 
       const keyPrefix = `react-autowhatever-${id}-`;
       const sectionKeyPrefix = `${keyPrefix}section-${sectionIndex}-`;
+      const isFirstSection = (sectionIndex === 0);
 
       // `key` is provided by theme()
       /* eslint-disable react/jsx-key */
       return (
-        <div {...theme(`${sectionKeyPrefix}container`, 'sectionContainer')}>
+        <div {...theme(`${sectionKeyPrefix}container`, 'sectionContainer', isFirstSection && 'sectionContainerFirst')}>
           <SectionTitle
             section={section}
             renderSectionTitle={renderSectionTitle}
@@ -188,8 +191,8 @@ export default class Autowhatever extends Component {
             renderItem={renderItem}
             renderItemData={renderItemData}
             sectionIndex={sectionIndex}
-            focusedItemIndex={focusedSectionIndex === sectionIndex ? focusedItemIndex : null}
-            onFocusedItemChange={this.onFocusedItemChange}
+            highlightedItemIndex={highlightedSectionIndex === sectionIndex ? highlightedItemIndex : null}
+            onHighlightedItemChange={this.onHighlightedItemChange}
             getItemId={this.getItemId}
             theme={theme}
             keyPrefix={keyPrefix}
@@ -210,8 +213,8 @@ export default class Autowhatever extends Component {
 
     const { theme } = this;
     const {
-      id, renderItem, renderItemData, focusedSectionIndex,
-      focusedItemIndex, itemProps
+      id, renderItem, renderItemData, highlightedSectionIndex,
+      highlightedItemIndex, itemProps
     } = this.props;
 
     return (
@@ -220,8 +223,8 @@ export default class Autowhatever extends Component {
         itemProps={itemProps}
         renderItem={renderItem}
         renderItemData={renderItemData}
-        focusedItemIndex={focusedSectionIndex === null ? focusedItemIndex : null}
-        onFocusedItemChange={this.onFocusedItemChange}
+        highlightedItemIndex={highlightedSectionIndex === null ? highlightedItemIndex : null}
+        onHighlightedItemChange={this.onHighlightedItemChange}
         getItemId={this.getItemId}
         theme={theme}
         keyPrefix={`react-autowhatever-${id}-`}
@@ -229,46 +232,66 @@ export default class Autowhatever extends Component {
     );
   }
 
-  onKeyDown(event) {
-    const { inputProps, focusedSectionIndex, focusedItemIndex } = this.props;
+  onFocus = event => {
+    const { inputProps } = this.props;
+
+    this.setState({
+      isInputFocused: true
+    });
+
+    inputProps.onFocus && inputProps.onFocus(event);
+  };
+
+  onBlur = event => {
+    const { inputProps } = this.props;
+
+    this.setState({
+      isInputFocused: false
+    });
+
+    inputProps.onBlur && inputProps.onBlur(event);
+  };
+
+  onKeyDown = event => {
+    const { inputProps, highlightedSectionIndex, highlightedItemIndex } = this.props;
 
     switch (event.key) {
       case 'ArrowDown':
       case 'ArrowUp': {
         const nextPrev = (event.key === 'ArrowDown' ? 'next' : 'prev');
-        const [newFocusedSectionIndex, newFocusedItemIndex] =
-          this.sectionIterator[nextPrev]([focusedSectionIndex, focusedItemIndex]);
+        const [newHighlightedSectionIndex, newHighlightedItemIndex] =
+          this.sectionIterator[nextPrev]([highlightedSectionIndex, highlightedItemIndex]);
 
-        inputProps.onKeyDown(event, { newFocusedSectionIndex, newFocusedItemIndex });
+        inputProps.onKeyDown(event, { newHighlightedSectionIndex, newHighlightedItemIndex });
         break;
       }
 
       default:
-        inputProps.onKeyDown(event, { focusedSectionIndex, focusedItemIndex });
+        inputProps.onKeyDown(event, { highlightedSectionIndex, highlightedItemIndex });
     }
-  }
+  };
 
-  ensureFocusedItemIsVisible() {
-    const { focusedItem } = this;
+  ensureHighlightedItemIsVisible() {
+    const { highlightedItem } = this;
 
-    if (!focusedItem) {
+    if (!highlightedItem) {
       return;
     }
 
     const { itemsContainer } = this;
     const itemOffsetRelativeToContainer =
-      focusedItem.offsetParent === itemsContainer
-        ? focusedItem.offsetTop
-        : focusedItem.offsetTop - itemsContainer.offsetTop;
+      highlightedItem.offsetParent === itemsContainer
+        ? highlightedItem.offsetTop
+        : highlightedItem.offsetTop - itemsContainer.offsetTop;
 
     let { scrollTop } = itemsContainer; // Top of the visible area
 
     if (itemOffsetRelativeToContainer < scrollTop) {
       // Item is off the top of the visible area
       scrollTop = itemOffsetRelativeToContainer;
-    } else if (itemOffsetRelativeToContainer + focusedItem.offsetHeight > scrollTop + itemsContainer.offsetHeight) {
+    } else if (itemOffsetRelativeToContainer + highlightedItem.offsetHeight > scrollTop + itemsContainer.offsetHeight) {
       // Item is off the bottom of the visible area
-      scrollTop = itemOffsetRelativeToContainer + focusedItem.offsetHeight - itemsContainer.offsetHeight;
+      scrollTop = itemOffsetRelativeToContainer + highlightedItem.offsetHeight - itemsContainer.offsetHeight;
     }
 
     if (scrollTop !== itemsContainer.scrollTop) {
@@ -280,11 +303,12 @@ export default class Autowhatever extends Component {
     const { theme } = this;
     const {
       id, multiSection, renderInputComponent, renderItemsContainer,
-      focusedSectionIndex, focusedItemIndex
+      highlightedSectionIndex, highlightedItemIndex
     } = this.props;
+    const { isInputFocused } = this.state;
     const renderedItems = multiSection ? this.renderSections() : this.renderItems();
     const isOpen = (renderedItems !== null);
-    const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
+    const ariaActivedescendant = this.getItemId(highlightedSectionIndex, highlightedItemIndex);
     const containerProps = theme(
       `react-autowhatever-${id}-container`,
       'container',
@@ -301,16 +325,29 @@ export default class Autowhatever extends Component {
       'aria-expanded': isOpen,
       'aria-haspopup': isOpen,
       'aria-activedescendant': ariaActivedescendant,
-      ...theme(`react-autowhatever-${id}-input`, 'input'),
+      ...theme(
+        `react-autowhatever-${id}-input`,
+        'input',
+        isOpen && 'inputOpen',
+        isInputFocused && 'inputFocus'
+      ),
       ...this.props.inputProps,
+      onFocus: this.onFocus,
+      onBlur: this.onBlur,
       onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown,
       ref: this.storeInputReference
     });
     const itemsContainer = renderItemsContainer({
-      id: itemsContainerId,
-      ...theme(`react-autowhatever-${id}-items-container`, 'itemsContainer'),
-      ref: this.storeItemsContainerReference,
-      children: renderedItems
+      children: renderedItems,
+      containerProps: {
+        id: itemsContainerId,
+        ...theme(
+          `react-autowhatever-${id}-items-container`,
+          'itemsContainer',
+          isOpen && 'itemsContainerOpen'
+        ),
+        ref: this.storeItemsContainerReference
+      }
     });
 
     return (

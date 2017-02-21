@@ -4,7 +4,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-import { updateInputValue, hideItems, updateFocusedItem } from '../../redux';
+import { updateInputValue, hideItems, updateHighlightedItem } from '../../redux';
 import Autowhatever from 'Autowhatever';
 import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
 import countries from './countries';
@@ -44,8 +44,8 @@ function findItemElement(startNode) {
 function mapStateToProps(state) {
   return {
     value: state[exampleId].value,
-    focusedSectionIndex: state[exampleId].focusedSectionIndex,
-    focusedItemIndex: state[exampleId].focusedItemIndex,
+    highlightedSectionIndex: state[exampleId].highlightedSectionIndex,
+    highlightedItemIndex: state[exampleId].highlightedItemIndex,
     items: state[exampleId].items
   };
 }
@@ -65,10 +65,10 @@ function mapDispatchToProps(dispatch) {
       dispatch(hideItems(exampleId));
     },
     onMouseEnter: (event, { sectionIndex, itemIndex }) => {
-      dispatch(updateFocusedItem(exampleId, sectionIndex, itemIndex));
+      dispatch(updateHighlightedItem(exampleId, sectionIndex, itemIndex));
     },
     onMouseLeave: () => {
-      dispatch(updateFocusedItem(exampleId, null, null));
+      dispatch(updateHighlightedItem(exampleId, null, null));
     },
     onMouseDown: clickedItem => {
       dispatch(updateInputValue(exampleId, clickedItem.name));
@@ -76,7 +76,8 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-function renderItemsContainer({ ref, ...rest }) { // eslint-disable-line react/prop-types
+function renderItemsContainer({ children, containerProps }) {
+  const { ref, ...restContainerProps } = containerProps;
   const callRef = isolatedScroll => {
     if (isolatedScroll !== null) {
       ref(isolatedScroll.component);
@@ -84,7 +85,7 @@ function renderItemsContainer({ ref, ...rest }) { // eslint-disable-line react/p
   };
 
   return (
-    <IsolatedScroll {...rest} ref={callRef} />
+    <IsolatedScroll children={children} ref={callRef} {...restContainerProps} />
   );
 }
 
@@ -109,7 +110,7 @@ function renderItem(country, { value }) {
 
 function Example(props) {
   const {
-    value, focusedSectionIndex, focusedItemIndex, items,
+    value, highlightedSectionIndex, highlightedItemIndex, items,
     onChange, onFocus, onBlur, onMouseEnter, onMouseLeave, onMouseDown
   } = props;
   const inputProps = {
@@ -140,8 +141,8 @@ function Example(props) {
         renderItem={renderItem}
         renderItemData={{ value }}
         inputProps={inputProps}
-        focusedSectionIndex={focusedSectionIndex}
-        focusedItemIndex={focusedItemIndex}
+        highlightedSectionIndex={highlightedSectionIndex}
+        highlightedItemIndex={highlightedItemIndex}
         itemProps={itemProps}
         theme={theme}
       />
@@ -152,8 +153,8 @@ function Example(props) {
 
 Example.propTypes = {
   value: PropTypes.string.isRequired,
-  focusedSectionIndex: PropTypes.number,
-  focusedItemIndex: PropTypes.number,
+  highlightedSectionIndex: PropTypes.number,
+  highlightedItemIndex: PropTypes.number,
   items: PropTypes.array.isRequired,
 
   onChange: PropTypes.func.isRequired,

@@ -14,7 +14,7 @@
   -webkit-appearance: none;
 }
 
-.react-autowhatever__input:focus {
+.react-autowhatever__input--focus {
   outline: none;
 }
 
@@ -22,7 +22,7 @@
   display: none;
 }
 
-.react-autowhatever__container--open .react-autowhatever__input {
+.react-autowhatever__input--open {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
@@ -31,7 +31,7 @@
   display: none;
 }
 
-.react-autowhatever__container--open .react-autowhatever__items-container {
+.react-autowhatever__items-container--open {
   display: block;
   position: relative;
   top: -1px;
@@ -57,6 +57,6 @@
   padding: 10px 20px;
 }
 
-.react-autowhatever__item--focused {
+.react-autowhatever__item--highlight {
   background-color: #ddd;
 }
