@@ -14,12 +14,12 @@ const defaultTheme = {
   containerOpen: 'react-autowhatever__container--open',
   input: 'react-autowhatever__input',
   inputOpen: 'react-autowhatever__input--open',
-  inputFocus: 'react-autowhatever__input--focus',
+  inputFocused: 'react-autowhatever__input--focused',
   itemsContainer: 'react-autowhatever__items-container',
   itemsContainerOpen: 'react-autowhatever__items-container--open',
   itemsList: 'react-autowhatever__items-list',
   item: 'react-autowhatever__item',
-  itemHighlight: 'react-autowhatever__item--highlight',
+  itemHighlighted: 'react-autowhatever__item--highlighted',
   sectionContainer: 'react-autowhatever__section-container',
   sectionContainerFirst: 'react-autowhatever__section-container--first',
   sectionTitle: 'react-autowhatever__section-title'
@@ -329,7 +329,7 @@ export default class Autowhatever extends Component {
         `react-autowhatever-${id}-input`,
         'input',
         isOpen && 'inputOpen',
-        isInputFocused && 'inputFocus'
+        isInputFocused && 'inputFocused'
       ),
       ...this.props.inputProps,
       onFocus: this.onFocus,

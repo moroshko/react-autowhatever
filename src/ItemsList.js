@@ -48,7 +48,7 @@ export default class ItemsList extends Component {
             const itemPropsObj = isItemPropsFunction ? itemProps({ sectionIndex, itemIndex }) : itemProps;
             const allItemProps = {
               id: getItemId(sectionIndex, itemIndex),
-              ...theme(itemKey, 'item', isHighlighted && 'itemHighlight'),
+              ...theme(itemKey, 'item', isHighlighted && 'itemHighlighted'),
               ...itemPropsObj
             };
 
