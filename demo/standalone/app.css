@@ -14,7 +14,7 @@
   -webkit-appearance: none;
 }
 
-.react-autowhatever__input--focus {
+.react-autowhatever__input--focused {
   outline: none;
 }
 
@@ -57,6 +57,6 @@
   padding: 10px 20px;
 }
 
-.react-autowhatever__item--highlight {
+.react-autowhatever__item--highlighted {
   background-color: #ddd;
 }

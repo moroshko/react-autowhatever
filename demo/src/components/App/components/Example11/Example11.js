@@ -24,7 +24,7 @@ const theme = {
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0
   },
-  inputFocus: {
+  inputFocused: {
     outline: 'none'
   },
   itemsContainer: {
@@ -54,7 +54,7 @@ const theme = {
     cursor: 'pointer',
     padding: '10px 20px'
   },
-  itemHighlight: {
+  itemHighlighted: {
     backgroundColor: '#ddd'
   }
 };
