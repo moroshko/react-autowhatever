@@ -1,6 +1,6 @@
 import styles from './Example11.less';
 
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { updateInputValue } from '../../redux';
 import Autowhatever from 'Autowhatever';
@@ -62,13 +62,13 @@ const theme = {
 const exampleId = '11';
 const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`;
 
-const renderItemsContainer = ({ children, containerProps, data }) => (
+const renderItemsContainer = ({ children, containerProps, query }) => (
   <div {...containerProps}>
     {children}
     <div className={styles.footer}>
       {
-        data.query
-          ? <span>Press Enter to search <strong>{data.query}</strong></span>
+        query
+          ? <span>Press Enter to search <strong>{query}</strong></span>
           : <span>Powered by react-autowhatever</span>
       }
     </div>
@@ -101,36 +101,44 @@ function renderItem(item) {
   );
 }
 
-const Example = props => {
-  const { value, onChange } = props;
-  const inputProps = {
-    placeholder: 'Custom items container',
-    value,
-    onChange
-  };
-  const renderItemsContainerData = {
-    query: value.trim()
+class Example extends Component {
+  static propTypes = {
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
   };
 
-  return (
-    <div>
-      <Autowhatever
-        id={exampleId}
-        renderItemsContainer={renderItemsContainer}
-        renderItemsContainerData={renderItemsContainerData}
-        items={items}
-        renderItem={renderItem}
-        inputProps={inputProps}
-        theme={theme}
-      />
-      <SourceCodeLink file={file} />
-    </div>
-  );
-};
+  renderItemsContainer = ({ children, containerProps }) => {
+    const { value } = this.props;
 
-Example.propTypes = {
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
-};
+    return renderItemsContainer({
+      children,
+      containerProps,
+      query: value.trim()
+    });
+  };
+
+  render() {
+    const { value, onChange } = this.props;
+    const inputProps = {
+      placeholder: 'Custom items container',
+      value,
+      onChange
+    };
+
+    return (
+      <div>
+        <Autowhatever
+          id={exampleId}
+          renderItemsContainer={this.renderItemsContainer}
+          items={items}
+          renderItem={renderItem}
+          inputProps={inputProps}
+          theme={theme}
+        />
+        <SourceCodeLink file={file} />
+      </div>
+    );
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Example);

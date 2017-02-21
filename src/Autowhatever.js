@@ -31,7 +31,6 @@ export default class Autowhatever extends Component {
     multiSection: PropTypes.bool,               // Indicates whether a multi section layout should be rendered.
     renderInputComponent: PropTypes.func,       // When specified, it is used to render the input element.
     renderItemsContainer: PropTypes.func,       // Renders the items container.
-    renderItemsContainerData: PropTypes.object, // Arbitrary data that will be passed to renderItemsContainer()
     items: PropTypes.array.isRequired,          // Array of items or sections to render.
     renderItem: PropTypes.func,                 // This function renders a single item.
     renderItemData: PropTypes.object,           // Arbitrary data that will be passed to renderItem()
@@ -56,7 +55,6 @@ export default class Autowhatever extends Component {
     multiSection: false,
     renderInputComponent: defaultRenderInputComponent,
     renderItemsContainer: defaultRenderItemsContainer,
-    renderItemsContainerData: emptyObject,
     shouldRenderSection: alwaysTrue,
     renderItem: () => {
       throw new Error('`renderItem` must be provided');
@@ -305,7 +303,7 @@ export default class Autowhatever extends Component {
     const { theme } = this;
     const {
       id, multiSection, renderInputComponent, renderItemsContainer,
-      renderItemsContainerData, highlightedSectionIndex, highlightedItemIndex
+      highlightedSectionIndex, highlightedItemIndex
     } = this.props;
     const { isInputFocused } = this.state;
     const renderedItems = multiSection ? this.renderSections() : this.renderItems();
@@ -349,8 +347,7 @@ export default class Autowhatever extends Component {
           isOpen && 'itemsContainerOpen'
         ),
         ref: this.storeItemsContainerReference
-      },
-      data: renderItemsContainerData
+      }
     });
 
     return (

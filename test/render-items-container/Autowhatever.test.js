@@ -30,8 +30,7 @@ describe('Autowhatever with renderItemsContainer', () => {
     expect(renderItemsContainer).to.have.been.calledOnce;
     expect(renderItemsContainer).to.be.calledWith({
       children: childrenMatcher,
-      containerProps: containerPropsMatcher,
-      data: { foo: 'bar' }
+      containerProps: containerPropsMatcher
     });
   });
 });

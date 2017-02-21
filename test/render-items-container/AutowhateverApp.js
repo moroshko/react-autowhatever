@@ -41,7 +41,6 @@ export default class AutowhateverApp extends Component {
       <Autowhatever
         id="my-id"
         renderItemsContainer={renderItemsContainer}
-        renderItemsContainerData={{ foo: 'bar' }}
         items={items}
         renderItem={renderItem}
         inputProps={inputProps}
