@@ -19,6 +19,7 @@ const defaultTheme = {
   itemsContainerOpen: 'react-autowhatever__items-container--open',
   itemsList: 'react-autowhatever__items-list',
   item: 'react-autowhatever__item',
+  itemFirst: 'react-autowhatever__item--first',
   itemHighlighted: 'react-autowhatever__item--highlighted',
   sectionContainer: 'react-autowhatever__section-container',
   sectionContainerFirst: 'react-autowhatever__section-container--first',
