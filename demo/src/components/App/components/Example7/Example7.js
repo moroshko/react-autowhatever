@@ -64,7 +64,9 @@ function renderItemsContainer({ children, containerProps }) {
   };
 
   return (
-    <IsolatedScroll children={children} ref={callRef} {...restContainerProps} />
+    <IsolatedScroll ref={callRef} {...restContainerProps}>
+      {children}
+    </IsolatedScroll>
   );
 }
 

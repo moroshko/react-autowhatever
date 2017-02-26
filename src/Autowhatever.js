@@ -8,7 +8,7 @@ const alwaysTrue = () => true;
 const emptyObject = {};
 const defaultRenderInputComponent = props => <input {...props} />;
 const defaultRenderItemsContainer =
-  ({ children, containerProps }) => <div children={children} {...containerProps} />;
+  ({ containerProps, children }) => <div {...containerProps}>{children}</div>;
 const defaultTheme = {
   container: 'react-autowhatever__container',
   containerOpen: 'react-autowhatever__container--open',
@@ -339,7 +339,6 @@ export default class Autowhatever extends Component {
       ref: this.storeInputReference
     });
     const itemsContainer = renderItemsContainer({
-      children: renderedItems,
       containerProps: {
         id: itemsContainerId,
         ...theme(
@@ -348,7 +347,8 @@ export default class Autowhatever extends Component {
           isOpen && 'itemsContainerOpen'
         ),
         ref: this.storeItemsContainerReference
-      }
+      },
+      children: renderedItems
     });
 
     return (
