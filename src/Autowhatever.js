@@ -4,7 +4,6 @@ import themeable from 'react-themeable';
 import SectionTitle from './SectionTitle';
 import ItemsList from './ItemsList';
 
-const alwaysTrue = () => true;
 const emptyObject = {};
 const defaultRenderInputComponent = props => <input {...props} />;
 const defaultRenderItemsContainer =
@@ -28,18 +27,17 @@ const defaultTheme = {
 
 export default class Autowhatever extends Component {
   static propTypes = {
-    id: PropTypes.string,                       // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
-    multiSection: PropTypes.bool,               // Indicates whether a multi section layout should be rendered.
-    renderInputComponent: PropTypes.func,       // When specified, it is used to render the input element.
-    renderItemsContainer: PropTypes.func,       // Renders the items container.
-    items: PropTypes.array.isRequired,          // Array of items or sections to render.
-    renderItem: PropTypes.func,                 // This function renders a single item.
-    renderItemData: PropTypes.object,           // Arbitrary data that will be passed to renderItem()
-    shouldRenderSection: PropTypes.func,        // This function gets a section and returns whether it should be rendered, or not.
-    renderSectionTitle: PropTypes.func,         // This function gets a section and renders its title.
-    getSectionItems: PropTypes.func,            // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
-    inputProps: PropTypes.object,               // Arbitrary input props
-    itemProps: PropTypes.oneOfType([            // Arbitrary item props
+    id: PropTypes.string,                 // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
+    multiSection: PropTypes.bool,         // Indicates whether a multi section layout should be rendered.
+    renderInputComponent: PropTypes.func, // When specified, it is used to render the input element.
+    renderItemsContainer: PropTypes.func, // Renders the items container.
+    items: PropTypes.array.isRequired,    // Array of items or sections to render.
+    renderItem: PropTypes.func,           // This function renders a single item.
+    renderItemData: PropTypes.object,     // Arbitrary data that will be passed to renderItem()
+    renderSectionTitle: PropTypes.func,   // This function gets a section and renders its title.
+    getSectionItems: PropTypes.func,      // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
+    inputProps: PropTypes.object,         // Arbitrary input props
+    itemProps: PropTypes.oneOfType([      // Arbitrary item props
       PropTypes.object,
       PropTypes.func
     ]),
@@ -56,7 +54,6 @@ export default class Autowhatever extends Component {
     multiSection: false,
     renderInputComponent: defaultRenderInputComponent,
     renderItemsContainer: defaultRenderItemsContainer,
-    shouldRenderSection: alwaysTrue,
     renderItem: () => {
       throw new Error('`renderItem` must be provided');
     },
@@ -163,15 +160,11 @@ export default class Autowhatever extends Component {
 
     const { theme } = this;
     const {
-      id, items, renderItem, renderItemData, shouldRenderSection,
-      renderSectionTitle, highlightedSectionIndex, highlightedItemIndex, itemProps
+      id, items, renderItem, renderItemData, renderSectionTitle,
+      highlightedSectionIndex, highlightedItemIndex, itemProps
     } = this.props;
 
     return items.map((section, sectionIndex) => {
-      if (!shouldRenderSection(section)) {
-        return null;
-      }
-
       const keyPrefix = `react-autowhatever-${id}-`;
       const sectionKeyPrefix = `${keyPrefix}section-${sectionIndex}-`;
       const isFirstSection = (sectionIndex === 0);

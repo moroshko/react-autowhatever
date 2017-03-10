@@ -28,10 +28,6 @@ const items = [{
   }]
 }];
 
-function shouldRenderSection(section) {
-  return section.items.length > 0;
-}
-
 function renderSectionTitle(section) {
   return (
     <strong>{section.title}</strong>
@@ -89,7 +85,6 @@ function Example(props) {
         id={exampleId}
         multiSection={true}
         items={items}
-        shouldRenderSection={shouldRenderSection}
         renderSectionTitle={renderSectionTitle}
         getSectionItems={getSectionItems}
         renderItem={renderItem}
