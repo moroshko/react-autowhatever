@@ -1,6 +1,7 @@
 import styles from './SourceCodeLink.less';
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function SourceCodeLink(props) {
   const { file } = props;

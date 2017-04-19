@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import createSectionIterator from 'section-iterator';
 import themeable from 'react-themeable';
 import SectionTitle from './SectionTitle';

@@ -1,6 +1,7 @@
 import styles from './ForkMeOnGitHub.less';
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function ForkMeOnGitHub(props) {
   const { user, repo } = props;
