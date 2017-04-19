@@ -1,6 +1,7 @@
 import theme from '../theme.less';
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
@@ -85,7 +86,9 @@ function renderItemsContainer({ children, containerProps }) {
   };
 
   return (
-    <IsolatedScroll children={children} ref={callRef} {...restContainerProps} />
+    <IsolatedScroll ref={callRef} {...restContainerProps}>
+      {children}
+    </IsolatedScroll>
   );
 }
 

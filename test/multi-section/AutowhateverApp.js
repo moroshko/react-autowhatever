@@ -5,8 +5,6 @@ import sections from './sections';
 
 let app;
 
-export const shouldRenderSection = sinon.spy(section => section.items.length > 0);
-
 export const renderSectionTitle = sinon.spy(section => (
   <strong>{section.title}</strong>
 ));
@@ -63,7 +61,6 @@ export default class AutowhateverApp extends Component {
       <Autowhatever
         multiSection={true}
         items={sections}
-        shouldRenderSection={shouldRenderSection}
         renderSectionTitle={renderSectionTitle}
         getSectionItems={getSectionItems}
         renderItem={renderItem}

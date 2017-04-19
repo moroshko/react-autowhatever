@@ -1,6 +1,7 @@
 import theme from '../theme.less';
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { updateInputValue } from '../../redux';
 import Autowhatever from 'Autowhatever';
@@ -40,10 +41,6 @@ const items = [{
   }]
 }];
 
-function shouldRenderSection(section) {
-  return section.items.length > 0;
-}
-
 function renderSectionTitle(section) {
   return (
     <strong>{section.title}</strong>
@@ -70,7 +67,6 @@ function Example(props) {
         id={exampleId}
         multiSection={true}
         items={items}
-        shouldRenderSection={shouldRenderSection}
         renderSectionTitle={renderSectionTitle}
         getSectionItems={getSectionItems}
         renderItem={renderItem}

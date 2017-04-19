@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Item from './Item';
 import compareObjects from './compareObjects';
 
@@ -43,12 +44,13 @@ export default class ItemsList extends Component {
       <ul role="listbox" {...theme(`${sectionPrefix}items-list`, 'itemsList')}>
         {
           items.map((item, itemIndex) => {
+            const isFirst = (itemIndex === 0);
             const isHighlighted = (itemIndex === highlightedItemIndex);
             const itemKey = `${sectionPrefix}item-${itemIndex}`;
             const itemPropsObj = isItemPropsFunction ? itemProps({ sectionIndex, itemIndex }) : itemProps;
             const allItemProps = {
               id: getItemId(sectionIndex, itemIndex),
-              ...theme(itemKey, 'item', isHighlighted && 'itemHighlighted'),
+              ...theme(itemKey, 'item', isFirst && 'itemFirst', isHighlighted && 'itemHighlighted'),
               ...itemPropsObj
             };
 

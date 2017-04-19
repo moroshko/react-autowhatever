@@ -1,6 +1,7 @@
 import theme from '../theme.less';
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { updateInputValue, updateHighlightedItem } from '../../redux';
 import Autowhatever from 'Autowhatever';
@@ -64,7 +65,9 @@ function renderItemsContainer({ children, containerProps }) {
   };
 
   return (
-    <IsolatedScroll children={children} ref={callRef} {...restContainerProps} />
+    <IsolatedScroll ref={callRef} {...restContainerProps}>
+      {children}
+    </IsolatedScroll>
   );
 }
 
