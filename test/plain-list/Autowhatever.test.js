@@ -66,6 +66,18 @@ describe('Plain List Autowhatever', () => {
       expect(renderItem).to.have.been.calledTwice;
     });
 
+    it('should call `renderItem` with `isHighlighted` flag', () => {
+      renderItem.reset();
+      mouseEnterItem(0);
+      expect(renderItem).to.have.been.calledOnce;
+      expect(renderItem).to.be.calledWith({ text: 'Apple' }, { isHighlighted: true });
+
+      renderItem.reset();
+      mouseLeaveItem(0);
+      expect(renderItem).to.have.been.calledOnce;
+      expect(renderItem).to.be.calledWith({ text: 'Apple' }, { isHighlighted: false });
+    });
+
     it('should call `renderItem` once when item is left', () => {
       mouseEnterItem(3);
       renderItem.reset();

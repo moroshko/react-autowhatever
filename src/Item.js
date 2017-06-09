@@ -5,6 +5,7 @@ import compareObjects from './compareObjects';
 export default class Item extends Component {
   static propTypes = {
     sectionIndex: PropTypes.number,
+    isHighlighted: PropTypes.bool.isRequired,
     itemIndex: PropTypes.number.isRequired,
     item: PropTypes.any.isRequired,
     renderItem: PropTypes.func.isRequired,
@@ -50,7 +51,7 @@ export default class Item extends Component {
   };
 
   render() {
-    const { item, renderItem, renderItemData, ...restProps } = this.props;
+    const { isHighlighted, item, renderItem, renderItemData, ...restProps } = this.props;
 
     delete restProps.sectionIndex;
     delete restProps.itemIndex;
@@ -73,7 +74,7 @@ export default class Item extends Component {
 
     return (
       <li role="option" {...restProps} ref={this.storeItemReference}>
-        {renderItem(item, renderItemData)}
+        {renderItem(item, { isHighlighted, ...renderItemData })}
       </li>
     );
   }
