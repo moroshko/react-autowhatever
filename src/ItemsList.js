@@ -64,6 +64,7 @@ export default class ItemsList extends Component {
               <Item
                 {...allItemProps}
                 sectionIndex={sectionIndex}
+                isHighlighted={isHighlighted}
                 itemIndex={itemIndex}
                 item={item}
                 renderItem={renderItem}
