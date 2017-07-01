@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import compareObjects from './compareObjects';
 
@@ -10,6 +10,7 @@ export default class Item extends Component {
     item: PropTypes.any.isRequired,
     renderItem: PropTypes.func.isRequired,
     renderItemData: PropTypes.object.isRequired,
+    renderListItemContainer: PropTypes.func.isRequired,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
     onMouseDown: PropTypes.func,
@@ -51,7 +52,7 @@ export default class Item extends Component {
   };
 
   render() {
-    const { isHighlighted, item, renderItem, renderItemData, ...restProps } = this.props;
+    const { isHighlighted, item, renderItem, renderItemData, renderListItemContainer, ...restProps } = this.props;
 
     delete restProps.sectionIndex;
     delete restProps.itemIndex;
@@ -72,10 +73,12 @@ export default class Item extends Component {
       restProps.onClick = this.onClick;
     }
 
-    return (
-      <li role="option" {...restProps} ref={this.storeItemReference}>
-        {renderItem(item, { isHighlighted, ...renderItemData })}
-      </li>
-    );
+    restProps.ref = this.storeItemReference;
+
+    return renderListItemContainer({
+      item: item,
+      containerProps: restProps,
+      children: renderItem(item, { isHighlighted, ...renderItemData })
+    });
   }
 }

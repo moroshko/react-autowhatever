@@ -9,6 +9,8 @@ const emptyObject = {};
 const defaultRenderInputComponent = props => <input {...props} />;
 const defaultRenderItemsContainer =
   ({ containerProps, children }) => <div {...containerProps}>{children}</div>;
+const defaultRenderListItemContainer =
+  ({ containerProps,children }) => <li role="option" {...containerProps}>{children}</li>;
 const defaultTheme = {
   container: 'react-autowhatever__container',
   containerOpen: 'react-autowhatever__container--open',
@@ -28,17 +30,18 @@ const defaultTheme = {
 
 export default class Autowhatever extends Component {
   static propTypes = {
-    id: PropTypes.string,                 // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
-    multiSection: PropTypes.bool,         // Indicates whether a multi section layout should be rendered.
-    renderInputComponent: PropTypes.func, // When specified, it is used to render the input element.
-    renderItemsContainer: PropTypes.func, // Renders the items container.
-    items: PropTypes.array.isRequired,    // Array of items or sections to render.
-    renderItem: PropTypes.func,           // This function renders a single item.
-    renderItemData: PropTypes.object,     // Arbitrary data that will be passed to renderItem()
-    renderSectionTitle: PropTypes.func,   // This function gets a section and renders its title.
-    getSectionItems: PropTypes.func,      // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
-    inputProps: PropTypes.object,         // Arbitrary input props
-    itemProps: PropTypes.oneOfType([      // Arbitrary item props
+    id: PropTypes.string,                    // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
+    multiSection: PropTypes.bool,            // Indicates whether a multi section layout should be rendered.
+    renderInputComponent: PropTypes.func,    // When specified, it is used to render the input element.
+    renderItemsContainer: PropTypes.func,    // Renders the items container.
+    renderListItemContainer: PropTypes.func, // Renders the list item container.
+    items: PropTypes.array.isRequired,       // Array of items or sections to render.
+    renderItem: PropTypes.func,              // This function renders a single item.
+    renderItemData: PropTypes.object,        // Arbitrary data that will be passed to renderItem()
+    renderSectionTitle: PropTypes.func,      // This function gets a section and renders its title.
+    getSectionItems: PropTypes.func,         // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
+    inputProps: PropTypes.object,            // Arbitrary input props
+    itemProps: PropTypes.oneOfType([         // Arbitrary item props
       PropTypes.object,
       PropTypes.func
     ]),
@@ -55,6 +58,7 @@ export default class Autowhatever extends Component {
     multiSection: false,
     renderInputComponent: defaultRenderInputComponent,
     renderItemsContainer: defaultRenderItemsContainer,
+    renderListItemContainer: defaultRenderListItemContainer,
     renderItem: () => {
       throw new Error('`renderItem` must be provided');
     },
@@ -161,7 +165,7 @@ export default class Autowhatever extends Component {
 
     const { theme } = this;
     const {
-      id, items, renderItem, renderItemData, renderSectionTitle,
+      id, items,renderListItemContainer, renderItem, renderItemData, renderSectionTitle,
       highlightedSectionIndex, highlightedItemIndex, itemProps
     } = this.props;
 
@@ -185,6 +189,7 @@ export default class Autowhatever extends Component {
             itemProps={itemProps}
             renderItem={renderItem}
             renderItemData={renderItemData}
+            renderListItemContainer={renderListItemContainer}
             sectionIndex={sectionIndex}
             highlightedItemIndex={highlightedSectionIndex === sectionIndex ? highlightedItemIndex : null}
             onHighlightedItemChange={this.onHighlightedItemChange}
@@ -208,7 +213,7 @@ export default class Autowhatever extends Component {
 
     const { theme } = this;
     const {
-      id, renderItem, renderItemData, highlightedSectionIndex,
+      id, renderListItemContainer, renderItem, renderItemData, highlightedSectionIndex,
       highlightedItemIndex, itemProps
     } = this.props;
 
@@ -216,6 +221,7 @@ export default class Autowhatever extends Component {
       <ItemsList
         items={items}
         itemProps={itemProps}
+        renderListItemContainer={renderListItemContainer}
         renderItem={renderItem}
         renderItemData={renderItemData}
         highlightedItemIndex={highlightedSectionIndex === null ? highlightedItemIndex : null}

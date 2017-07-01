@@ -10,6 +10,7 @@ export default class ItemsList extends Component {
       PropTypes.object,
       PropTypes.func
     ]),
+    renderListItemContainer: PropTypes.func.isRequired,
     renderItem: PropTypes.func.isRequired,
     renderItemData: PropTypes.object.isRequired,
     sectionIndex: PropTypes.number,
@@ -34,7 +35,7 @@ export default class ItemsList extends Component {
 
   render() {
     const {
-      items, itemProps, renderItem, renderItemData, sectionIndex,
+      items, itemProps, renderListItemContainer, renderItem, renderItemData, sectionIndex,
       highlightedItemIndex, getItemId, theme, keyPrefix
     } = this.props;
     const sectionPrefix = (sectionIndex === null ? keyPrefix : `${keyPrefix}section-${sectionIndex}-`);
@@ -67,6 +68,7 @@ export default class ItemsList extends Component {
                 isHighlighted={isHighlighted}
                 itemIndex={itemIndex}
                 item={item}
+                renderListItemContainer={renderListItemContainer}
                 renderItem={renderItem}
                 renderItemData={renderItemData}
               />

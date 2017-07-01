@@ -22,6 +22,12 @@ export const containerPropsMatcher = sinon.match({
   className: sinon.match.string,
   ref: sinon.match.func
 });
+export const listItemContainerPropsMatcher = sinon.match({
+  id: sinon.match.string,
+  className: sinon.match.string,
+  ref: sinon.match.func
+});
+export const itemMatcher = sinon.match.any;
 
 export const getElementWithClass =
   className => TestUtils.findRenderedDOMComponentWithClass(app, className);
