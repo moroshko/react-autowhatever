@@ -42,14 +42,14 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(1);
 
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -125,5 +125,5 @@
 
 	ReactDOM.render(React.createElement(App, null), document.getElementById('app')); // eslint-disable-line no-undef
 
-/***/ }
+/***/ })
 /******/ ]);
