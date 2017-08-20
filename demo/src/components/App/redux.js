@@ -49,6 +49,11 @@ const initialState = {
   },
   11: {
     value: ''
+  },
+  12: {
+    value: '',
+    highlightedSectionIndex: null,
+    highlightedItemIndex: null
   }
 };
 
