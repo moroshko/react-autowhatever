@@ -129,6 +129,8 @@ function renderItem(item) {
 class Example extends Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
+    highlightedSectionIndex: PropTypes.number,
+    highlightedItemIndex: PropTypes.number,
     onChange: PropTypes.func.isRequired,
     onKeyDown: PropTypes.func.isRequired
   };
