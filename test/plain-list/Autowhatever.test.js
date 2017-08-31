@@ -70,12 +70,12 @@ describe('Plain List Autowhatever', () => {
       renderItem.reset();
       mouseEnterItem(0);
       expect(renderItem).to.have.been.calledOnce;
-      expect(renderItem).to.be.calledWith({ text: 'Apple' }, { isHighlighted: true });
+      expect(renderItem).to.be.calledWith({ text: 'Apple' }, { itemIndex: 0, isHighlighted: true });
 
       renderItem.reset();
       mouseLeaveItem(0);
       expect(renderItem).to.have.been.calledOnce;
-      expect(renderItem).to.be.calledWith({ text: 'Apple' }, { isHighlighted: false });
+      expect(renderItem).to.be.calledWith({ text: 'Apple' }, { itemIndex: 0, isHighlighted: false });
     });
 
     it('should call `renderItem` once when item is left', () => {
