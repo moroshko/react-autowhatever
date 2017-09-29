@@ -191,7 +191,9 @@ export default class Autowhatever extends Component {
             renderItemData={renderItemData}
             sectionIndex={sectionIndex}
             highlightedItemIndex={highlightedSectionIndex === sectionIndex ? highlightedItemIndex : null}
-            isItemDisabled={(item, itemIndex) => isItemDisabled(item, itemIndex, sectionIndex)}
+            isItemDisabled={function(item, itemIndex) {
+              return isItemDisabled(item, itemIndex, sectionIndex);
+            }}
             onHighlightedItemChange={this.onHighlightedItemChange}
             getItemId={this.getItemId}
             theme={theme}
@@ -224,7 +226,9 @@ export default class Autowhatever extends Component {
         renderItem={renderItem}
         renderItemData={renderItemData}
         highlightedItemIndex={highlightedSectionIndex === null ? highlightedItemIndex : null}
-        isItemDisabled={(item, itemIndex) => isItemDisabled(item, itemIndex, null)}
+        isItemDisabled={function(item, itemIndex) {
+          return isItemDisabled(item, itemIndex, null);
+        }}
         onHighlightedItemChange={this.onHighlightedItemChange}
         getItemId={this.getItemId}
         theme={theme}
@@ -261,7 +265,7 @@ export default class Autowhatever extends Component {
       case 'ArrowUp': {
         const nextPrev = (event.key === 'ArrowDown' ? 'next' : 'prev');
         const [newHighlightedSectionIndex, newHighlightedItemIndex] =
-          this.closestNotDisabled(nextPrev, highlightedSectionIndex, highlightedItemIndex)
+          this.closestNotDisabled(nextPrev, highlightedSectionIndex, highlightedItemIndex);
 
         inputProps.onKeyDown(event, { newHighlightedSectionIndex, newHighlightedItemIndex });
         break;
@@ -273,9 +277,9 @@ export default class Autowhatever extends Component {
   };
 
   closestNotDisabled = (direction, highlightedSectionIndex, highlightedItemIndex) => {
-    const {multiSection, getSectionItems, isItemDisabled, items} = this.props
+    const { multiSection, getSectionItems, isItemDisabled, items } = this.props;
     let [newHighlightedSectionIndex, newHighlightedItemIndex] =
-      this.sectionIterator[direction]([highlightedSectionIndex, highlightedItemIndex])
+      this.sectionIterator[direction]([highlightedSectionIndex, highlightedItemIndex]);
 
     for (; newHighlightedItemIndex !== null;
            [newHighlightedSectionIndex, newHighlightedItemIndex] =
@@ -283,21 +287,22 @@ export default class Autowhatever extends Component {
                [newHighlightedSectionIndex, newHighlightedItemIndex]
              )
     ) {
-      let highlightedItem
+      let highlightedItem;
 
       if (multiSection) {
-        const sectionItems = getSectionItems(items[newHighlightedSectionIndex])
-        highlightedItem = sectionItems[newHighlightedItemIndex]
+        const sectionItems = getSectionItems(items[newHighlightedSectionIndex]);
+
+        highlightedItem = sectionItems[newHighlightedItemIndex];
       } else {
-        highlightedItem = items[newHighlightedItemIndex]
+        highlightedItem = items[newHighlightedItemIndex];
       }
 
       if (!isItemDisabled(highlightedItem, newHighlightedItemIndex, newHighlightedSectionIndex)) {
-        break
+        break;
       }
     }
 
-    return [newHighlightedSectionIndex, newHighlightedItemIndex]
+    return [newHighlightedSectionIndex, newHighlightedItemIndex];
   }
 
   ensureHighlightedItemIsVisible() {

@@ -60,7 +60,7 @@ function Example(props) {
       <Autowhatever
         id={exampleId}
         items={items}
-        isItemDisabled={(item, index) => {
+        isItemDisabled={function (item, index) {
           return index === 1 || index === 3
         }}
         renderItem={renderItem}

@@ -85,7 +85,7 @@ function Example(props) {
       <Autowhatever
         id={exampleId}
         multiSection={true}
-        isItemDisabled={(item, index, sectionIndex) => {
+        isItemDisabled={function (item, index, sectionIndex) {
           return index === 1 && sectionIndex === 0
         }}
         items={items}
