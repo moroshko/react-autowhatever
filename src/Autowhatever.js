@@ -318,7 +318,6 @@ export default class Autowhatever extends Component {
       'aria-autocomplete': 'list',
       'aria-owns': itemsContainerId,
       'aria-expanded': isOpen,
-      'aria-haspopup': isOpen,
       'aria-activedescendant': ariaActivedescendant,
       ...theme(
         `react-autowhatever-${id}-input`,
