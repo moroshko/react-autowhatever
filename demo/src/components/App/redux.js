@@ -54,6 +54,16 @@ const initialState = {
     value: '',
     highlightedSectionIndex: null,
     highlightedItemIndex: null
+  },
+  13: {
+    value: 'Multi section - Disabled items',
+    highlightedSectionIndex: null,
+    highlightedItemIndex: null
+  },
+  14: {
+    value: 'Disabled items',
+    highlightedSectionIndex: null,
+    highlightedItemIndex: null
   }
 };
 
