@@ -304,20 +304,24 @@ export default class Autowhatever extends Component {
     const renderedItems = multiSection ? this.renderSections() : this.renderItems();
     const isOpen = (renderedItems !== null);
     const ariaActivedescendant = this.getItemId(highlightedSectionIndex, highlightedItemIndex);
-    const containerProps = theme(
-      `react-autowhatever-${id}-container`,
-      'container',
-      isOpen && 'containerOpen'
-    );
     const itemsContainerId = `react-autowhatever-${id}`;
+    const containerProps = {
+      role: 'combobox',
+      'aria-haspopup': 'listbox',
+      'aria-owns': itemsContainerId,
+      'aria-expanded': isOpen,
+      ...theme(
+        `react-autowhatever-${id}-container`,
+        'container',
+        isOpen && 'containerOpen'
+      )
+    };
     const inputComponent = renderInputComponent({
       type: 'text',
       value: '',
       autoComplete: 'off',
-      role: 'combobox',
       'aria-autocomplete': 'list',
-      'aria-owns': itemsContainerId,
-      'aria-expanded': isOpen,
+      'aria-controls': itemsContainerId,
       'aria-activedescendant': ariaActivedescendant,
       ...theme(
         `react-autowhatever-${id}-input`,
@@ -334,6 +338,7 @@ export default class Autowhatever extends Component {
     const itemsContainer = renderItemsContainer({
       containerProps: {
         id: itemsContainerId,
+        role: 'listbox',
         ...theme(
           `react-autowhatever-${id}-items-container`,
           'itemsContainer',
