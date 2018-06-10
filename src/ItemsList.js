@@ -50,6 +50,7 @@ export default class ItemsList extends Component {
             const itemPropsObj = isItemPropsFunction ? itemProps({ sectionIndex, itemIndex }) : itemProps;
             const allItemProps = {
               id: getItemId(sectionIndex, itemIndex),
+              'aria-selected': isHighlighted,
               ...theme(itemKey, 'item', isFirst && 'itemFirst', isHighlighted && 'itemHighlighted'),
               ...itemPropsObj
             };
