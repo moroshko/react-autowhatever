@@ -56,7 +56,7 @@ const initialState = {
     highlightedItemIndex: null
   },
   13: {
-    value: '',
+    value: 'Virtualized list',
     highlightedSectionIndex: null,
     highlightedItemIndex: 10
   }
