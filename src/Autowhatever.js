@@ -47,7 +47,8 @@ export default class Autowhatever extends Component {
     theme: PropTypes.oneOfType([               // Styles. See: https://github.com/markdalgleish/react-themeable
       PropTypes.object,
       PropTypes.array
-    ])
+    ]),
+    renderItemsList: PropTypes.func
   };
 
   static defaultProps = {
@@ -162,7 +163,8 @@ export default class Autowhatever extends Component {
     const { theme } = this;
     const {
       id, items, renderItem, renderItemData, renderSectionTitle,
-      highlightedSectionIndex, highlightedItemIndex, itemProps
+      highlightedSectionIndex, highlightedItemIndex, itemProps,
+      renderItemsList
     } = this.props;
 
     return items.map((section, sectionIndex) => {
@@ -192,6 +194,7 @@ export default class Autowhatever extends Component {
             theme={theme}
             keyPrefix={keyPrefix}
             ref={this.storeItemsListReference}
+            renderItemsList={renderItemsList}
           />
         </div>
       );
@@ -209,7 +212,7 @@ export default class Autowhatever extends Component {
     const { theme } = this;
     const {
       id, renderItem, renderItemData, highlightedSectionIndex,
-      highlightedItemIndex, itemProps
+      highlightedItemIndex, itemProps, renderItemsList
     } = this.props;
 
     return (
@@ -223,6 +226,7 @@ export default class Autowhatever extends Component {
         getItemId={this.getItemId}
         theme={theme}
         keyPrefix={`react-autowhatever-${id}-`}
+        renderItemsList={renderItemsList}
       />
     );
   }
