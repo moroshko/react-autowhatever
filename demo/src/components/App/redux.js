@@ -54,6 +54,11 @@ const initialState = {
     value: '',
     highlightedSectionIndex: null,
     highlightedItemIndex: null
+  },
+  13: {
+    value: '',
+    highlightedSectionIndex: null,
+    highlightedItemIndex: 10
   }
 };
 
