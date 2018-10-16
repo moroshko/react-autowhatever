@@ -4,6 +4,7 @@ import createSectionIterator from 'section-iterator';
 import themeable from 'react-themeable';
 import SectionTitle from './SectionTitle';
 import ItemsList from './ItemsList';
+import Grid from '@material-ui/core/Grid';
 
 const emptyObject = {};
 const defaultRenderInputComponent = props => <input {...props} />;
@@ -165,38 +166,84 @@ export default class Autowhatever extends Component {
       highlightedSectionIndex, highlightedItemIndex, itemProps
     } = this.props;
 
-    return items.map((section, sectionIndex) => {
-      const keyPrefix = `react-autowhatever-${id}-`;
-      const sectionKeyPrefix = `${keyPrefix}section-${sectionIndex}-`;
-      const isFirstSection = (sectionIndex === 0);
+    const leftColumnItems = items.filter(item => item.column === 1);
+    const rightColumnItems = items.filter(item => item.column === 2);
 
-      // `key` is provided by theme()
-      /* eslint-disable react/jsx-key */
+    if (rightColumnItems.length > 0) {
       return (
-        <div {...theme(`${sectionKeyPrefix}container`, 'sectionContainer', isFirstSection && 'sectionContainerFirst')}>
-          <SectionTitle
-            section={section}
-            renderSectionTitle={renderSectionTitle}
-            theme={theme}
-            sectionKeyPrefix={sectionKeyPrefix}
-          />
-          <ItemsList
-            items={this.sectionsItems[sectionIndex]}
-            itemProps={itemProps}
-            renderItem={renderItem}
-            renderItemData={renderItemData}
-            sectionIndex={sectionIndex}
-            highlightedItemIndex={highlightedSectionIndex === sectionIndex ? highlightedItemIndex : null}
-            onHighlightedItemChange={this.onHighlightedItemChange}
-            getItemId={this.getItemId}
-            theme={theme}
-            keyPrefix={keyPrefix}
-            ref={this.storeItemsListReference}
-          />
-        </div>
+        <Grid container={true} className="">
+          <Grid item={true} xs={12} sm={6}>
+            {leftColumnItems.map((section, sectionIndex) => {
+              const keyPrefix = `react-autowhatever-${id}-`;
+              const sectionKeyPrefix = `${keyPrefix}section-${sectionIndex}-`;
+              const isFirstSection = (sectionIndex === 0);
+
+              // `key` is provided by theme()
+              /* eslint-disable react/jsx-key */
+              return (
+                <div {...theme(`${sectionKeyPrefix}container`, 'sectionContainer', isFirstSection && 'sectionContainerFirst')}>
+                  <SectionTitle
+                    section={section}
+                    renderSectionTitle={renderSectionTitle}
+                    theme={theme}
+                    sectionKeyPrefix={sectionKeyPrefix}
+                  />
+                  <ItemsList
+                    items={this.sectionsItems[sectionIndex]}
+                    itemProps={itemProps}
+                    renderItem={renderItem}
+                    renderItemData={renderItemData}
+                    sectionIndex={sectionIndex}
+                    highlightedItemIndex={highlightedSectionIndex === sectionIndex ? highlightedItemIndex : null}
+                    onHighlightedItemChange={this.onHighlightedItemChange}
+                    getItemId={this.getItemId}
+                    theme={theme}
+                    keyPrefix={keyPrefix}
+                    ref={this.storeItemsListReference}
+                  />
+                </div>
+              );
+              /* eslint-enable react/jsx-key */
+            })}
+          </Grid>
+          <Grid item={true} xs={12} sm={6} className="right-column">
+            {rightColumnItems.map((section, sectionIndex) => {
+              const keyPrefix = `react-autowhatever-${id}-`;
+              const sectionKeyPrefix = `${keyPrefix}section-${sectionIndex}-`;
+              const isFirstSection = (sectionIndex === 0);
+
+              sectionIndex = leftColumnItems.length;
+              // `key` is provided by theme()
+              /* eslint-disable react/jsx-key */
+              return (
+                <div {...theme(`${sectionKeyPrefix}container`, 'sectionContainer', isFirstSection && 'sectionContainerFirst')}>
+                  <SectionTitle
+                    section={section}
+                    renderSectionTitle={renderSectionTitle}
+                    theme={theme}
+                    sectionKeyPrefix={sectionKeyPrefix}
+                  />
+                  <ItemsList
+                    items={this.sectionsItems[sectionIndex]}
+                    itemProps={itemProps}
+                    renderItem={renderItem}
+                    renderItemData={renderItemData}
+                    sectionIndex={sectionIndex}
+                    highlightedItemIndex={highlightedSectionIndex === sectionIndex ? highlightedItemIndex : null}
+                    onHighlightedItemChange={this.onHighlightedItemChange}
+                    getItemId={this.getItemId}
+                    theme={theme}
+                    keyPrefix={keyPrefix}
+                    ref={this.storeItemsListReference}
+                  />
+                </div>
+              );
+              /* eslint-enable react/jsx-key */
+            })}
+          </Grid>
+        </Grid>
       );
-      /* eslint-enable react/jsx-key */
-    });
+    }
   }
 
   renderItems() {

@@ -1,6 +1,7 @@
 export default [
   {
     title: 'A',
+    column: 1,
     items: [
       {
         text: 'Apple'
@@ -12,6 +13,7 @@ export default [
   },
   {
     title: 'B',
+    column: 1,
     items: [
       {
         text: 'Banana'
@@ -19,7 +21,8 @@ export default [
     ]
   },
   {
-    title: 'C',
+    title: 'Top Products',
+    column: 2,
     items: [
       {
         text: 'Cherry'
