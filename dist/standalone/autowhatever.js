@@ -396,6 +396,47 @@ return /******/ (function(modules) { // webpackBootstrap
 	            })
 	          )
 	        );
+	      } else {
+	        return _react2.default.createElement(
+	          _Grid2.default,
+	          { container: true, className: '' },
+	          _react2.default.createElement(
+	            _Grid2.default,
+	            { item: true, xs: 12, sm: 12 },
+	            leftColumnItems.map(function (section, sectionIndex) {
+	              var keyPrefix = 'react-autowhatever-' + id + '-';
+	              var sectionKeyPrefix = keyPrefix + 'section-' + sectionIndex + '-';
+	              var isFirstSection = sectionIndex === 0;
+
+	              // `key` is provided by theme()
+	              /* eslint-disable react/jsx-key */
+	              return _react2.default.createElement(
+	                'div',
+	                theme(sectionKeyPrefix + 'container', 'sectionContainer', isFirstSection && 'sectionContainerFirst'),
+	                _react2.default.createElement(_SectionTitle2.default, {
+	                  section: section,
+	                  renderSectionTitle: renderSectionTitle,
+	                  theme: theme,
+	                  sectionKeyPrefix: sectionKeyPrefix
+	                }),
+	                _react2.default.createElement(_ItemsList2.default, {
+	                  items: _this2.sectionsItems[sectionIndex],
+	                  itemProps: itemProps,
+	                  renderItem: renderItem,
+	                  renderItemData: renderItemData,
+	                  sectionIndex: sectionIndex,
+	                  highlightedItemIndex: highlightedSectionIndex === sectionIndex ? highlightedItemIndex : null,
+	                  onHighlightedItemChange: _this2.onHighlightedItemChange,
+	                  getItemId: _this2.getItemId,
+	                  theme: theme,
+	                  keyPrefix: keyPrefix,
+	                  ref: _this2.storeItemsListReference
+	                })
+	              );
+	              /* eslint-enable react/jsx-key */
+	            })
+	          )
+	        );
 	      }
 	    }
 	  }, {
