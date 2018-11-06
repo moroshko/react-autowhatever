@@ -37,6 +37,7 @@ export default class Autowhatever extends Component {
     renderItemData: PropTypes.object,     // Arbitrary data that will be passed to renderItem()
     renderSectionTitle: PropTypes.func,   // This function gets a section and renders its title.
     getSectionItems: PropTypes.func,      // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
+    containerProps: PropTypes.object,     // Arbitrary container props
     inputProps: PropTypes.object,         // Arbitrary input props
     itemProps: PropTypes.oneOfType([      // Arbitrary item props
       PropTypes.object,
@@ -65,6 +66,7 @@ export default class Autowhatever extends Component {
     getSectionItems: () => {
       throw new Error('`getSectionItems` must be provided');
     },
+    containerProps: emptyObject,
     inputProps: emptyObject,
     itemProps: emptyObject,
     highlightedSectionIndex: null,
@@ -314,7 +316,8 @@ export default class Autowhatever extends Component {
         `react-autowhatever-${id}-container`,
         'container',
         isOpen && 'containerOpen'
-      )
+      ),
+      ...this.props.containerProps
     };
     const inputComponent = renderInputComponent({
       type: 'text',
