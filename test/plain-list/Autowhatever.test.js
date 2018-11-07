@@ -6,9 +6,11 @@ import {
   getStoredInput,
   getStoredItemsContainer,
   getStoredHighlightedItem,
+  getContainerAttribute,
   getInputAttribute,
   getItemsContainerAttribute,
   getItems,
+  getItem,
   mouseEnterItem,
   mouseLeaveItem,
   mouseDownItem,
@@ -25,8 +27,12 @@ describe('Plain List Autowhatever', () => {
   });
 
   describe('initially', () => {
-    it('should set input\'s `aria-owns` to items container\'s `id`', () => {
-      expect(getInputAttribute('aria-owns')).to.equal(getItemsContainerAttribute('id'));
+    it('should set container\'s `aria-owns` to items container\'s `id`', () => {
+      expect(getContainerAttribute('aria-owns')).to.equal(getItemsContainerAttribute('id'));
+    });
+
+    it('should set input\'s `aria-controls` to items container\'s `id`', () => {
+      expect(getInputAttribute('aria-controls')).to.equal(getItemsContainerAttribute('id'));
     });
 
     it('should render all items', () => {
@@ -76,6 +82,16 @@ describe('Plain List Autowhatever', () => {
       mouseLeaveItem(0);
       expect(renderItem).to.have.been.calledOnce;
       expect(renderItem).to.be.calledWith({ text: 'Apple' }, { isHighlighted: false });
+    });
+
+    it('should set `aria-selected` to true on highlighted items', () => {
+      renderItem.reset();
+      mouseEnterItem(0);
+      expect(getItem(0).getAttribute('aria-selected')).to.equal('true');
+
+      renderItem.reset();
+      mouseLeaveItem(0);
+      expect(getItem(0).getAttribute('aria-selected')).to.equal('false');
     });
 
     it('should call `renderItem` once when item is left', () => {

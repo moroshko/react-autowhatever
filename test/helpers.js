@@ -6,10 +6,11 @@ import TestUtils, { Simulate } from 'react-dom/test-utils';
 
 chai.use(sinonChai);
 
-let app, input, itemsContainer;
+let app, container, input, itemsContainer;
 
 export const init = application => {
   app = application;
+  container = TestUtils.findRenderedDOMComponentWithClass(app, 'react-autowhatever__container');
   input = TestUtils.findRenderedDOMComponentWithTag(app, 'input');
   itemsContainer = TestUtils.findRenderedDOMComponentWithClass(app, 'react-autowhatever__items-container');
 };
@@ -28,6 +29,9 @@ export const getElementWithClass =
 export const getStoredInput = () => app.autowhatever.input;
 export const getStoredItemsContainer = () => app.autowhatever.itemsContainer;
 export const getStoredHighlightedItem = () => app.autowhatever.highlightedItem;
+
+export const getContainerAttribute = attr =>
+  container.getAttribute(attr);
 
 export const getInputAttribute = attr =>
   input.getAttribute(attr);

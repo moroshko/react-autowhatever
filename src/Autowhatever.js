@@ -37,6 +37,7 @@ export default class Autowhatever extends Component {
     renderItemData: PropTypes.object,     // Arbitrary data that will be passed to renderItem()
     renderSectionTitle: PropTypes.func,   // This function gets a section and renders its title.
     getSectionItems: PropTypes.func,      // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
+    containerProps: PropTypes.object,     // Arbitrary container props
     inputProps: PropTypes.object,         // Arbitrary input props
     itemProps: PropTypes.oneOfType([      // Arbitrary item props
       PropTypes.object,
@@ -65,6 +66,7 @@ export default class Autowhatever extends Component {
     getSectionItems: () => {
       throw new Error('`getSectionItems` must be provided');
     },
+    containerProps: emptyObject,
     inputProps: emptyObject,
     itemProps: emptyObject,
     highlightedSectionIndex: null,
@@ -304,21 +306,25 @@ export default class Autowhatever extends Component {
     const renderedItems = multiSection ? this.renderSections() : this.renderItems();
     const isOpen = (renderedItems !== null);
     const ariaActivedescendant = this.getItemId(highlightedSectionIndex, highlightedItemIndex);
-    const containerProps = theme(
-      `react-autowhatever-${id}-container`,
-      'container',
-      isOpen && 'containerOpen'
-    );
     const itemsContainerId = `react-autowhatever-${id}`;
+    const containerProps = {
+      role: 'combobox',
+      'aria-haspopup': 'listbox',
+      'aria-owns': itemsContainerId,
+      'aria-expanded': isOpen,
+      ...theme(
+        `react-autowhatever-${id}-container`,
+        'container',
+        isOpen && 'containerOpen'
+      ),
+      ...this.props.containerProps
+    };
     const inputComponent = renderInputComponent({
       type: 'text',
       value: '',
       autoComplete: 'off',
-      role: 'combobox',
       'aria-autocomplete': 'list',
-      'aria-owns': itemsContainerId,
-      'aria-expanded': isOpen,
-      'aria-haspopup': isOpen,
+      'aria-controls': itemsContainerId,
       'aria-activedescendant': ariaActivedescendant,
       ...theme(
         `react-autowhatever-${id}-input`,
@@ -335,6 +341,7 @@ export default class Autowhatever extends Component {
     const itemsContainer = renderItemsContainer({
       containerProps: {
         id: itemsContainerId,
+        role: 'listbox',
         ...theme(
           `react-autowhatever-${id}-items-container`,
           'itemsContainer',
