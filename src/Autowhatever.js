@@ -4,7 +4,7 @@ import createSectionIterator from 'section-iterator';
 import themeable from 'react-themeable';
 import SectionTitle from './SectionTitle';
 import ItemsList from './ItemsList';
-import Grid from '@material-ui/core/Grid';
+import { Grid } from 'react-bootstrap';
 
 const emptyObject = {};
 const defaultRenderInputComponent = props => <input {...props} />;
