@@ -4,7 +4,7 @@ import createSectionIterator from 'section-iterator';
 import themeable from 'react-themeable';
 import SectionTitle from './SectionTitle';
 import ItemsList from './ItemsList';
-import Grid from '@material-ui/core/Grid';
+import { Grid, Col } from 'react-bootstrap';
 
 const emptyObject = {};
 const defaultRenderInputComponent = props => <input {...props} />;
@@ -172,7 +172,7 @@ export default class Autowhatever extends Component {
     if (rightColumnItems.length > 0) {
       return (
         <Grid container={true} className="">
-          <Grid item={true} xs={12} sm={6}>
+          <Col item={true} xs={12} sm={6}>
             {leftColumnItems.map((section, sectionIndex) => {
               const keyPrefix = `react-autowhatever-${id}-`;
               const sectionKeyPrefix = `${keyPrefix}section-${sectionIndex}-`;
@@ -205,8 +205,8 @@ export default class Autowhatever extends Component {
               );
               /* eslint-enable react/jsx-key */
             })}
-          </Grid>
-          <Grid item={true} xs={12} sm={6} className="right-column">
+          </Col>
+          <Col item={true} xs={12} sm={6} className="right-column">
             {rightColumnItems.map((section, sectionIndex) => {
               const keyPrefix = `react-autowhatever-${id}-`;
               const sectionKeyPrefix = `${keyPrefix}section-${sectionIndex}-`;
@@ -240,13 +240,13 @@ export default class Autowhatever extends Component {
               );
               /* eslint-enable react/jsx-key */
             })}
-          </Grid>
+          </Col>
         </Grid>
       );
     } else {
       return (
         <Grid container={true} className="">
-          <Grid item={true} xs={12} sm={12}>
+          <Col item={true} xs={12} sm={12}>
             {leftColumnItems.map((section, sectionIndex) => {
               const keyPrefix = `react-autowhatever-${id}-`;
               const sectionKeyPrefix = `${keyPrefix}section-${sectionIndex}-`;
@@ -279,7 +279,7 @@ export default class Autowhatever extends Component {
               );
               /* eslint-enable react/jsx-key */
             })}
-          </Grid>
+          </Col>
         </Grid>
       );
     }

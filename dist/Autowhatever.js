@@ -34,9 +34,7 @@ var _ItemsList = require('./ItemsList');
 
 var _ItemsList2 = _interopRequireDefault(_ItemsList);
 
-var _Grid = require('@material-ui/core/Grid');
-
-var _Grid2 = _interopRequireDefault(_Grid);
+var _reactBootstrap = require('react-bootstrap');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -256,10 +254,10 @@ var Autowhatever = function (_Component) {
 
       if (rightColumnItems.length > 0) {
         return _react2.default.createElement(
-          _Grid2.default,
+          _reactBootstrap.Grid,
           { container: true, className: '' },
           _react2.default.createElement(
-            _Grid2.default,
+            _reactBootstrap.Col,
             { item: true, xs: 12, sm: 6 },
             leftColumnItems.map(function (section, sectionIndex) {
               var keyPrefix = 'react-autowhatever-' + id + '-';
@@ -295,7 +293,7 @@ var Autowhatever = function (_Component) {
             })
           ),
           _react2.default.createElement(
-            _Grid2.default,
+            _reactBootstrap.Col,
             { item: true, xs: 12, sm: 6, className: 'right-column' },
             rightColumnItems.map(function (section, sectionIndex) {
               var keyPrefix = 'react-autowhatever-' + id + '-';
@@ -334,10 +332,10 @@ var Autowhatever = function (_Component) {
         );
       } else {
         return _react2.default.createElement(
-          _Grid2.default,
+          _reactBootstrap.Grid,
           { container: true, className: '' },
           _react2.default.createElement(
-            _Grid2.default,
+            _reactBootstrap.Col,
             { item: true, xs: 12, sm: 12 },
             leftColumnItems.map(function (section, sectionIndex) {
               var keyPrefix = 'react-autowhatever-' + id + '-';
