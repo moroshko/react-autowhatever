@@ -39,6 +39,7 @@ export default class Autowhatever extends Component {
     getSectionItems: PropTypes.func,      // This function gets a section and returns its items, which will be passed into `renderItem` for rendering.
     containerProps: PropTypes.object,     // Arbitrary container props
     inputProps: PropTypes.object,         // Arbitrary input props
+    ariaLabel: PropTypes.string,          // Sets aria-label
     itemProps: PropTypes.oneOfType([      // Arbitrary item props
       PropTypes.object,
       PropTypes.func
@@ -71,6 +72,7 @@ export default class Autowhatever extends Component {
     itemProps: emptyObject,
     highlightedSectionIndex: null,
     highlightedItemIndex: null,
+    ariaLabel: 'search',
     theme: defaultTheme
   };
 
@@ -300,7 +302,7 @@ export default class Autowhatever extends Component {
     const { theme } = this;
     const {
       id, multiSection, renderInputComponent, renderItemsContainer,
-      highlightedSectionIndex, highlightedItemIndex
+      highlightedSectionIndex, highlightedItemIndex, ariaLabel
     } = this.props;
     const { isInputFocused } = this.state;
     const renderedItems = multiSection ? this.renderSections() : this.renderItems();
@@ -312,6 +314,7 @@ export default class Autowhatever extends Component {
       'aria-haspopup': 'listbox',
       'aria-owns': itemsContainerId,
       'aria-expanded': isOpen,
+      'aria-label': ariaLabel,
       ...theme(
         `react-autowhatever-${id}-container`,
         'container',
@@ -325,6 +328,7 @@ export default class Autowhatever extends Component {
       autoComplete: 'off',
       'aria-autocomplete': 'list',
       'aria-controls': itemsContainerId,
+      'aria-label' : 'suggestions',
       'aria-activedescendant': ariaActivedescendant,
       ...theme(
         `react-autowhatever-${id}-input`,
