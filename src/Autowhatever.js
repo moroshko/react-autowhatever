@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import createSectionIterator from 'section-iterator';
 import themeable from 'react-themeable';
@@ -26,7 +26,7 @@ const defaultTheme = {
   sectionTitle: 'react-autowhatever__section-title'
 };
 
-export default class Autowhatever extends Component {
+export default class Autowhatever extends PureComponent {
   static propTypes = {
     id: PropTypes.string,                 // Used in aria-* attributes. If multiple Autowhatever's are rendered on a page, they must have unique ids.
     multiSection: PropTypes.bool,         // Indicates whether a multi section layout should be rendered.
@@ -82,28 +82,10 @@ export default class Autowhatever extends Component {
     this.state = {
       isInputFocused: false
     };
-
-    this.setSectionsItems(props);
-    this.setSectionIterator(props);
-    this.setTheme(props);
   }
 
   componentDidMount() {
     this.ensureHighlightedItemIsVisible();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.items !== this.props.items) {
-      this.setSectionsItems(nextProps);
-    }
-
-    if (nextProps.items !== this.props.items || nextProps.multiSection !== this.props.multiSection) {
-      this.setSectionIterator(nextProps);
-    }
-
-    if (nextProps.theme !== this.props.theme) {
-      this.setTheme(nextProps);
-    }
   }
 
   componentDidUpdate() {
@@ -111,22 +93,34 @@ export default class Autowhatever extends Component {
   }
 
   setSectionsItems(props) {
+    if (props.items === this.latestItems) {
+      return;
+    }
     if (props.multiSection) {
       this.sectionsItems = props.items.map(section => props.getSectionItems(section));
       this.sectionsLengths = this.sectionsItems.map(items => items.length);
       this.allSectionsAreEmpty = this.sectionsLengths.every(itemsCount => itemsCount === 0);
     }
+    this.latestItems = props.items;
   }
 
   setSectionIterator(props) {
+    if (this.latestItems === props.items && this.latestMultiSection === props.multiSection) {
+      return;
+    }
     this.sectionIterator = createSectionIterator({
       multiSection: props.multiSection,
       data: props.multiSection ? this.sectionsLengths : props.items.length
     });
+    this.latestMultiSection = props.multiSection;
   }
 
   setTheme(props) {
+    if (props.theme === this.latestTheme) {
+      return;
+    }
     this.theme = themeable(props.theme);
+    this.latestTheme = props.theme;
   }
 
   storeInputReference = input => {
@@ -297,6 +291,9 @@ export default class Autowhatever extends Component {
   }
 
   render() {
+    this.setSectionsItems(this.props);
+    this.setSectionIterator(this.props);
+    this.setTheme(this.props);
     const { theme } = this;
     const {
       id, multiSection, renderInputComponent, renderItemsContainer,
