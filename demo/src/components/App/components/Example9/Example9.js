@@ -1,45 +1,34 @@
-import theme from '../theme.less';
+import theme from "../theme.less";
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
-import { updateInputValue, hideItems, updateHighlightedItem } from '../../redux';
-import Autowhatever from 'Autowhatever';
-import SourceCodeLink from 'SourceCodeLink/SourceCodeLink';
-import countries from './countries';
-import { escapeRegexCharacters } from '../../utils';
-import IsolatedScroll from 'react-isolated-scroll';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import match from "autosuggest-highlight/match";
+import parse from "autosuggest-highlight/parse";
+import {
+  updateInputValue,
+  hideItems,
+  updateHighlightedItem
+} from "../../redux";
+import Autowhatever from "Autowhatever";
+import SourceCodeLink from "SourceCodeLink/SourceCodeLink";
+import countries from "./countries";
+import { escapeRegexCharacters } from "../../utils";
+import IsolatedScroll from "react-isolated-scroll";
 
-const exampleId = '9';
+const exampleId = "9";
 const file = `demo/src/components/App/components/Example${exampleId}/Example${exampleId}.js`;
 
 function getMatchingCountries(value) {
   const escapedValue = escapeRegexCharacters(value.trim());
 
-  if (escapedValue === '') {
+  if (escapedValue === "") {
     return [];
   }
 
-  const regex = new RegExp('^' + escapedValue, 'i');
+  const regex = new RegExp("^" + escapedValue, "i");
 
   return countries.filter(country => regex.test(country.name));
-}
-
-function findItemElement(startNode) {
-  let node = startNode;
-
-  do {
-    if (node.getAttribute('data-item-index') !== null) {
-      return node;
-    }
-
-    node = node.parentNode;
-  } while (node !== null);
-
-  console.error('Clicked item:', startNode); // eslint-disable-line no-console
-  throw new Error('Couldn\'t find the clicked item element');
 }
 
 function mapStateToProps(state) {
@@ -60,7 +49,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(updateInputValue(exampleId, newValue, newItems));
     },
     onFocus: () => {
-      dispatch(updateInputValue(exampleId, ''));
+      dispatch(updateInputValue(exampleId, ""));
     },
     onBlur: () => {
       dispatch(hideItems(exampleId));
@@ -98,41 +87,46 @@ function renderItem(country, { value }) {
 
   return (
     <span>
-      {
-        parts.map((part, index) => {
-          const className = part.highlight ? theme.highlight : null;
+      {parts.map((part, index) => {
+        const className = part.highlight ? theme.highlight : null;
 
-          return (
-            <span className={className} key={index}>{part.text}</span>
-          );
-        })
-      }
+        return (
+          <span className={className} key={index}>
+            {part.text}
+          </span>
+        );
+      })}
     </span>
   );
 }
 
 function Example(props) {
   const {
-    value, highlightedSectionIndex, highlightedItemIndex, items,
-    onChange, onFocus, onBlur, onMouseEnter, onMouseLeave, onMouseDown
+    value,
+    highlightedSectionIndex,
+    highlightedItemIndex,
+    items,
+    onChange,
+    onFocus,
+    onBlur,
+    onMouseEnter,
+    onMouseLeave,
+    onMouseDown
   } = props;
   const inputProps = {
-    placeholder: 'Search and click countries',
+    placeholder: "Search and click countries",
     value,
     onChange,
     onFocus,
     onBlur
   };
   const itemProps = ({ itemIndex }) => ({
-    'data-item-index': itemIndex,
+    "data-item-index": itemIndex,
     onMouseEnter,
     onMouseLeave,
-    onMouseDown: event => {
-      const clickedItem = findItemElement(event.target);
-      const clickedItemIndex = clickedItem.getAttribute('data-item-index');
-
-      onMouseDown(items[clickedItemIndex]);
-    }
+    onMouseDown: (index => {
+      return event => onMouseDown(items[index]);
+    })(itemIndex)
   });
 
   return (
