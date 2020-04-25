@@ -134,6 +134,15 @@ export default class Autowhatever extends Component {
     if (input !== null) {
       this.input = input;
     }
+
+    const userRef = this.props.inputProps.ref;
+    if (userRef) {
+      if (typeof userRef === 'function') {
+        userRef(input);
+      } else if (typeof userRef === 'object' && userRef.hasOwnProperty('current')) {
+        userRef.current = input;
+      }
+    }
   };
 
   storeItemsContainerReference = itemsContainer => {
