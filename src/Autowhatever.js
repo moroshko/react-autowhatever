@@ -314,7 +314,10 @@ export default class Autowhatever extends Component {
     } = this.props;
     const { isInputFocused } = this.state;
     const renderedItems = multiSection ? this.renderSections() : this.renderItems();
-    const isOpen = (renderedItems !== null);
+    const isOpen = (
+      renderedItems !== null ||
+      renderItemsContainer !== defaultRenderItemsContainer
+    );
     const ariaActivedescendant = this.getItemId(highlightedSectionIndex, highlightedItemIndex);
     const itemsContainerId = `react-autowhatever-${id}`;
     const containerProps = {
