@@ -45,7 +45,7 @@
     "babel-register": "^6.24.1",
     "chai": "^3.5.0",
     "css-loader": "^0.28.0",
-    "eslint": "^3.19.0",
+    "eslint": "^4.18.2",
     "eslint-plugin-react": "^6.10.3",
     "extract-text-webpack-plugin": "^1.0.1",
     "jsdom": "^9.12.0",
